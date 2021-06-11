@@ -1,0 +1,56 @@
+{
+    "cities": [
+        {
+            "cityID": 1,
+            "cityName": "TPHCM",
+            "data": {
+                "day1": "Rainy",
+                "day2": "Snowy",
+                "day3": "Sunny",
+                "day4": "Cloudy",
+                "day5": "Dry",
+                "day6": "Normal",
+                "day7": "Humid"
+            }
+        },
+        {
+            "cityID": 2,
+            "cityName": "HaNoi",
+            "data": {
+                "day1": "Snowy",
+                "day2": "Cloudy",
+                "day3": "Cloudy",
+                "day4": "Rainy",
+                "day5": "Rainy",
+                "day6": "Normal",
+                "day7": "Snowy"
+            }
+        },
+        {
+            "cityID": 3,
+            "cityName": "DaNang",
+            "data": {
+                "day1": "Sunny",
+                "day2": "Normal",
+                "day3": "Sunny",
+                "day4": "Rainy",
+                "day5": "Dry",
+                "day6": "Dry",
+                "day7": "Sunny"
+            }
+        },
+        {
+            "cityID": 4,
+            "cityName": "Hue",
+            "data": {
+                "day1": "Rainy",
+                "day2": "Rainy",
+                "day3": "Normal",
+                "day4": "Cloudy",
+                "day5": "Rainy",
+                "day6": "Normal",
+                "day7": "Cloudy"
+            }
+        }
+    ]
+}

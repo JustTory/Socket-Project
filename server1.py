@@ -28,13 +28,44 @@ def checkLogIn(username, password, userData):
             return user["userID"];
     return False;
 
-def logInSection():
+def logInSection(conn, userData):
     while True:
-        login = "Type /signin to sign in or /signup to create a new account"
-        conn.sendall(bytes(login, "utf8"))
+        loginHint = "Type /signin to sign in or /signup to create a new account"
+        conn.sendall(bytes(loginHint, "utf8"))
         clientInput = conn.recv(1024)
         strClientInput = clientInput.decode("utf8")
-        ###continue code
+        if strClientInput == "/signin":
+            while True:
+                loginReq = "Sign In: type [username] [password]"
+                conn.sendall(bytes(loginReq, "utf8"))
+                clientInput = conn.recv(1024)
+                strClientInput = clientInput.decode("utf8")
+                username = strClientInput.split()[0]
+                password = strClientInput.split()[1]
+                if checkLogIn(username, password, userData):
+                    conn.sendall(bytes("You have signed in successfully", "utf8"))
+                    break
+                else:
+                    conn.sendall(bytes("Incorrect username or password!", "utf8"))
+            break
+        elif strClientInput == "/signup":
+            while True:
+                loginReq = "Sign Up: type [username] [password]"
+                conn.sendall(bytes(loginReq, "utf8"))
+                clientInput = conn.recv(1024)
+                strClientInput = clientInput.decode("utf8")
+                username = strClientInput.split()[0]
+                password = strClientInput.split()[1]
+                if checkExistUsername(username, userData):
+                    conn.sendall(bytes("You have created a new account successfully", "utf8"))
+                    createNewUser(username, password, userData)
+                    break
+                else:
+                    conn.sendall(bytes("Username already exists!", "utf8"))
+            break
+        else:
+            conn.sendall(bytes("Unknown command!\n", "utf8"))
+
 
 
 def commandManager(strClientInput, weatherData):
@@ -53,7 +84,7 @@ def commandManager(strClientInput, weatherData):
         return "Unknown command!"
 
 
-def communicateSection():
+def communicateSection(conn, weatherData):
     hint = "Server: type /help for list of commands"
     conn.sendall(bytes(hint, "utf8"))
 
@@ -90,7 +121,8 @@ if __name__ == "__main__":
         conn, addr = s.accept()
         print(addr, "has connected")
 
-        # functions here
+        logInSection(conn, userData)
+        communicateSection(conn, weatherData)
 
         conn.close()
         print(addr, "has disconnected")

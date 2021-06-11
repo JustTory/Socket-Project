@@ -3,7 +3,40 @@ import socket
 import json
 
 
-# helper functions
+# functions
+def checkExistUsername(username, userData):
+    for user in userData["users"]:
+        if user["username"] == username:
+            return False
+    return True
+
+def createNewUser(username, password, userData):
+    if checkExistUsername(username, userData) == False:
+        newUser = {
+            "userID": len(userData["users"]),
+            "username": username,
+            "password": password
+        }
+        userData["users"].append(newUser)
+        return True
+    else:
+        return False
+
+def checkLogIn(username, password, userData):
+    for user in userData["users"]:
+        if user["username"] == username and user["password"] == password:
+            return user["userID"];
+    return False;
+
+def logInSection():
+    while True:
+        login = "Type /signin to sign in or /signup to create a new account"
+        conn.sendall(bytes(login, "utf8"))
+        clientInput = conn.recv(1024)
+        strClientInput = clientInput.decode("utf8")
+        ###continue code
+
+
 def commandManager(strClientInput, weatherData):
     commandArr = strClientInput.split()
     if commandArr[0] == "/help":
@@ -12,28 +45,42 @@ def commandManager(strClientInput, weatherData):
         for city in weatherData["cities"]:
             if city['cityName'] == commandArr[1]:
                 res = "\n"
-                for days in city['data']:
-                    res += "%s: %s\n" % (days, city['data'][days])
-                return res;
+                for days in city["data"]:
+                    res += "%s: %s\n" % (days, city["data"][days])
+                return res
         return "City name not found!"
-    else: return "Unknown command!"
+    else:
+        return "Unknown command!"
+
+
+def communicateSection():
+    hint = "Server: type /help for list of commands"
+    conn.sendall(bytes(hint, "utf8"))
+
+    while True:
+        clientInput = conn.recv(1024)
+        strClientInput = clientInput.decode("utf8")
+
+        if strClientInput == "/exit":
+            break
+        if not clientInput:
+            break
+
+        print(addr, strClientInput)
+        serverResponse = commandManager(strClientInput, weatherData)
+        conn.sendall(bytes(serverResponse, "utf8"))
 
 
 # main function
 if __name__ == "__main__":
-    HOST = '127.0.0.1' # server's IP
-    PORT = 65432 # server's port: any non-privileged ports
+    HOST = '127.0.0.1'
+    PORT = 65432
 
-    weatherJson = open('weather.json') # open json file
-    weatherData = json.load(weatherJson) #load json data to an array
+    weatherJson = open("weather.json")
+    weatherData = json.load(weatherJson)
+    userJson = open("user.json")
+    userData = json.load(userJson)
 
-    # s = socket.socket(addr_family, type)
-    # addr_family:
-    #   socket.AF_INET: Internet protocol (IPv4)
-    #   socket.AF_INET6: Internet protocol (IPv6)
-    # type:
-    #   socket.SOCK_STREAM: Connection based stream (TCP)
-    #   socket.SOCK_DGRAM: Datagrams (UDP)
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((HOST, PORT))
     s.listen(5)
@@ -43,19 +90,9 @@ if __name__ == "__main__":
         conn, addr = s.accept()
         print(addr, "has connected")
 
-        while True:
-            clientInput = conn.recv(1024)
-            strClientInput = clientInput.decode("utf8")
-
-            if strClientInput == "/exit": break
-            if not clientInput: break
-
-            print(addr, strClientInput)
-            serverResponse = commandManager(strClientInput, weatherData)
-            conn.sendall(bytes(serverResponse, "utf8"))
+        # functions here
 
         conn.close()
         print(addr, "has disconnected")
 
     s.close()
-

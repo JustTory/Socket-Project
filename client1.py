@@ -13,7 +13,9 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 serverAddr = (HOST, PORT)
 s.connect(serverAddr)
 print('Connected to server: ' + str(serverAddr))
-print("Server: type /help for list of commands")
+
+while True:
+    serverResponse = s.recv(1024)
 
 while True:
     clientMsg = input('\nClient: ')

@@ -7,66 +7,82 @@ import json
 def checkExistUsername(username, userData):
     for user in userData["users"]:
         if user["username"] == username:
-            return False
-    return True
+            return True
+    return False
 
 def createNewUser(username, password, userData):
-    if checkExistUsername(username, userData) == False:
-        newUser = {
-            "userID": len(userData["users"]),
-            "username": username,
-            "password": password
-        }
-        userData["users"].append(newUser)
-        return True
-    else:
-        return False
+    print(userData)
+    newUser = {
+        "userID": len(userData["users"]),
+        "username": username,
+        "password": password
+    }
+
+    userData["users"].append(newUser)
+    with open("user.json", "w") as outfile:
+        json.dump(userData, outfile)
 
 def checkLogIn(username, password, userData):
     for user in userData["users"]:
         if user["username"] == username and user["password"] == password:
-            return user["userID"];
-    return False;
+            return True
+    return False
 
 def logInSection(conn, userData):
+    print("logInSection")
+    errorMsg = ""
     while True:
-        loginHint = "Type /signin to sign in or /signup to create a new account"
+        print("log in")
+        loginHint = errorMsg + "Type /signin to sign in or /signup to create a new account"
         conn.sendall(bytes(loginHint, "utf8"))
         clientInput = conn.recv(1024)
         strClientInput = clientInput.decode("utf8")
         if strClientInput == "/signin":
+            errorMsg = ""
             while True:
-                loginReq = "Sign In: type [username] [password]"
+                print("sign in")
+                loginReq = errorMsg + "Sign In: type [username] [password]"
                 conn.sendall(bytes(loginReq, "utf8"))
                 clientInput = conn.recv(1024)
                 strClientInput = clientInput.decode("utf8")
-                username = strClientInput.split()[0]
-                password = strClientInput.split()[1]
+                userInfo = strClientInput.split()
+                if len(userInfo) == 2:
+                    username = userInfo[0]
+                    password = userInfo[1]
+                else:
+                    errorMsg = "\nSyntax error!\n"
+                    continue
                 if checkLogIn(username, password, userData):
-                    conn.sendall(bytes("You have signed in successfully", "utf8"))
+                    conn.sendall(bytes("You have signed in successfully!", "utf8"))
                     break
                 else:
-                    conn.sendall(bytes("Incorrect username or password!", "utf8"))
+                    errorMsg = "\nIncorrect username or password!\n"
             break
         elif strClientInput == "/signup":
+            errorMsg = ""
             while True:
-                loginReq = "Sign Up: type [username] [password]"
+                print("sign up")
+                loginReq = errorMsg + "Sign Up: type [username] [password]"
                 conn.sendall(bytes(loginReq, "utf8"))
                 clientInput = conn.recv(1024)
                 strClientInput = clientInput.decode("utf8")
-                username = strClientInput.split()[0]
-                password = strClientInput.split()[1]
-                if checkExistUsername(username, userData):
-                    conn.sendall(bytes("You have created a new account successfully", "utf8"))
+                userInfo = strClientInput.split()
+                if len(userInfo) == 2:
+                    username = userInfo[0]
+                    password = userInfo[1]
+                else:
+                    errorMsg = "\nSyntax error!\n"
+                    continue
+                if checkExistUsername(username, userData) == False:
                     createNewUser(username, password, userData)
+                    conn.sendall(bytes("You have created a new account successfully", "utf8"))
                     break
                 else:
-                    conn.sendall(bytes("Username already exists!", "utf8"))
+                    errorMsg = "\nUsername already exists!\n"
             break
         else:
-            conn.sendall(bytes("Unknown command!\n", "utf8"))
-
-
+            print("unknown command")
+            errorMsg = "\nUnknown command!\n"
 
 def commandManager(strClientInput, weatherData):
     commandArr = strClientInput.split()

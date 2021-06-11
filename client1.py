@@ -17,5 +17,4 @@ while True:
         if clientMsg == "/exit": break
         data = s.recv(1024)
         print('Server:', data.decode("utf8"))
-        
 s.close()

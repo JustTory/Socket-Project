@@ -34,43 +34,40 @@ def logInSection(conn, userData):
         strclientReq = clientReq.decode("utf8")
         data = strclientReq.split()
         reqType = data[0]
+
         if reqType == "signin":
             print("signin")
-            while True:
-                if len(data) == 3:
-                    username = data[1]
-                    password = data[2]
-                    if checkLogIn(username, password, userData):
-                        conn.sendall(bytes("sign in success", "utf8"))
-                        print("sign in success")
-                        break
-                    else:
-                        conn.sendall(bytes("info incorrect", "utf8"))
-                        print("info incorrect")
-                        break
-                else:
-                    conn.sendall(bytes("syntax error", "utf8"))
-                    print("syntax error")
+            if len(data) == 3:
+                username = data[1]
+                password = data[2]
+                if checkLogIn(username, password, userData):
+                    conn.sendall(bytes("sign in success", "utf8"))
+                    print("sign in success")
                     break
+                else:
+                    conn.sendall(bytes("info incorrect", "utf8"))
+                    print("info incorrect")
+            else:
+                conn.sendall(bytes("syntax error", "utf8"))
+                print("syntax error")
+
         elif reqType == "signup":
             print("signup")
-            while True:
-                if len(data) == 3:
-                    username = data[1]
-                    password = data[2]
-                    if checkExistUsername(username, userData) == False:
-                        createNewUser(username, password, userData)
-                        conn.sendall(bytes("sign up success", "utf8"))
-                        print("sign up success")
-                        break
-                    else:
-                        conn.sendall(bytes("username exists", "utf8"))
-                        print("username exists")
-                        break
-                else:
-                    conn.sendall(bytes("syntax error", "utf8"))
-                    print("syntax error")
+            if len(data) == 3:
+                username = data[1]
+                password = data[2]
+                if checkExistUsername(username, userData) == False:
+                    createNewUser(username, password, userData)
+                    conn.sendall(bytes("sign up success", "utf8"))
+                    print("sign up success")
                     break
+                else:
+                    conn.sendall(bytes("username exists", "utf8"))
+                    print("username exists")
+            else:
+                conn.sendall(bytes("syntax error", "utf8"))
+                print("syntax error")
+
         else:
             conn.sendall(bytes("unknown command", "utf8"))
             print("unknown command")
@@ -92,7 +89,7 @@ def commandManager(strclientReq, weatherData):
 
 
 def communicateSection(conn, weatherData):
-    hint = "Server: type /help for list of commands"
+    hint = "logged in"
     conn.sendall(bytes(hint, "utf8"))
 
     while True:

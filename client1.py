@@ -9,8 +9,7 @@ def receive():
     msg = s.recv(1024).decode("utf8")
     return msg
 
-def frameManager():
-    serverResponse = receive()
+def frameManager(serverResponse):
     print(serverResponse)
     if (serverResponse == "sign in success"):
         messagebox.showinfo("Success", "You have signed in successfully")
@@ -19,9 +18,11 @@ def frameManager():
         messagebox.showinfo("Success", "You have created an account successfully")
         showFrame(mainMenuFrame)
     elif (serverResponse == "info incorrect"):
-        messagebox.showerror("Error", "Username or password incorrect")
+        messagebox.showerror("Error", "Incorrect username or password")
     elif (serverResponse == "username exists"):
         messagebox.showerror("Error", "Username already exists")
+    elif (serverResponse == "syntax error"):
+        messagebox.showerror("Error", "Username or password can't be empty")
 
 def sendUserInfo(usernameEntry, passwordEntry, type):
     username = usernameEntry.get()
@@ -30,7 +31,8 @@ def sendUserInfo(usernameEntry, passwordEntry, type):
     passwordEntry.delete(0, 'end')
 
     send(type + " " + username + " " + password)
-    frameManager()
+    serverResponse = receive()
+    frameManager(serverResponse)
 
 def showFrame(frame):
     frame.tkraise()

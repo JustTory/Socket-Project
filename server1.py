@@ -29,63 +29,54 @@ def checkLogIn(username, password, userData):
     return False
 
 def logInSection(conn, userData):
-    print("logInSection")
-    errorMsg = ""
     while True:
-        print("log in")
-        loginHint = errorMsg + "Type /signin to sign in or /signup to create a new account"
-        conn.sendall(bytes(loginHint, "utf8"))
-        clientInput = conn.recv(1024)
-        strClientInput = clientInput.decode("utf8")
-        if strClientInput == "/signin":
-            errorMsg = ""
+        clientReq = conn.recv(1024)
+        strclientReq = clientReq.decode("utf8")
+        data = strclientReq.split()
+        reqType = data[0]
+        if reqType == "signin":
+            print("signin")
             while True:
-                print("sign in")
-                loginReq = errorMsg + "Sign In: type [username] [password]"
-                conn.sendall(bytes(loginReq, "utf8"))
-                clientInput = conn.recv(1024)
-                strClientInput = clientInput.decode("utf8")
-                userInfo = strClientInput.split()
-                if len(userInfo) == 2:
-                    username = userInfo[0]
-                    password = userInfo[1]
+                if len(data) == 3:
+                    username = data[1]
+                    password = data[2]
+                    if checkLogIn(username, password, userData):
+                        conn.sendall(bytes("sign in success", "utf8"))
+                        print("sign in success")
+                        break
+                    else:
+                        conn.sendall(bytes("info incorrect", "utf8"))
+                        print("info incorrect")
+                        break
                 else:
-                    errorMsg = "\nSyntax error!\n"
-                    continue
-                if checkLogIn(username, password, userData):
-                    conn.sendall(bytes("You have signed in successfully!", "utf8"))
+                    conn.sendall(bytes("syntax error", "utf8"))
+                    print("syntax error")
                     break
-                else:
-                    errorMsg = "\nIncorrect username or password!\n"
-            break
-        elif strClientInput == "/signup":
-            errorMsg = ""
+        elif reqType == "signup":
+            print("signup")
             while True:
-                print("sign up")
-                loginReq = errorMsg + "Sign Up: type [username] [password]"
-                conn.sendall(bytes(loginReq, "utf8"))
-                clientInput = conn.recv(1024)
-                strClientInput = clientInput.decode("utf8")
-                userInfo = strClientInput.split()
-                if len(userInfo) == 2:
-                    username = userInfo[0]
-                    password = userInfo[1]
+                if len(data) == 3:
+                    username = data[1]
+                    password = data[2]
+                    if checkExistUsername(username, userData) == False:
+                        createNewUser(username, password, userData)
+                        conn.sendall(bytes("sign up success", "utf8"))
+                        print("sign up success")
+                        break
+                    else:
+                        conn.sendall(bytes("username exists", "utf8"))
+                        print("username exists")
+                        break
                 else:
-                    errorMsg = "\nSyntax error!\n"
-                    continue
-                if checkExistUsername(username, userData) == False:
-                    createNewUser(username, password, userData)
-                    conn.sendall(bytes("You have created a new account successfully", "utf8"))
+                    conn.sendall(bytes("syntax error", "utf8"))
+                    print("syntax error")
                     break
-                else:
-                    errorMsg = "\nUsername already exists!\n"
-            break
         else:
+            conn.sendall(bytes("unknown command", "utf8"))
             print("unknown command")
-            errorMsg = "\nUnknown command!\n"
 
-def commandManager(strClientInput, weatherData):
-    commandArr = strClientInput.split()
+def commandManager(strclientReq, weatherData):
+    commandArr = strclientReq.split()
     if commandArr[0] == "/help":
         return "\n/city [city_name]\n[city_name]: TPHCM, HaNoi, DaNang, Hue"
     elif commandArr[0] == "/city":
@@ -97,7 +88,7 @@ def commandManager(strClientInput, weatherData):
                 return res
         return "City name not found!"
     else:
-        return "Unknown command!"
+        return "unknown command"
 
 
 def communicateSection(conn, weatherData):
@@ -105,16 +96,16 @@ def communicateSection(conn, weatherData):
     conn.sendall(bytes(hint, "utf8"))
 
     while True:
-        clientInput = conn.recv(1024)
-        strClientInput = clientInput.decode("utf8")
+        clientReq = conn.recv(1024)
+        strclientReq = clientReq.decode("utf8")
 
-        if strClientInput == "/exit":
+        if strclientReq == "/exit":
             break
-        if not clientInput:
+        if not clientReq:
             break
 
-        print(addr, strClientInput)
-        serverResponse = commandManager(strClientInput, weatherData)
+        print(addr, strclientReq)
+        serverResponse = commandManager(strclientReq, weatherData)
         conn.sendall(bytes(serverResponse, "utf8"))
 
 

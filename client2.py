@@ -16,7 +16,7 @@ print('Connected to server: ' + str(serverAddr))
 print("Server: type /help for list of commands")
 
 while True:
-    clientMsg = input('\nClient: ')
+    clientMsg = input('Client: ')
     s.sendall(bytes(clientMsg, "utf8"))
     if clientMsg == "/exit": break
     data = s.recv(1024)

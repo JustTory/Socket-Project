@@ -4,13 +4,36 @@
             "cityID": 1,
             "cityName": "TPHCM",
             "data": {
-                "day1": "Rainy",
-                "day2": "Snowy",
-                "day3": "Sunny",
-                "day4": "Cloudy",
-                "day5": "Dry",
-                "day6": "Normal",
-                "day7": "Humid"
+                "June": {
+                "1": "Rainy",
+                "2": "Snowy",
+                "3": "Sunny",
+                "4": "Cloudy",
+                "5": "Dry",
+                "6": "Normal",
+                "7": "Humid",
+                "8": "Rainy",
+                "9": "Snowy",
+                "10": "Sunny",
+                "11": "Cloudy",
+                "12": "Dry",
+                "13": "Normal",
+                "14": "Humid",
+                "15": "Rainy",
+                "16": "Snowy",
+                "17": "Sunny",
+                "18": "Cloudy",
+                "19": "Dry",
+                "20": "Normal",
+                "21": "Humid",
+                "22": "Rainy",
+                "23": "Snowy",
+                "24": "Sunny",
+                "25": "Cloudy",
+                "26": "Dry",
+                "27": "Normal",
+                "28": "Humid"
+                }
             }
         },
         {

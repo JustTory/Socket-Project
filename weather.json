@@ -1,56 +1,142 @@
 {
-    "cities": [
-        {
-            "cityID": 1,
-            "cityName": "TPHCM",
-            "data": {
-                "day1": "Rainy",
-                "day2": "Snowy",
-                "day3": "Sunny",
-                "day4": "Cloudy",
-                "day5": "Dry",
-                "day6": "Normal",
-                "day7": "Humid"
-            }
-        },
-        {
-            "cityID": 2,
-            "cityName": "HaNoi",
-            "data": {
-                "day1": "Snowy",
-                "day2": "Cloudy",
-                "day3": "Cloudy",
-                "day4": "Rainy",
-                "day5": "Rainy",
-                "day6": "Normal",
-                "day7": "Snowy"
-            }
-        },
-        {
-            "cityID": 3,
-            "cityName": "DaNang",
-            "data": {
-                "day1": "Sunny",
-                "day2": "Normal",
-                "day3": "Sunny",
-                "day4": "Rainy",
-                "day5": "Dry",
-                "day6": "Dry",
-                "day7": "Sunny"
-            }
-        },
-        {
-            "cityID": 4,
-            "cityName": "Hue",
-            "data": {
-                "day1": "Rainy",
-                "day2": "Rainy",
-                "day3": "Normal",
-                "day4": "Cloudy",
-                "day5": "Rainy",
-                "day6": "Normal",
-                "day7": "Cloudy"
+    "weather":{
+        "2021": {
+            "May": {
+                "24": {
+                    "TPHCM": "A",
+                    "HaNoi": "A"
+                },
+                "25": {
+                    "TPHCM": "B",
+                    "HaNoi": "B"
+                },
+                "26": {
+                    "TPHCM": "C",
+                    "HaNoi": "C"
+                },
+                "27": {
+                    "TPHCM": "D",
+                    "HaNoi": "D"
+                },
+                "28": {
+                    "TPHCM": "A",
+                    "HaNoi": "A"
+                },
+                "29": {
+                    "TPHCM": "B",
+                    "HaNoi": "B"
+                },
+                "30": {
+                    "TPHCM": "C",
+                    "HaNoi": "C"
+                },
+                "31": {
+                    "TPHCM": "D",
+                    "HaNoi": "D"
+                }
+            },
+            "June": {
+                "1": {
+                    "TPHCM": "A",
+                    "HaNoi": "A"
+                },
+                "2": {
+                    "TPHCM": "B",
+                    "HaNoi": "B"
+                },
+                "3": {
+                    "TPHCM": "C",
+                    "HaNoi": "C"
+                },
+                "4": {
+                    "TPHCM": "D",
+                    "HaNoi": "D"
+                },
+                "5": {
+                    "TPHCM": "A",
+                    "HaNoi": "A"
+                },
+                "6": {
+                    "TPHCM": "B",
+                    "HaNoi": "B"
+                },
+                "7": {
+                    "TPHCM": "C",
+                    "HaNoi": "C"
+                },
+                "8": {
+                    "TPHCM": "D",
+                    "HaNoi": "D"
+                },
+                "9": {
+                    "TPHCM": "A",
+                    "HaNoi": "A"
+                },
+                "10": {
+                    "TPHCM": "B",
+                    "HaNoi": "B"
+                },
+                "11": {
+                    "TPHCM": "C",
+                    "HaNoi": "C"
+                },
+                "12": {
+                    "TPHCM": "D",
+                    "HaNoi": "D"
+                },
+                "13": {
+                    "TPHCM": "A",
+                    "HaNoi": "A"
+                },
+                "14": {
+                    "TPHCM": "B",
+                    "HaNoi": "B"
+                },
+                "15": {
+                    "TPHCM": "C",
+                    "HaNoi": "C"
+                },
+                "16": {
+                    "TPHCM": "D",
+                    "HaNoi": "D"
+                },
+                "17": {
+                    "TPHCM": "A",
+                    "HaNoi": "A"
+                },
+                "18": {
+                    "TPHCM": "B",
+                    "HaNoi": "B"
+                },
+                "19": {
+                    "TPHCM": "C",
+                    "HaNoi": "C"
+                },
+                "20": {
+                    "TPHCM": "D",
+                    "HaNoi": "D"
+                },
+                "21": {
+                    "TPHCM": "A",
+                    "HaNoi": "A"
+                },
+                "22": {
+                    "TPHCM": "B",
+                    "HaNoi": "B"
+                },
+                "23": {
+                    "TPHCM": "C",
+                    "HaNoi": "C"
+                },
+                "24": {
+                    "TPHCM": "D",
+                    "HaNoi": "D"
+                },
+                "31": {
+
+                }
             }
         }
-    ]
+    }
+
 }

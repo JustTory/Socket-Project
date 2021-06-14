@@ -106,7 +106,13 @@ while True:
         if (user_req[0] == "/city"):
             data_transfer = getCityWeather(user_req[1], 7)
         if (user_req[0] == "/list"):
-            data_transfer = getWeatherAll()
+            if (len(user_req) == 1):
+                data_transfer = getWeatherAll()
+            else:
+                if (len(user_req) == 4):
+                    data_transfer = getWeatherAll(user_req[1], user_req[2], user_req[3])
+                else:
+                    data_transfer = "Syntax Errors"
 
         conn.sendall(bytes(data_transfer, "utf8"))
 

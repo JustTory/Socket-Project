@@ -16,9 +16,11 @@ print(MONTH)
 HOST = '127.0.0.1' # server's IP
 PORT = 65432 # server's port: any non-privileged ports
 weatherJson = open("weather.json")
+cityJson = open("cities.json")
+cityData = json.load(cityJson)
 data = json.load(weatherJson)
 
-cityData = data["cities"]
+cityData = cityData["cities"]
 weatherData = data["weather"]
 
 # s = socket.socket(addr_family, type)
@@ -41,7 +43,7 @@ def checkExistsCity(id):
     return True
 
 def getCityWeather(city, numDay):
-    if (checkExistsCity(city) == False):  
+    if (checkExistsCity(city) == False):
         return "This city doesn't exist"
 
     res = "\n"
@@ -49,28 +51,28 @@ def getCityWeather(city, numDay):
     month_loop = MONTH
     year_loop = YEAR
 
-    if (int(DAY) - 6 < 0): 
+    if (int(DAY) - numDay - 1 < 0):
         index = MONTHS.index(MONTH)
-        PrevMonth = MONTHS[index-1] 
+        PrevMonth = MONTHS[index-1]
         keys = list(weatherData[YEAR][PrevMonth])
         lastDayofPrevMonth = keys[-1]
 
-    getNumofDay = numDay    
-    for i in range(getNumofDay):
+    for i in range(numDay):
         try:
             date_data = weatherData[year_loop][month_loop][day_loop]
             if (date_data[city]):
                 weather = date_data[city]
         except:
-            weather = "NaN"    
+            weather = "NaN"
 
         res += "%-5s %s, %s: %s\n" % (month_loop,day_loop.zfill(2), year_loop,weather)
         day_loop = str(int(day_loop) - 1)
         if (int(day_loop) <= 0):
             day_loop = lastDayofPrevMonth
-            month_loop = PrevMonth   
+            month_loop = PrevMonth
     return res
-def getWeatherAll(day = DAY, month = MONTH, year = YEAR): 
+    
+def getWeatherAll(day = DAY, month = MONTH, year = YEAR):
     allCity = list(cityData)
 
     try:
@@ -79,14 +81,14 @@ def getWeatherAll(day = DAY, month = MONTH, year = YEAR):
         return "No data available"
     res = "\n[%s %s, %s]:\n" % (month, day, year)
     for city in allCity:
-        try: 
+        try:
             status = date_data[city]
         except:
-            status = "NaN" 
+            status = "NaN"
         res += "%s: %s\n" % (city, status)
     return res
 
-    
+
 while True:
     conn, addr = s.accept()
     print(addr, "has connected")

@@ -1,15 +1,4 @@
 {
-    "cities": {
-        "TPHCM": {
-            "name": "TPHCM"
-        },
-        "HaNoi": {
-            "name": "HaNoi"
-        },
-        "DaNang": {
-            "name": "DaNang"
-        }
-    },
     "weather":{
         "2021": {
             "May": {
@@ -149,5 +138,5 @@
             }
         }
     }
-    
+
 }

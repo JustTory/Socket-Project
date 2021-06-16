@@ -76,20 +76,20 @@ def logInSection(client, clientAddr, userData):
         if data:
             reqType = data[0]
             if reqType == "signin":
-                print("signin")
+                print(clientAddr ,"SIGN IN")
                 if len(data) == 3:
                     username = data[1]
                     password = data[2]
                     if checkLogIn(username, password, userData):
-                        client.sendall(bytes("sign in success", "utf8"))
-                        print("sign in success")
+                        client.sendall(bytes("SIGN IN: success", "utf8"))
+                        print(clientAddr, "SIGN IN: success")
                         return True
                     else:
-                        client.sendall(bytes("info incorrect", "utf8"))
-                        print("info incorrect")
+                        client.sendall(bytes("SIGN IN: info incorrect", "utf8"))
+                        print(clientAddr, "SIGN IN: info incorrect")
                 else:
-                    client.sendall(bytes("syntax error", "utf8"))
-                    print("syntax error")
+                    client.sendall(bytes("SIGN IN: syntax error", "utf8"))
+                    print(clientAddr, "SIGN IN: syntax error")
 
             elif reqType == "signup":
                 print("signup")
@@ -98,15 +98,15 @@ def logInSection(client, clientAddr, userData):
                     password = data[2]
                     if checkExistUsername(username, userData) == False:
                         createNewUser(username, password, userData)
-                        client.sendall(bytes("sign up success", "utf8"))
-                        print("sign up success")
+                        client.sendall(bytes("SIGN UP: success", "utf8"))
+                        print(clientAddr, "SIGN UP: success")
                         return True
                     else:
-                        client.sendall(bytes("username exists", "utf8"))
-                        print("username exists")
+                        client.sendall(bytes("SIGN UP: username already existed", "utf8"))
+                        print(clientAddr, "SIGN UP: username already existed")
                 else:
-                    client.sendall(bytes("syntax error", "utf8"))
-                    print("syntax error")
+                    client.sendall(bytes("SIGN UP: syntax error", "utf8"))
+                    print(clientAddr, "SIGN UP: syntax error")
 
             elif reqType == "exit":
                 disconnectClient(client, clientAddr)
@@ -114,7 +114,7 @@ def logInSection(client, clientAddr, userData):
 
             else:
                 client.sendall(bytes("unknown command", "utf8"))
-                print("unknown command")
+                print(clientAddr, "unknown command")
         else: return False
 
 def communicateSection(client, clientAddr, weatherData):

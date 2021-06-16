@@ -21,17 +21,20 @@ def receive():
 
 def frameManager(serverResponse):
     print(serverResponse)
-    if (serverResponse == "sign in success"):
+    if (serverResponse == "SIGN IN: success"):
         messagebox.showinfo("Success", "You have signed in successfully")
         showFrame(mainMenuFrame)
-    elif (serverResponse == "sign up success"):
+    elif (serverResponse == "SIGN IN: info incorrect"):
+        messagebox.showerror("Error", "Incorrect username or password")
+    elif (serverResponse == "SIGN IN: syntax error"):
+        messagebox.showerror("Error", "Username or password can't be empty")
+
+    elif (serverResponse == "SIGN UP: success"):
         messagebox.showinfo("Success", "You have created an account successfully")
         showFrame(mainMenuFrame)
-    elif (serverResponse == "info incorrect"):
-        messagebox.showerror("Error", "Incorrect username or password")
-    elif (serverResponse == "username exists"):
-        messagebox.showerror("Error", "Username already exists")
-    elif (serverResponse == "syntax error"):
+    elif (serverResponse == "SIGN UP: username already existed"):
+        messagebox.showerror("Error", "Username already existed")
+    elif (serverResponse == "SIGN UP: syntax error"):
         messagebox.showerror("Error", "Username or password can't be empty")
 
 def showFrame(frame):

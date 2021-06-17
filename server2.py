@@ -2,7 +2,7 @@ import socket
 import json
 from datetime import date
 
-MONTHS = ["January", "Febuary", "May", "June"]
+MONTHS = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "Setemper", "October", "November", "December"]
 today = date.today()
 
 DAY = "13"

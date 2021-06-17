@@ -1,14 +1,24 @@
 import socket
 from tkinter import *
+from tkinter import ttk
 # from tkinter.ttk import Progressbar
 from tkinter import messagebox
 from threading import Thread
+from datetime import date
+
+today = date.today()
+DAY = int(today.strftime("%d"))
+MONTH = today.strftime("%B")
+YEAR = today.strftime("%Y")
+
 
 def send(msg):
     s.sendall(bytes(msg, "utf8"))
+    print('user send')
 
 def receive():
     msg = s.recv(1024).decode("utf8")
+    print('user receive')
     return msg
 
 def frameManager(serverResponse):
@@ -73,10 +83,51 @@ def setUpSignUpFrame():
     Button(signUpFrame, text="Create account", width=15, height=1, command=lambda: sendUserInfo(usernameEntry, passwordEntry, "signup")).pack(pady=(20,10))
     Button(signUpFrame, text="Already have an account? Sign in", width=30, height=1, command=lambda: showFrame(signInFrame)).pack()
 
+def sendAllWeathers(day,month, year): 
+    message = "/list %s %s %s" % (day,month,year)
+    send(message)
+    data = receive()
+    print(data)
+def showAllWeathersFrameUI():
+    Label(allWeathersFrame, text = "WEATHER DATA").grid(row=0,column=1,sticky="WE",pady=20)
+    
+    #Day
+    dayList = list(range(32))
+
+    Label(allWeathersFrame, text = "Choose day").grid(pady=5,row=1, column=0, sticky="W", ipadx=5)
+    dayChoose = StringVar(allWeathersFrame)
+    dayOption = ttk.Combobox(allWeathersFrame, textvariable=dayChoose, values=dayList,width=10)
+    dayChoose = dayList.index(DAY)
+    dayOption.current(dayChoose)
+    dayOption.grid(row = 1, column=1)
+
+    #Month
+    monthList = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "Setemper", "October", "November", "December"]
+
+    Label(allWeathersFrame, text = "Choose Month").grid(pady=5,row=2, column=0, sticky="W", ipadx=5)
+    monthChoose = StringVar(allWeathersFrame)
+    monthOption = ttk.Combobox(allWeathersFrame, textvariable=monthChoose, value=monthList,width=10)
+    monthChoose = monthList.index(MONTH)
+    monthOption.current(monthChoose)
+    monthOption.grid(row = 2, column=1)
+
+    #Year
+    yearList = ["2020","2021","2022"]
+
+    Label(allWeathersFrame, text = "Choose Year").grid(pady=5,row=3, column=0, sticky="W", ipadx=5)
+    yearChoose = StringVar(allWeathersFrame)
+    yearOption = ttk.Combobox(allWeathersFrame, textvariable = yearChoose, values=yearList,width=10)
+    yearChoose = yearList.index(YEAR)
+    yearOption.current(yearChoose)
+    yearOption.grid(row = 3, column=1)
+
+    Button(allWeathersFrame, text="Submit", width=15, height=1, command=lambda: sendAllWeathers(dayOption.get(),monthOption.get(),yearOption.get() )).grid(pady=10)
+
+
 def setUpMainMenuFrame():
     Label(mainMenuFrame, text="MAIN MENU").pack()
-    Button(mainMenuFrame, text="List all cities", width=15, height=1).pack()
-    Button(mainMenuFrame, text="Select a city", width=15, height=1).pack()
+    Button(mainMenuFrame, text="List all cities", width=15, height=1, command=lambda: showFrame(allWeathersFrame)).pack()
+    Button(mainMenuFrame, text="Select a city", width=15, height=1, command=lambda: showFrame(allWeathersFrame)).pack()
 
 def connectThread(entry):
     # global threadConnect
@@ -130,8 +181,9 @@ chooseSVFrame = Frame(root)
 signInFrame = Frame(root)
 signUpFrame = Frame(root)
 mainMenuFrame = Frame(root)
+allWeathersFrame = Frame(root)
 
-for frame in (pbFrame, chooseSVFrame, signInFrame, signUpFrame, mainMenuFrame):
+for frame in (pbFrame, chooseSVFrame, signInFrame, signUpFrame, mainMenuFrame, allWeathersFrame):
     frame.grid(row=0, column=0, sticky='nsew')
 
 # setUpPBFrame()
@@ -139,6 +191,7 @@ setUpChooseSVFrame()
 setUpSignInFrame()
 setUpSignUpFrame()
 setUpMainMenuFrame()
+showAllWeathersFrameUI()
 #receiveMsgList = {}
 
 Thread(target=showFrame, args=(chooseSVFrame,)).start()

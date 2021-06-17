@@ -2,7 +2,7 @@
 import socket
 import json
 from threading import Thread
-
+from datetime import date
 
 # functions
 def checkExistUsername(username, userData):
@@ -73,25 +73,37 @@ def logInSection(client, userData):
             client.sendall(bytes("unknown command", "utf8"))
             print("unknown command")
 
+def getWeatherAll(day , month, year):
+    allCity = list(cityData)
+
+    try:
+        date_data = weatherData[year][month][day]
+    except:
+        return "No data available"
+    res = "\n[%s %s, %s]:\n" % (month, day, year)
+    for city in allCity:
+        try:
+            status = date_data[city]
+        except:
+            status = "NaN"
+        res += "%s: %s\n" % (city, status)
+    return res
 def commandManager(strClientReq, weatherData):
     commandArr = strClientReq.split()
+    print(strClientReq)
     if commandArr[0] == "/help":
         return "\n/city [city_name]\n[city_name]: TPHCM, HaNoi, DaNang, Hue"
-    elif commandArr[0] == "/city":
-        for city in weatherData["cities"]:
-            if city['cityName'] == commandArr[1]:
-                res = "\n"
-                for days in city["data"]:
-                    res += "%s: %s\n" % (days, city["data"][days])
-                return res
-        return "City name not found!"
+    if (commandArr[0] == "/list"):
+        data_transfer = getWeatherAll(commandArr[1], commandArr[2], commandArr[3])
+        return data_transfer
     else:
         return "unknown command"
 
 def communicateSection(client, weatherData):
-    hint = "logged in"
-    client.sendall(bytes(hint, "utf8"))
+    # hint = "logged in"
+    # client.sendall(bytes(hint, "utf8"))
 
+    print("run here 1")
     while True:
         clientReq = client.recv(1024)
         strclientReq = clientReq.decode("utf8")
@@ -102,6 +114,7 @@ def communicateSection(client, weatherData):
             break
 
         serverResponse = commandManager(strclientReq, weatherData)
+        print("server Response: ", serverResponse)
         client.sendall(bytes(serverResponse, "utf8"))
 
 def processClientReq(client, clientAddr):
@@ -127,13 +140,25 @@ if __name__ == "__main__":
     HOST = '127.0.0.1'
     PORT = 65432
 
+    MONTHS = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "Setemper", "October", "November", "December"]
+    today = date.today()
+
+    # DAY = "13"
+    DAY = today.strftime("%d")
+    MONTH = today.strftime("%B")
+    YEAR = today.strftime("%Y")
+
     clientSockets = {}
     clientAdrrs = {}
 
     weatherJson = open("weather.json")
-    weatherData = json.load(weatherJson)
+    cityJson = open("cities.json")
+    cityData = json.load(cityJson)
+    data = json.load(weatherJson)
     userJson = open("user.json")
     userData = json.load(userJson)
+    cityData = cityData["cities"]
+    weatherData = data["weather"]
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((HOST, PORT))

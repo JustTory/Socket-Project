@@ -6,26 +6,29 @@ from threading import Thread
 from tkinter.constants import TRUE
 
 
-# functions
-def checkExistUsername(username, userData):
-    for user in userData["users"]:
+# helper functions
+def checkExistUsername(username):
+    userJson = open("user.json")
+    userData = json.load(userJson)
+    for user in userData["users"].values():
         if user["username"] == username:
             return True
     return False
 
-def createNewUser(username, password, userData):
-    newUser = {
-        "userID": len(userData["users"]),
-        "username": username,
-        "password": password
-    }
+def createNewUser(username, password):
+    userJson = open("user.json")
+    userData = json.load(userJson)
+    newUser = {len(userData["users"]): {"username": username,"password": password}}
+    with open("user.json", "r+") as file:
+        fileData = json.load(file)
+        fileData["users"].update(newUser)
+        file.seek(0)
+        json.dump(fileData, file, indent = 4)
 
-    userData["users"].append(newUser)
-    with open("user.json", "w") as outfile:
-        json.dump(userData, outfile)
-
-def checkLogIn(username, password, userData):
-    for user in userData["users"]:
+def checkLogIn(username, password):
+    userJson = open("user.json")
+    userData = json.load(userJson)
+    for user in userData["users"].values():
         if user["username"] == username and user["password"] == password:
             try:
                 user['isAdmin']
@@ -33,21 +36,25 @@ def checkLogIn(username, password, userData):
             except: return "isUser"
     return False
 
-def commandManager(strClientReq, weatherData):
-    commandArr = strClientReq.split()
-    if commandArr[0] == "/help":
-        return "\n/city [city_name]\n[city_name]: TPHCM, HaNoi, DaNang, Hue"
-    elif commandArr[0] == "/city":
-        for city in weatherData["cities"]:
-            if city['cityName'] == commandArr[1]:
-                res = "\n"
-                for days in city["data"]:
-                    res += "%s: %s\n" % (days, city["data"][days])
-                return res
-        return "City name not found!"
-    else:
-        return "unknown command"
+def checkExistsCity(cityName):
+    cityJson = open("city.json")
+    cityData = json.load(cityJson)
+    for city in cityData["cities"].values():
+        if city["cityName"] == cityName:
+            return True
+    return False
 
+def createNewCity(cityName):
+    cityJson = open("city.json")
+    cityData = json.load(cityJson)
+    newCity= {len(cityData["cities"]): {"cityName": cityName}}
+    with open("city.json", "r+") as file:
+        fileData = json.load(file)
+        fileData["cities"].update(newCity)
+        file.seek(0)
+        json.dump(fileData, file, indent = 4)
+
+# server functions
 def acceptClientConnections():
     while True:
         client, clientAddr = server.accept()
@@ -71,14 +78,13 @@ def disconnectClient(client, clientAddr):
     del clientAddrs[client]
 
 def processClientReq(client, clientAddr):
-    clientType = logInSection(client, clientAddr, userData)
+    clientType = logInSection(client, clientAddr)
     if clientType == "user":
-        communicateSection(client, clientAddr, weatherData)
+        userSection(client, clientAddr)
     elif clientType == "admin":
-        adminSection(client, clientAddr, weatherData)
+        adminSection(client, clientAddr)
 
-
-def logInSection(client, clientAddr, userData):
+def logInSection(client, clientAddr):
     while True:
         data = receiveClientReq(client, clientAddr)
         if data:
@@ -88,7 +94,7 @@ def logInSection(client, clientAddr, userData):
                 if len(data) == 3:
                     username = data[1]
                     password = data[2]
-                    userType = checkLogIn(username, password, userData)
+                    userType = checkLogIn(username, password)
                     if userType != False:
                         client.sendall(bytes("SIGN IN: success", "utf8"))
                         print(clientAddr, "SIGN IN: success")
@@ -105,8 +111,8 @@ def logInSection(client, clientAddr, userData):
                 if len(data) == 3:
                     username = data[1]
                     password = data[2]
-                    if checkExistUsername(username, userData) == False:
-                        createNewUser(username, password, userData)
+                    if checkExistUsername(username) == False:
+                        createNewUser(username, password)
                         client.sendall(bytes("SIGN UP: success", "utf8"))
                         print(clientAddr, "SIGN UP: success")
                         return True
@@ -122,7 +128,7 @@ def logInSection(client, clientAddr, userData):
                 if len(data) == 3:
                     username = data[1]
                     password = data[2]
-                    userType = checkLogIn(username, password, userData)
+                    userType = checkLogIn(username, password)
                     if userType == "isAdmin":
                         client.sendall(bytes("SIGN IN ADMIN: success", "utf8"))
                         print(clientAddr, "SIGN IN ADMIN: success")
@@ -143,37 +149,46 @@ def logInSection(client, clientAddr, userData):
                 print(clientAddr, "unknown command")
         else: return False
 
-def communicateSection(client, clientAddr, weatherData):
+def userSection(client, clientAddr):
     while True:
         data = receiveClientReq(client, clientAddr)
         if data:
             reqType = data[0]
-
             if reqType == "exit":
                 disconnectClient(client, clientAddr)
                 return
-
-            clientReq = client.recv(1024)
-            strclientReq = clientReq.decode("utf8")
-
-            if strclientReq == "/exit":
-                break
-            if not clientReq:
-                break
-
-            serverResponse = commandManager(strclientReq, weatherData)
-            client.sendall(bytes(serverResponse, "utf8"))
-
         else: return
 
-def adminSection(client, clientAddr, weatherData):
+def adminSection(client, clientAddr):
     while True:
         data = receiveClientReq(client, clientAddr)
         if data:
             reqType = data[0]
-            if reqType == "exit":
+            if reqType == "addcity":
+                print(clientAddr, "ADMIN ADD CITY")
+                if len(data) == 2:
+                    newCityName = data[1]
+                    if checkExistsCity(newCityName) == False:
+                        createNewCity(newCityName)
+                        client.sendall(bytes("ADMIN ADD CITY: success", "utf8"))
+                        print(clientAddr, "ADMIN ADD CITY: success")
+
+                    else:
+                        client.sendall(bytes("ADMIN ADD CITY: city already existed", "utf8"))
+                        print(clientAddr, "ADMIN ADD CITY: city already existed")
+
+                else:
+                    client.sendall(bytes("ADMIN ADD CITY: syntax error", "utf8"))
+                    print(clientAddr, "ADMIN ADD CITY: syntax error")
+            elif reqType == "exit":
                 disconnectClient(client, clientAddr)
                 return
+
+            else:
+                client.sendall(bytes("ADMIN ADD CITY: syntax error", "utf8"))
+                print(clientAddr, "ADMIN ADD CITY: syntax error")
+
+        else: return False
 
 
 # main function
@@ -182,11 +197,6 @@ if __name__ == "__main__":
     PORT = 65432
 
     clientAddrs = {}
-
-    weatherJson = open("weather.json")
-    weatherData = json.load(weatherJson)
-    userJson = open("user.json")
-    userData = json.load(userJson)
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((HOST, PORT))

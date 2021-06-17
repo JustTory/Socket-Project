@@ -30,6 +30,14 @@ def frameManager(serverResponse):
     elif (serverResponse == "SIGN IN ADMIN: syntax error"):
         messagebox.showerror("Error", "Username or password can't be empty")
 
+    elif (serverResponse == "ADMIN ADD CITY: success"):
+        messagebox.showinfo("Success", "You have added a new city successfully")
+    elif (serverResponse == "ADMIN ADD CITY: city already existed"):
+        messagebox.showerror("Error", "City already existed")
+    elif (serverResponse == "ADMIN ADD CITY: syntax error"):
+        messagebox.showerror("Error", "City name can't be empty")
+
+
 def showFrame(frame):
     frame.tkraise()
 
@@ -67,19 +75,26 @@ def setUpMainMenuFrame():
 
 def setUpAddCityFrame():
     Button(addCityFrame, text="< Back", width=8, height=1, command=lambda: showFrame(mainMenuFrame)).pack(side=TOP, anchor=NW)
+    Label(addCityFrame, text="ADD CITY").pack(pady=20)
+    Label(addCityFrame, text="New city name").pack()
+    cityNameEntry = Entry(addCityFrame)
+    cityNameEntry.pack()
+
+    Button(addCityFrame, text="Add", width=10, height=1, command=lambda: addCityThread(cityNameEntry)).pack(pady=(20,10))
 
 def setUpUWBDFrame():
     Button(UWBDFrame, text="< Back", width=8, height=1, command=lambda: showFrame(mainMenuFrame)).pack(side=TOP, anchor=NW)
+    Label(UWBDFrame, text="UPDATE WEATHER DATA BY DATE").pack(pady=20)
 
 def setUpUWBCFrame():
     Button(UWBCFrame, text="< Back", width=8, height=1, command=lambda: showFrame(mainMenuFrame)).pack(side=TOP, anchor=NW)
+    Label(UWBCFrame, text="UPDATE WEATHER DATA BY CITY").pack(pady=20)
 
 
 def disconnectThread():
     threadDisconnect = Thread(target=disconnectServer)
     threadDisconnect.daemon = True
     threadDisconnect.start()
-
 def disconnectServer():
     send("exit")
     client.close()
@@ -99,7 +114,6 @@ def connectThread(entry):
     threadConnect = Thread(target=connectServer, args=(entry,))
     threadConnect.daemon = True
     threadConnect.start()
-
 def connectServer(entry):
     global client # client socket
     host = entry.get()
@@ -117,7 +131,6 @@ def sendUserInfoThread(usernameEntry, passwordEntry, type):
     threadSend = Thread(target=sendUserInfo, args=(usernameEntry, passwordEntry, type,))
     threadSend.daemon = True
     threadSend.start()
-
 def sendUserInfo(usernameEntry, passwordEntry, type):
     username = usernameEntry.get()
     usernameEntry.delete(0, 'end')
@@ -125,6 +138,17 @@ def sendUserInfo(usernameEntry, passwordEntry, type):
     passwordEntry.delete(0, 'end')
 
     if(send(type + " " + username + " " + password)):
+        serverResponse = receive()
+        frameManager(serverResponse)
+
+def addCityThread(cityNameEntry):
+    threadCity = Thread(target=addCity, args=(cityNameEntry,))
+    threadCity.daemon = True
+    threadCity.start()
+def addCity(cityNameEntry):
+    cityName = cityNameEntry.get()
+    cityNameEntry.delete(0, 'end')
+    if(send("addcity " + cityName)):
         serverResponse = receive()
         frameManager(serverResponse)
 

@@ -1,40 +1,49 @@
 {
-    "users": [
-        {
-            "userID": 0,
+    "users": {
+        "0": {
             "isAdmin": true,
             "username": "admin",
             "password": "admin"
         },
-        {
-            "userID": 1,
+        "1": {
             "username": "dao",
             "password": "123"
         },
-        {
-            "userID": 2,
+        "2": {
             "username": "tory",
             "password": "hehe"
         },
-        {
-            "userID": 3,
+        "3": {
             "username": "test",
             "password": "test"
         },
-        {
-            "userID": 4,
+        "4": {
             "username": "heh",
             "password": "cringe"
         },
-        {
-            "userID": 5,
+        "5": {
             "username": "bruh",
             "password": "bruh"
         },
-        {
-            "userID": 6,
+        "6": {
             "username": "new",
             "password": "heh"
+        },
+        "7": {
+            "username": "tester",
+            "password": "123"
+        },
+        "8": {
+            "username": "newboi",
+            "password": "hehe"
+        },
+        "9": {
+            "username": "mom",
+            "password": "asdfa"
+        },
+        "10": {
+            "username": "hehehehe",
+            "password": "aasadf"
         }
-    ]
+    }
 }

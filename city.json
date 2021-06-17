@@ -1,0 +1,28 @@
+{
+    "cities": {
+        "0": {
+            "cityName": "TPHCM"
+        },
+        "1": {
+            "cityName": "HaNoi"
+        },
+        "2": {
+            "cityName": "DaNang"
+        },
+        "3": {
+            "cityName": "Hue"
+        },
+        "4": {
+            "cityName": "HaiPhong"
+        },
+        "5": {
+            "cityName": "VungTau"
+        },
+        "6": {
+            "cityName": "QuangNinh"
+        },
+        "7": {
+            "cityName": "MyTho"
+        }
+    }
+}

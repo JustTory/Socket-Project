@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 from threading import Thread
 
+
 def send(msg):
     try:
         client.sendall(bytes(msg, "utf8"))
@@ -44,7 +45,7 @@ def setUpChooseSVFrame():
     Label(chooseSVFrame, text="SERVER IP").pack(pady=20)
     Label(chooseSVFrame, text="Input server's IP").pack()
     serverIPEntry = Entry(chooseSVFrame)
-    serverIPEntry.bind("<Return>", (lambda event: connectThread(serverIPEntry)))
+    #serverIPEntry.bind("<Return>", (lambda event: connectThread(serverIPEntry)))
     serverIPEntry.pack()
     serverIPEntry.focus()
 
@@ -55,8 +56,9 @@ def setUpSignInFrame():
     Label(signInFrame, text="SIGN IN").pack(pady=20)
     Label(signInFrame, text="Username").pack()
     usernameEntry = Entry(signInFrame)
-    usernameEntry.bind("<Return>", (lambda event: sendUserInfoThread(usernameEntry, passwordEntry, "signin")))
+    #usernameEntry.bind("<Return>", (lambda event: sendUserInfoThread(usernameEntry, passwordEntry, "signin")))
     usernameEntry.pack()
+    usernameEntry.focus()
 
     Label(signInFrame, text="Password").pack(pady=(10,0))
     passwordEntry = Entry(signInFrame, show= '*')
@@ -71,12 +73,12 @@ def setUpSignUpFrame():
     Label(signUpFrame, text="CREATE ACCOUNT").pack(pady=20)
     Label(signUpFrame, text="Username").pack()
     usernameEntry = Entry(signUpFrame)
-    usernameEntry.bind("<Return>", (lambda event: sendUserInfoThread(usernameEntry, passwordEntry, "signup")))
+    #usernameEntry.bind("<Return>", (lambda event: sendUserInfoThread(usernameEntry, passwordEntry, "signup")))
     usernameEntry.pack()
 
     Label(signUpFrame, text="Password").pack(pady=(10,0))
     passwordEntry = Entry(signUpFrame, show= '*')
-    passwordEntry.bind("<Return>", (lambda event: sendUserInfoThread(usernameEntry, passwordEntry, "signup")))
+    #passwordEntry.bind("<Return>", (lambda event: sendUserInfoThread(usernameEntry, passwordEntry, "signup")))
     passwordEntry.pack()
 
     Button(signUpFrame, text="Create account", width=15, height=1, command=lambda: sendUserInfoThread(usernameEntry, passwordEntry, "signup")).pack(pady=(20,10))
@@ -100,8 +102,12 @@ def disconnectServer():
     showFrame(chooseSVFrame)
 
 def exitApp():
-    send("exit")
-    client.close()
+    try:
+        client
+        send("exit")
+        client.close()
+    except NameError:
+        print("closing app")
     root.destroy()
 
 def connectThread(entry):
@@ -148,13 +154,12 @@ if __name__ == "__main__":
     root.rowconfigure(0, weight=1)
     root.columnconfigure(0, weight=1)
 
-    pbFrame = Frame(root)
     chooseSVFrame = Frame(root)
     signInFrame = Frame(root)
     signUpFrame = Frame(root)
     mainMenuFrame = Frame(root)
 
-    for frame in (pbFrame, chooseSVFrame, signInFrame, signUpFrame, mainMenuFrame):
+    for frame in (chooseSVFrame, signInFrame, signUpFrame, mainMenuFrame):
         frame.grid(row=0, column=0, sticky='nsew')
 
     setUpChooseSVFrame()

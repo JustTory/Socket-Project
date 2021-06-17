@@ -1,7 +1,9 @@
 #import libraries
+from os import truncate
 import socket
 import json
 from threading import Thread
+from tkinter.constants import TRUE
 
 
 # functions
@@ -25,7 +27,10 @@ def createNewUser(username, password, userData):
 def checkLogIn(username, password, userData):
     for user in userData["users"]:
         if user["username"] == username and user["password"] == password:
-            return True
+            try:
+                user['isAdmin']
+                return "isAdmin"
+            except: return "isUser"
     return False
 
 def commandManager(strClientReq, weatherData):
@@ -66,8 +71,11 @@ def disconnectClient(client, clientAddr):
     del clientAddrs[client]
 
 def processClientReq(client, clientAddr):
-    if(logInSection(client, clientAddr, userData)):
+    clientType = logInSection(client, clientAddr, userData)
+    if clientType == "user":
         communicateSection(client, clientAddr, weatherData)
+    elif clientType == "admin":
+        adminSection(client, clientAddr, weatherData)
 
 
 def logInSection(client, clientAddr, userData):
@@ -80,10 +88,11 @@ def logInSection(client, clientAddr, userData):
                 if len(data) == 3:
                     username = data[1]
                     password = data[2]
-                    if checkLogIn(username, password, userData):
+                    userType = checkLogIn(username, password, userData)
+                    if userType != False:
                         client.sendall(bytes("SIGN IN: success", "utf8"))
                         print(clientAddr, "SIGN IN: success")
-                        return True
+                        return "user"
                     else:
                         client.sendall(bytes("SIGN IN: info incorrect", "utf8"))
                         print(clientAddr, "SIGN IN: info incorrect")
@@ -92,7 +101,7 @@ def logInSection(client, clientAddr, userData):
                     print(clientAddr, "SIGN IN: syntax error")
 
             elif reqType == "signup":
-                print("signup")
+                print(clientAddr, "SIGN UP")
                 if len(data) == 3:
                     username = data[1]
                     password = data[2]
@@ -108,6 +117,23 @@ def logInSection(client, clientAddr, userData):
                     client.sendall(bytes("SIGN UP: syntax error", "utf8"))
                     print(clientAddr, "SIGN UP: syntax error")
 
+            elif reqType == "signinadmin":
+                print(clientAddr, "SIGN IN ADMIN")
+                if len(data) == 3:
+                    username = data[1]
+                    password = data[2]
+                    userType = checkLogIn(username, password, userData)
+                    if userType == "isAdmin":
+                        client.sendall(bytes("SIGN IN ADMIN: success", "utf8"))
+                        print(clientAddr, "SIGN IN ADMIN: success")
+                        return "admin"
+                    else:
+                        client.sendall(bytes("SIGN IN ADMIN: info incorrect", "utf8"))
+                        print(clientAddr, "SIGN IN ADMIN: info incorrect")
+                else:
+                    client.sendall(bytes("SIGN IN ADMIN: syntax error", "utf8"))
+                    print(clientAddr, "SIGN IN ADMIN: syntax error")
+
             elif reqType == "exit":
                 disconnectClient(client, clientAddr)
                 return False
@@ -118,9 +144,6 @@ def logInSection(client, clientAddr, userData):
         else: return False
 
 def communicateSection(client, clientAddr, weatherData):
-    # hint = "logged in"
-    # client.sendall(bytes(hint, "utf8"))
-
     while True:
         data = receiveClientReq(client, clientAddr)
         if data:
@@ -143,6 +166,15 @@ def communicateSection(client, clientAddr, weatherData):
 
         else: return
 
+def adminSection(client, clientAddr, weatherData):
+    while True:
+        data = receiveClientReq(client, clientAddr)
+        if data:
+            reqType = data[0]
+            if reqType == "exit":
+                disconnectClient(client, clientAddr)
+                return
+
 
 # main function
 if __name__ == "__main__":
@@ -161,7 +193,5 @@ if __name__ == "__main__":
     server.listen(5)
     print("Server 1 is online, wating for connections...")
 
-    threadAccept = Thread(target=acceptClientConnections)
-    threadAccept.start()
-    threadAccept.join()
+    acceptClientConnections()
     server.close()

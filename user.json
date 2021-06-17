@@ -1,1 +1,40 @@
-{"users": [{"userID": 0, "username": "admin", "password": "admin"}, {"userID": 1, "username": "dao", "password": "123"}, {"userID": 2, "username": "tory", "password": "hehe"}, {"userID": 3, "username": "test", "password": "test"}, {"userID": 4, "username": "heh", "password": "cringe"}, {"userID": 5, "username": "bruh", "password": "bruh"}, {"userID": 6, "username": "new", "password": "heh"}]}
+{
+    "users": [
+        {
+            "userID": 0,
+            "isAdmin": true,
+            "username": "admin",
+            "password": "admin"
+        },
+        {
+            "userID": 1,
+            "username": "dao",
+            "password": "123"
+        },
+        {
+            "userID": 2,
+            "username": "tory",
+            "password": "hehe"
+        },
+        {
+            "userID": 3,
+            "username": "test",
+            "password": "test"
+        },
+        {
+            "userID": 4,
+            "username": "heh",
+            "password": "cringe"
+        },
+        {
+            "userID": 5,
+            "username": "bruh",
+            "password": "bruh"
+        },
+        {
+            "userID": 6,
+            "username": "new",
+            "password": "heh"
+        }
+    ]
+}

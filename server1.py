@@ -180,13 +180,21 @@ def adminSection(client, clientAddr):
                 else:
                     client.sendall(bytes("ADMIN ADD CITY: syntax error", "utf8"))
                     print(clientAddr, "ADMIN ADD CITY: syntax error")
+
+            elif reqType == "updatebydate":
+                print(clientAddr, "ADMIN UPDATE BY DATE")
+                #if len(data) == 4:
+
+            elif reqType == "updatebycity":
+                print(clientAddr, "ADMIN UPDATE BY CITY")
+
             elif reqType == "exit":
                 disconnectClient(client, clientAddr)
                 return
 
             else:
-                client.sendall(bytes("ADMIN ADD CITY: syntax error", "utf8"))
-                print(clientAddr, "ADMIN ADD CITY: syntax error")
+                client.sendall(bytes("Unknown command", "utf8"))
+                print(clientAddr, "Unknown command")
 
         else: return False
 

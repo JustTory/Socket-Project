@@ -1,7 +1,9 @@
 import socket
 from tkinter import *
+from tkinter import ttk
 from tkinter import messagebox
 from threading import Thread
+from datetime import date
 
 
 def send(msg):
@@ -86,6 +88,38 @@ def setUpUWBDFrame():
     Button(UWBDFrame, text="< Back", width=8, height=1, command=lambda: showFrame(mainMenuFrame)).pack(side=TOP, anchor=NW)
     Label(UWBDFrame, text="UPDATE WEATHER DATA BY DATE").pack(pady=20)
 
+    #Day
+    dayList = list(range(32))
+
+    Label(UWBDFrame, text = "Choose day").pack()
+    dayChoose = StringVar(UWBDFrame)
+    dayOption = ttk.Combobox(UWBDFrame, textvariable=dayChoose, values=dayList, width=10)
+    dayChoose = dayList.index(DAY)
+    dayOption.current(dayChoose)
+    dayOption.pack(pady=(0,15))
+
+    #Month
+    monthList = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "Setemper", "October", "November", "December"]
+
+    Label(UWBDFrame, text = "Choose Month").pack()
+    monthChoose = StringVar(UWBDFrame)
+    monthOption = ttk.Combobox(UWBDFrame, textvariable=monthChoose, value=monthList,width=10)
+    monthChoose = monthList.index(MONTH)
+    monthOption.current(monthChoose)
+    monthOption.pack(pady=(0,15))
+
+    #Year
+    yearList = ["2020","2021","2022"]
+
+    Label(UWBDFrame, text = "Choose Year").pack()
+    yearChoose = StringVar(UWBDFrame)
+    yearOption = ttk.Combobox(UWBDFrame, textvariable = yearChoose, values=yearList,width=10)
+    yearChoose = yearList.index(YEAR)
+    yearOption.current(yearChoose)
+    yearOption.pack(pady=(0,20))
+
+    Button(UWBDFrame, text="Choose", width=12, height=1, command=lambda: sendDate(dayOption.get(),monthOption.get(),yearOption.get() )).pack()
+
 def setUpUWBCFrame():
     Button(UWBCFrame, text="< Back", width=8, height=1, command=lambda: showFrame(mainMenuFrame)).pack(side=TOP, anchor=NW)
     Label(UWBCFrame, text="UPDATE WEATHER DATA BY CITY").pack(pady=20)
@@ -118,7 +152,7 @@ def connectServer(entry):
     global client # client socket
     host = entry.get()
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    serverAddr = (host, PORT)
+    serverAddr = ("localhost", PORT)
     try:
         client.connect(serverAddr)
         print('Connected to server: ' + str(serverAddr))
@@ -137,7 +171,7 @@ def sendUserInfo(usernameEntry, passwordEntry, type):
     password = passwordEntry.get()
     passwordEntry.delete(0, 'end')
 
-    if(send(type + " " + username + " " + password)):
+    if(send(type + " " + "admin" + " " + "admin")):
         serverResponse = receive()
         frameManager(serverResponse)
 
@@ -152,9 +186,25 @@ def addCity(cityNameEntry):
         serverResponse = receive()
         frameManager(serverResponse)
 
+def sendDateThread(day, month, year):
+    threadDate = Thread(target=sendDate, args=(day, month, year,))
+    threadDate.daemon = True
+    threadDate.start()
+
+def sendDate(day, month, year):
+    message = "updatebydate %s %s %s" % (day, month, year)
+    if(send(message)):
+        serverResponse = receive()
+        print(serverResponse)
+
 
 # main function
 if __name__ == "__main__":
+    today = date.today()
+    DAY = int(today.strftime("%d"))
+    MONTH = today.strftime("%B")
+    YEAR = today.strftime("%Y")
+
     PORT = 65432
     root = Tk()
     root.geometry("400x400")

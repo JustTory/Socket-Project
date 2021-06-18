@@ -28,8 +28,8 @@ def frameManager(serverResponse):
     serverResponse = serverResponse.split("\n")
 
     if (serverResponse[0] == "SIGN IN ADMIN: success"):
-        messagebox.showinfo("Success", "You have signed in successfully")
         showFrame(mainMenuFrame)
+        messagebox.showinfo("Success", "You have signed in successfully")
     elif (serverResponse[0] == "SIGN IN ADMIN: info incorrect"):
         messagebox.showerror("Error", "Incorrect admin username or password")
     elif (serverResponse[0] == "SIGN IN ADMIN: syntax error"):
@@ -89,14 +89,11 @@ def updateWeather(data, updateDate, listBox, newWeather):
     except:
         print("end of list")
 
-
-
 # frame funtions
 def setUpChooseSVFrame():
     Label(chooseSVFrame, text="SERVER IP").pack(pady=20)
     Label(chooseSVFrame, text="Input server's IP").pack()
     serverIPEntry = Entry(chooseSVFrame)
-    #serverIPEntry.bind("<Return>", (lambda event: connectThread(serverIPEntry)))
     serverIPEntry.pack()
     serverIPEntry.focus()
 

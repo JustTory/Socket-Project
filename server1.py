@@ -6,9 +6,9 @@ from threading import Thread
 from datetime import date
 
 # functions
-def checkExistUsername(username, userData):
+def checkExistUsername(username):
     for user in userData["users"]:
-        if user["username"] == username:
+        if userData["users"][user]["username"] == username:
             return True
     return False
 
@@ -41,51 +41,7 @@ def checkExistsCity(cityName):
             return True
     return False
 
-def logInSection(client, userData):
-    while True:
-        clientReq = client.recv(1024)
-        strclientReq = clientReq.decode("utf8")
-        data = strclientReq.split()
-        reqType = data[0]
-
-        if reqType == "signin":
-            print("signin")
-            if len(data) == 3:
-                username = data[1]
-                password = data[2]
-                if checkLogIn(username, password, userData):
-                    client.sendall(bytes("sign in success", "utf8"))
-                    print("sign in success")
-                    break
-                else:
-                    client.sendall(bytes("info incorrect", "utf8"))
-                    print("info incorrect")
-            else:
-                client.sendall(bytes("syntax error", "utf8"))
-                print("syntax error")
-
-        elif reqType == "signup":
-            print("signup")
-            if len(data) == 3:
-                username = data[1]
-                password = data[2]
-                if checkExistUsername(username, userData) == False:
-                    createNewUser(username, password, userData)
-                    client.sendall(bytes("sign up success", "utf8"))
-                    print("sign up success")
-                    break
-                else:
-                    client.sendall(bytes("username exists", "utf8"))
-                    print("username exists")
-            else:
-                client.sendall(bytes("syntax error", "utf8"))
-                print("syntax error")
-
-        else:
-            client.sendall(bytes("unknown command", "utf8"))
-            print("unknown command")
-
-def getWeatherByCity(city,numDay):
+def getWeatherByCity(city, numDay):
     res = "\n"
     day_loop = DAY
     month_loop = MONTH
@@ -112,9 +68,8 @@ def getWeatherByCity(city,numDay):
             month_loop = PrevMonth
     return res
 
-def getWeatherByDate(day , month, year):
+def getWeatherByDate(day, month, year):
     allCity = list(cityData)
-
     try:
         date_data = weatherData[year][month][day]
     except:
@@ -127,7 +82,8 @@ def getWeatherByDate(day , month, year):
             status = "NaN"
         res += "%s: %s\n" % (city, status)
     return res
-def commandManager(commandArr, weatherData):
+
+def commandManager(commandArr):
     print(commandArr)
     if commandArr[0] == "/help":
         return "\n/city [city_name]\n[city_name]: TPHCM, HaNoi, DaNang, Hue"
@@ -328,6 +284,12 @@ def userSection(client, clientAddr):
             if reqType == "exit":
                 disconnectClient(client, clientAddr)
                 return
+
+            response = commandManager(data)
+            client.sendall(bytes(response, "utf8"))
+            print(clientAddr, response)
+
+
         else: return
 
 def adminSection(client, clientAddr):

@@ -1,37 +1,28 @@
 {
     "cities": {
-        "0": {
+        "TPHCM": {
             "cityName": "TPHCM"
         },
-        "1": {
+        "HaNoi": {
             "cityName": "HaNoi"
         },
-        "2": {
+        "DaNang": {
             "cityName": "DaNang"
         },
-        "3": {
+        "Hue": {
             "cityName": "Hue"
         },
-        "4": {
+        "HaiPhong": {
             "cityName": "HaiPhong"
         },
-        "5": {
+        "VungTau": {
             "cityName": "VungTau"
         },
-        "6": {
+        "QuangNinh": {
             "cityName": "QuangNinh"
         },
-        "7": {
+        "MyTho": {
             "cityName": "MyTho"
-        },
-        "8": {
-            "cityName": "dasfj asdf as"
-        },
-        "9": {
-            "cityName": "Dao Ga"
-        },
-        "10": {
-            "cityName": "Heh"
         }
     }
 }

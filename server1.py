@@ -1,11 +1,10 @@
-#import libraries
 from os import truncate
 import socket
 import json
 from threading import Thread
 from datetime import date
 
-# functions
+# helper functions
 def checkExistUsername(username):
     for user in userData["users"]:
         if userData["users"][user]["username"] == username:
@@ -95,6 +94,7 @@ def commandManager(commandArr):
         return data_transfer
     else:
         return "unknown command"
+
 def createNewCity(cityName):
     cityJson = open("city.json")
     cityData = json.load(cityJson)
@@ -105,7 +105,7 @@ def createNewCity(cityName):
         file.seek(0)
         json.dump(fileData, file, indent = 4)
 
-def checkExistsDate(day, month ,year):
+def checkExistsDate(day, month, year):
     weatherJson = open("weather.json")
     weatherData = json.load(weatherJson)
     try:
@@ -242,7 +242,7 @@ def logInSection(client, clientAddr):
                         createNewUser(username, password)
                         client.sendall(bytes("SIGN UP: success", "utf8"))
                         print(clientAddr, "SIGN UP: success")
-                        return True
+                        return "user"
                     else:
                         client.sendall(bytes("SIGN UP: username already existed", "utf8"))
                         print(clientAddr, "SIGN UP: username already existed")
@@ -347,7 +347,6 @@ def adminSection(client, clientAddr):
                 print(clientAddr, "Unknown command")
 
         else: return False
-
 
 # main function
 if __name__ == "__main__":

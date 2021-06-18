@@ -280,8 +280,6 @@ def sendCityList(data):
         serverResponse = receive()
         frameManager(serverResponse)
 
-
-
 # main function
 if __name__ == "__main__":
     today = date.today()

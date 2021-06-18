@@ -54,6 +54,62 @@ def createNewCity(cityName):
         file.seek(0)
         json.dump(fileData, file, indent = 4)
 
+def checkExistsDate(day, month ,year):
+    weatherJson = open("weather.json")
+    weatherData = json.load(weatherJson)
+    try:
+        weatherData["weather"][year][month][day]
+        return True
+    except:
+        return False
+
+def getWeather(day, month, year, cityName):
+    weatherJson = open("weather.json")
+    weatherData = json.load(weatherJson)
+    if checkExistsDate(day, month ,year):
+        try:
+            weather = weatherData["weather"][year][month][day][cityName]
+            return weather
+        except:
+            return False
+
+def getAllCities(day, month, year):
+    cityJson = open("city.json")
+    cityData = json.load(cityJson)
+    weatherJson = open("weather.json")
+    weatherData = json.load(weatherJson)
+
+    res = '{"%s %s %s": {' % (month, day, year)
+    for city in cityData["cities"].values():
+        weather = getWeather(day, month, year, city["cityName"])
+        if weather == False: weather = None
+        res += '"%s": "%s",' % (city["cityName"], weather)
+    res = res[:-1]
+    res += '}}'
+    return res
+
+def updateWeatherByDate(newData):
+    try:
+        weatherJson = open("weather.json")
+        weatherData = json.load(weatherJson)
+
+        data = json.loads(newData)
+        print(data)
+        updateDate = list(data.keys())
+        updateDate = updateDate[0]
+        updateDate = updateDate.split()
+        cityList = list(data.values())
+        cityList = cityList[0]
+
+        weatherData["weather"][updateDate[2]][updateDate[0]][updateDate[1]] = cityList
+        weatherJson = open("weather.json", "w")
+        json.dump(weatherData, weatherJson)
+        
+        return True
+    except:
+        print("Error updating to json file")
+        return False
+
 # server functions
 def acceptClientConnections():
     while True:
@@ -62,11 +118,21 @@ def acceptClientConnections():
         clientAddrs[client] = clientAddr
         Thread(target=processClientReq, args=(client, clientAddr,)).start()
 
-def receiveClientReq(client, clientAddr):
+def receiveUserReq(client, clientAddr):
     try:
         clientReq = client.recv(1024)
         strclientReq = clientReq.decode("utf8")
         data = strclientReq.split()
+        return data
+    except:
+        disconnectClient(client, clientAddr)
+        return False
+
+def receiveAdminReq(client, clientAddr):
+    try:
+        clientReq = client.recv(1024)
+        strclientReq = clientReq.decode("utf8")
+        data = strclientReq.split("\n")
         return data
     except:
         disconnectClient(client, clientAddr)
@@ -84,9 +150,10 @@ def processClientReq(client, clientAddr):
     elif clientType == "admin":
         adminSection(client, clientAddr)
 
+# section functions
 def logInSection(client, clientAddr):
     while True:
-        data = receiveClientReq(client, clientAddr)
+        data = receiveUserReq(client, clientAddr)
         if data:
             reqType = data[0]
             if reqType == "signin":
@@ -151,7 +218,7 @@ def logInSection(client, clientAddr):
 
 def userSection(client, clientAddr):
     while True:
-        data = receiveClientReq(client, clientAddr)
+        data = receiveUserReq(client, clientAddr)
         if data:
             reqType = data[0]
             if reqType == "exit":
@@ -161,7 +228,7 @@ def userSection(client, clientAddr):
 
 def adminSection(client, clientAddr):
     while True:
-        data = receiveClientReq(client, clientAddr)
+        data = receiveAdminReq(client, clientAddr)
         if data:
             reqType = data[0]
             if reqType == "addcity":
@@ -181,12 +248,29 @@ def adminSection(client, clientAddr):
                     client.sendall(bytes("ADMIN ADD CITY: syntax error", "utf8"))
                     print(clientAddr, "ADMIN ADD CITY: syntax error")
 
-            elif reqType == "updatebydate":
-                print(clientAddr, "ADMIN UPDATE BY DATE")
-                #if len(data) == 4:
+            elif reqType == "choosedate":
+                print(clientAddr, "ADMIN CHOOSE DATE: ", data)
+                if len(data) == 4:
+                    res = getAllCities(data[1], data[2], data[3])
+                    if res == False:
+                        client.sendall(bytes("ADMIN CHOOSE DATE: Date not found in database", "utf8"))
+                        print(clientAddr, "ADMIN CHOOSE DATE: Date not found in database")
+                    else:
+                        client.sendall(bytes("ADMIN CHOOSE DATE: success\n" + res, "utf8"))
+                        print("ADMIN CHOOSE DATE: city list sent successfully")
 
-            elif reqType == "updatebycity":
-                print(clientAddr, "ADMIN UPDATE BY CITY")
+            elif reqType == "updateddate":
+                print(clientAddr, "ADMIN UPDATE BY DATE")
+                if len(data) == 2:
+                    if updateWeatherByDate(data[1]):
+                        client.sendall(bytes("ADMIN UPDATE BY DATE: updated successfully", "utf8"))
+                        print("ADMIN UPDATE BY DATE: updated successfully")
+                    else:
+                        client.sendall(bytes("ADMIN UPDATE BY DATE: error", "utf8"))
+                        print("ADMIN UPDATE BY DATE: error")
+
+            elif reqType == "choosecity":
+                print(clientAddr, "ADMIN CHOOSE CITY")
 
             elif reqType == "exit":
                 disconnectClient(client, clientAddr)

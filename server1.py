@@ -101,10 +101,19 @@ def updateWeatherByDate(newData):
         cityList = list(data.values())
         cityList = cityList[0]
 
-        weatherData["weather"][updateDate[2]][updateDate[0]][updateDate[1]] = cityList
+        year = updateDate[2]
+        month = updateDate[0]
+        day = updateDate[1]
+
+        try: weatherData["weather"][year]
+        except: weatherData["weather"][year] = {}
+        try: weatherData["weather"][year][month]
+        except: weatherData["weather"][year][month] = {}
+
+        weatherData["weather"][year][month][day] = cityList
         weatherJson = open("weather.json", "w")
         json.dump(weatherData, weatherJson)
-        
+
         return True
     except:
         print("Error updating to json file")

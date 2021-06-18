@@ -1,53 +1,33 @@
 import socket
 from tkinter import *
 from tkinter import ttk
-# from tkinter.ttk import Progressbar
 from tkinter import messagebox
 from threading import Thread
 from datetime import date
 import json
 
-today = date.today()
-DAY = int(today.strftime("%d"))
-MONTH = today.strftime("%B")
-YEAR = today.strftime("%Y")
-
-cityJson = open("cities.json")
-cityData = json.load(cityJson)['cities']
-
-
 def send(msg):
-    try:
-        client.sendall(bytes(msg, "utf8"))
-        return True
-    except:
-        print("Server is offline or request timeout")
-        messagebox.showerror("Error", "Server is offline or request timeout")
-        showFrame(chooseSVFrame)
-        return False
+    client.sendall(bytes(msg, "utf8"))
+    print('user send')
 
 def receive():
     msg = client.recv(1024).decode("utf8")
-    if len(msg) == 0:
-        print("Server has disconnected")
+    print('user receive')
     return msg
 
 def frameManager(serverResponse):
     print(serverResponse)
-    if (serverResponse == "SIGN IN: success"):
+    if (serverResponse == "sign in success"):
         messagebox.showinfo("Success", "You have signed in successfully")
         showFrame(mainMenuFrame)
-    elif (serverResponse == "SIGN IN: info incorrect"):
-        messagebox.showerror("Error", "Incorrect username or password")
-    elif (serverResponse == "SIGN IN: syntax error"):
-        messagebox.showerror("Error", "Username or password can't be empty")
-
-    elif (serverResponse == "SIGN UP: success"):
+    elif (serverResponse == "sign up success"):
         messagebox.showinfo("Success", "You have created an account successfully")
         showFrame(mainMenuFrame)
-    elif (serverResponse == "SIGN UP: username already existed"):
-        messagebox.showerror("Error", "Username already existed")
-    elif (serverResponse == "SIGN UP: syntax error"):
+    elif (serverResponse == "info incorrect"):
+        messagebox.showerror("Error", "Incorrect username or password")
+    elif (serverResponse == "username exists"):
+        messagebox.showerror("Error", "Username already exists")
+    elif (serverResponse == "syntax error"):
         messagebox.showerror("Error", "Username or password can't be empty")
 
 def showFrame(frame):
@@ -61,38 +41,35 @@ def setUpChooseSVFrame():
     serverIPEntry.pack()
     serverIPEntry.focus()
 
-    Button(chooseSVFrame, text="Connect", height="1", width="10", command=lambda:connectThread(serverIPEntry)).pack(pady=10)
+    Button(chooseSVFrame, text="Select", height="1", width="10", command=lambda:connectThread(serverIPEntry)).pack(pady=10)
 
 def setUpSignInFrame():
-    Button(signInFrame, text="< Disconnect", width=10, height=1, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
     Label(signInFrame, text="SIGN IN").pack(pady=20)
     Label(signInFrame, text="Username").pack()
     usernameEntry = Entry(signInFrame)
-    usernameEntry.bind("<Return>", (lambda event: sendUserInfoThread(usernameEntry, passwordEntry, "signin")))
+    usernameEntry.bind("<Return>", (lambda event: sendUserInfo(usernameEntry, passwordEntry, "signin")))
     usernameEntry.pack()
 
     Label(signInFrame, text="Password").pack(pady=(10,0))
     passwordEntry = Entry(signInFrame, show= '*')
-    passwordEntry.bind("<Return>", (lambda event: sendUserInfoThread(usernameEntry, passwordEntry, "signin")))
+    passwordEntry.bind("<Return>", (lambda event: sendUserInfo(usernameEntry, passwordEntry, "signin")))
     passwordEntry.pack()
 
-    Button(signInFrame, text="Login", width=10, height=1, command=lambda: sendUserInfoThread(usernameEntry, passwordEntry, "signin")).pack(pady=(20,10))
+
+    Button(signInFrame, text="Login", width=10, height=1, command=lambda: sendUserInfo(usernameEntry, passwordEntry, "signin")).pack(pady=(20,10))
     Button(signInFrame, text="Don't have an account? Sign up", width=30, height=1, command=lambda: showFrame(signUpFrame)).pack()
 
 def setUpSignUpFrame():
-    Button(signUpFrame, text="< Disconnect", width=10, height=1, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
     Label(signUpFrame, text="CREATE ACCOUNT").pack(pady=20)
     Label(signUpFrame, text="Username").pack()
     usernameEntry = Entry(signUpFrame)
-    usernameEntry.bind("<Return>", (lambda event: sendUserInfoThread(usernameEntry, passwordEntry, "signup")))
     usernameEntry.pack()
 
     Label(signUpFrame, text="Password").pack(pady=(10,0))
     passwordEntry = Entry(signUpFrame, show= '*')
-    passwordEntry.bind("<Return>", (lambda event: sendUserInfoThread(usernameEntry, passwordEntry, "signup")))
     passwordEntry.pack()
 
-    Button(signUpFrame, text="Create account", width=15, height=1, command=lambda: sendUserInfoThread(usernameEntry, passwordEntry, "signup")).pack(pady=(20,10))
+    Button(signUpFrame, text="Create account", width=15, height=1, command=lambda: sendUserInfo(usernameEntry, passwordEntry, "signup")).pack(pady=(20,10))
     Button(signUpFrame, text="Already have an account? Sign in", width=30, height=1, command=lambda: showFrame(signInFrame)).pack()
 
 def sendAllWeathersThread(day,month, year, myLabel):
@@ -200,9 +177,7 @@ def connectThread(entry):
     threadConnect.start()
 
 def connectServer(entry):
-    global client # client socket
     host = entry.get()
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     serverAddr = (host, PORT)
     try:
         client.connect(serverAddr)
@@ -222,23 +197,25 @@ def sendUserInfo(usernameEntry, passwordEntry, type):
     usernameEntry.delete(0, 'end')
     password = passwordEntry.get()
     passwordEntry.delete(0, 'end')
+    send(type + " " + username + " " + password)
+    serverResponse = receive()
+    frameManager(serverResponse)
 
-    if(send(type + " " + username + " " + password)):
-        serverResponse = receive()
-        frameManager(serverResponse)
 
-
-# main function
 if __name__ == "__main__":
+    today = date.today()
+    DAY = int(today.strftime("%d"))
+    MONTH = today.strftime("%B")
+    YEAR = today.strftime("%Y")
+
+    cityJson = open("city.json")
+    cityData = json.load(cityJson)['cities']
+
     PORT = 65432
     root = Tk()
     root.geometry("400x400")
     root.title("Weathery App")
 
-    root.rowconfigure(0, weight=1)
-    root.columnconfigure(0, weight=1)
-
-    pbFrame = Frame(root)
     chooseSVFrame = Frame(root)
     signInFrame = Frame(root)
     signUpFrame = Frame(root)
@@ -246,7 +223,7 @@ if __name__ == "__main__":
     weatherDate = Frame(root)
     weatherCity = Frame(root)
 
-    for frame in (pbFrame, chooseSVFrame, signInFrame, signUpFrame, mainMenuFrame, weatherDate,weatherCity):
+    for frame in (chooseSVFrame, signInFrame, signUpFrame, mainMenuFrame, weatherDate,weatherCity):
         frame.grid(row=0, column=0, sticky='nsew')
 
     setUpChooseSVFrame()
@@ -260,7 +237,9 @@ if __name__ == "__main__":
     root.protocol("WM_DELETE_WINDOW", exitApp) # handle when click "X" on tkinter app
     root.mainloop()
 
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+    root.mainloop()
 
 
 

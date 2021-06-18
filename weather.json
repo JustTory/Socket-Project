@@ -1,5 +1,5 @@
 {
-    "weather":{
+    "weather": {
         "2021": {
             "May": {
                 "24": {
@@ -93,8 +93,17 @@
                     "HaNoi": "B"
                 },
                 "15": {
-                    "TPHCM": "C",
-                    "HaNoi": "C"
+                    "TPHCM": "heh",
+                    "HaNoi": "C",
+                    "DaNang": "None",
+                    "Hue": "None",
+                    "HaiPhong": "None",
+                    "VungTau": "None",
+                    "QuangNinh": "None",
+                    "MyTho": "ga",
+                    "dasfj asdf as": "None",
+                    "Dao Ga": "None",
+                    "Heh": "None"
                 },
                 "16": {
                     "TPHCM": "D",
@@ -105,8 +114,14 @@
                     "HaNoi": "A"
                 },
                 "18": {
-                    "TPHCM": "B",
-                    "HaNoi": "B"
+                    "TPHCM": "nice",
+                    "HaNoi": "no",
+                    "DaNang": "lel",
+                    "Hue": "heh",
+                    "HaiPhong": "heh",
+                    "VungTau": "heh",
+                    "QuangNinh": "heh",
+                    "MyTho": "ok"
                 },
                 "19": {
                     "TPHCM": "C",
@@ -132,11 +147,63 @@
                     "TPHCM": "D",
                     "HaNoi": "D"
                 },
-                "31": {
-
+                "31": {},
+                "26": {
+                    "TPHCM": "new",
+                    "HaNoi": "None",
+                    "DaNang": "None",
+                    "Hue": "None",
+                    "HaiPhong": "None",
+                    "VungTau": "None",
+                    "QuangNinh": "None",
+                    "MyTho": "None"
+                },
+                "30": {
+                    "TPHCM": "new day",
+                    "HaNoi": "None",
+                    "DaNang": "None",
+                    "Hue": "None",
+                    "HaiPhong": "None",
+                    "VungTau": "None",
+                    "QuangNinh": "None",
+                    "MyTho": "None",
+                    "dasfj asdf as": "None",
+                    "Dao Ga": "None",
+                    "Heh": "None"
+                }
+            },
+            "December": {
+                "18": {
+                    "TPHCM": "None",
+                    "HaNoi": "December",
+                    "DaNang": "December",
+                    "Hue": "December",
+                    "HaiPhong": "December",
+                    "VungTau": "December",
+                    "QuangNinh": "December",
+                    "MyTho": "None",
+                    "dasfj asdf as": "None",
+                    "Dao Ga": "None",
+                    "Heh": "None"
+                }
+            }
+        },
+        "2022": {
+            "June": {
+                "18": {
+                    "TPHCM": "heh",
+                    "HaNoi": "None",
+                    "DaNang": "None",
+                    "Hue": "None",
+                    "HaiPhong": "None",
+                    "VungTau": "None",
+                    "QuangNinh": "None",
+                    "MyTho": "None",
+                    "dasfj asdf as": "None",
+                    "Dao Ga": "None",
+                    "Heh": "None"
                 }
             }
         }
     }
-
 }

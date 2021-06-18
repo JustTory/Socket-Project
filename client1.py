@@ -1,7 +1,20 @@
 import socket
 from tkinter import *
+from tkinter import ttk
+# from tkinter.ttk import Progressbar
 from tkinter import messagebox
 from threading import Thread
+from datetime import date
+import json
+
+today = date.today()
+DAY = int(today.strftime("%d"))
+MONTH = today.strftime("%B")
+YEAR = today.strftime("%Y")
+
+cityJson = open("cities.json")
+cityData = json.load(cityJson)['cities']
+
 
 def send(msg):
     try:
@@ -82,11 +95,83 @@ def setUpSignUpFrame():
     Button(signUpFrame, text="Create account", width=15, height=1, command=lambda: sendUserInfoThread(usernameEntry, passwordEntry, "signup")).pack(pady=(20,10))
     Button(signUpFrame, text="Already have an account? Sign in", width=30, height=1, command=lambda: showFrame(signInFrame)).pack()
 
+def sendAllWeathers(day,month, year, myLabel):
+    datetime = day + " " + month + " " + year
+    message = "/list %s" % datetime
+    send(message)
+    data = receive()
+
+    data = ("[Date: %s]\n" % (datetime)) + data
+    myLabel['text'] = data
+    # Label(weatherDate, text=queryRes).grid(row=4,column=1,padx=30)
+def showWeatherByDate():
+    Label(weatherDate, text = "WEATHER DATA").grid(row=0,column=1,sticky="WE",pady=20)
+
+    #Day
+    dayList = list(range(32))
+
+    Label(weatherDate, text = "Choose day").grid(pady=5,row=1, column=0, sticky="W", padx=(30,5))
+    dayChoose = StringVar(weatherDate)
+    dayOption = ttk.Combobox(weatherDate, textvariable=dayChoose, values=dayList,width=10,state="readonly")
+    dayChoose = dayList.index(DAY)
+    dayOption.current(dayChoose)
+    dayOption.grid(row = 1, column=1)
+
+    #Month
+    monthList = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "Setemper", "October", "November", "December"]
+
+    Label(weatherDate, text = "Choose Month").grid(pady=5,row=2, column=0, sticky="W", padx=(30,5))
+    monthChoose = StringVar(weatherDate)
+    monthOption = ttk.Combobox(weatherDate, textvariable=monthChoose, value=monthList,width=10,state="readonly")
+    monthChoose = monthList.index(MONTH)
+    monthOption.current(monthChoose)
+    monthOption.grid(row = 2, column=1)
+
+    #Year
+    yearList = ["2020","2021","2022"]
+
+    Label(weatherDate, text = "Choose Year").grid(pady=5,row=3, column=0, sticky="W", padx=(30,5))
+    yearChoose = StringVar(weatherDate)
+    yearOption = ttk.Combobox(weatherDate, textvariable = yearChoose, values=yearList,width=10,state="readonly")
+    yearChoose = yearList.index(YEAR)
+    yearOption.current(yearChoose)
+    yearOption.grid(row = 3, column=1)
+
+    myLabel = Label(weatherDate, text="")
+    myLabel.grid(row = 5,column=1, pady = 5)
+
+    Button(weatherDate, text="Submit", width=10, height=1, command=lambda: sendAllWeathers(dayOption.get(),monthOption.get(),yearOption.get(),myLabel )).grid(row=4,column=1,pady=(15,5))
+
+def sendCityWeather(city,label):
+    message = "/city %s" % (city)
+    send(message)
+    data = receive()
+
+    data = ("[%s]\n" % (city)) + data
+    label['text'] = data
+def showWeatherByCity():
+    Label(weatherCity, text = "CITY DATA").grid(row=0,column=1,sticky="WE",pady=20)
+
+    cityList= list(cityData)
+
+    Label(weatherCity, text = "Choose a city").grid(pady=5,row=1, column=0, sticky="W", padx=(30,5))
+    cityChoose = StringVar(weatherCity)
+    cityOption = ttk.Combobox(weatherCity, textvariable=cityChoose,values=cityList,width=15,justify='center',state="readonly")
+    cityChoose = 0
+    cityOption.current(cityChoose)
+    cityOption.grid(row = 1, column=1)
+
+    cityLabel = Label(weatherCity, text="")
+    cityLabel.grid(row = 3,column=1, pady = 5)
+
+    Button(weatherCity, text="Submit", width=15, height=1, command=lambda: sendCityWeather(cityOption.get(),cityLabel)).grid(row=2,column=1, pady=(15,5))
+
+
 def setUpMainMenuFrame():
     Button(mainMenuFrame, text="< Disconnect", width=10, height=1, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
     Label(mainMenuFrame, text="MAIN MENU").pack(pady=20)
-    Button(mainMenuFrame, text="List all cities", width=15, height=1).pack(pady=(0,10))
-    Button(mainMenuFrame, text="Select a city", width=15, height=1).pack()
+    Button(mainMenuFrame, text="List all cities", width=15, height=1, command=lambda: showFrame(weatherDate)).pack()
+    Button(mainMenuFrame, text="Select a city", width=15, height=1, command=lambda: showFrame(weatherCity)).pack()
 
 def disconnectThread():
     threadDisconnect = Thread(target=disconnectServer)
@@ -153,16 +238,18 @@ if __name__ == "__main__":
     signInFrame = Frame(root)
     signUpFrame = Frame(root)
     mainMenuFrame = Frame(root)
+    weatherDate = Frame(root)
+    weatherCity = Frame(root)
 
-    for frame in (pbFrame, chooseSVFrame, signInFrame, signUpFrame, mainMenuFrame):
+    for frame in (pbFrame, chooseSVFrame, signInFrame, signUpFrame, mainMenuFrame, weatherDate,weatherCity):
         frame.grid(row=0, column=0, sticky='nsew')
 
     setUpChooseSVFrame()
     setUpSignInFrame()
     setUpSignUpFrame()
     setUpMainMenuFrame()
-
-    Thread(target=showFrame, args=(chooseSVFrame,)).start()
+    showWeatherByDate()
+    showWeatherByCity()
 
     root.protocol("WM_DELETE_WINDOW", exitApp) # handle when click "X" on tkinter app
     root.mainloop()

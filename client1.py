@@ -95,6 +95,11 @@ def setUpSignUpFrame():
     Button(signUpFrame, text="Create account", width=15, height=1, command=lambda: sendUserInfoThread(usernameEntry, passwordEntry, "signup")).pack(pady=(20,10))
     Button(signUpFrame, text="Already have an account? Sign in", width=30, height=1, command=lambda: showFrame(signInFrame)).pack()
 
+def sendAllWeathersThread(day,month, year, myLabel):
+    threadSendWeather = Thread(target=sendAllWeathers, args=(day,month, year, myLabel,))
+    threadSendWeather.daemon = True
+    threadSendWeather.start()
+
 def sendAllWeathers(day,month, year, myLabel):
     datetime = day + " " + month + " " + year
     message = "/list %s" % datetime
@@ -140,7 +145,7 @@ def showWeatherByDate():
     myLabel = Label(weatherDate, text="")
     myLabel.grid(row = 5,column=1, pady = 5)
 
-    Button(weatherDate, text="Submit", width=10, height=1, command=lambda: sendAllWeathers(dayOption.get(),monthOption.get(),yearOption.get(),myLabel )).grid(row=4,column=1,pady=(15,5))
+    Button(weatherDate, text="Submit", width=10, height=1, command=lambda: sendAllWeathersThread(dayOption.get(),monthOption.get(),yearOption.get(),myLabel )).grid(row=4,column=1,pady=(15,5))
 
 def sendCityWeather(city,label):
     message = "/city %s" % (city)
@@ -251,6 +256,7 @@ if __name__ == "__main__":
     showWeatherByDate()
     showWeatherByCity()
 
+    Thread(target=showFrame, args=(chooseSVFrame,)).start()
     root.protocol("WM_DELETE_WINDOW", exitApp) # handle when click "X" on tkinter app
     root.mainloop()
 

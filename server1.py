@@ -120,9 +120,8 @@ def getWeatherByDate(day , month, year):
             status = "NaN"
         res += "%s: %s\n" % (city, status)
     return res
-def commandManager(strClientReq, weatherData):
-    commandArr = strClientReq.split()
-    print(strClientReq)
+def commandManager(commandArr, weatherData):
+    print(commandArr)
     if commandArr[0] == "/help":
         return "\n/city [city_name]\n[city_name]: TPHCM, HaNoi, DaNang, Hue"
     if (commandArr[0] == "/list"):
@@ -218,15 +217,7 @@ def communicateSection(client, clientAddr, weatherData):
                 disconnectClient(client, clientAddr)
                 return
 
-            clientReq = client.recv(1024)
-            strclientReq = clientReq.decode("utf8")
-
-            if strclientReq == "/exit":
-                break
-            if not clientReq:
-                break
-
-            serverResponse = commandManager(strclientReq, weatherData)
+            serverResponse = commandManager(data, weatherData)
             client.sendall(bytes(serverResponse, "utf8"))
 
         else: return

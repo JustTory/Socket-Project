@@ -146,6 +146,7 @@ def getWeather(day, month, year, cityName):
             return weather
         except:
             return False
+    else: return False
 
 def getAllCities(day, month, year):
     res = '{"%s %s %s": {' % (month, day, year)
@@ -367,12 +368,8 @@ def adminSection(client, clientAddr):
                 if len(data) == 4:
                     res = getAllCities(data[1], data[2], data[3])
                     print(res)
-                    if res == False:
-                        client.sendall(bytes("ADMIN CHOOSE DATE: Date not found in database", "utf8"))
-                        print(clientAddr, "ADMIN CHOOSE DATE: Date not found in database")
-                    else:
-                        client.sendall(bytes("ADMIN CHOOSE DATE: success\n" + res, "utf8"))
-                        print("ADMIN CHOOSE DATE: city list sent successfully")
+                    client.sendall(bytes("ADMIN CHOOSE DATE: success\n" + res, "utf8"))
+                    print("ADMIN CHOOSE DATE: city list sent successfully")
 
             elif reqType == "updateddate":
                 print(clientAddr, "ADMIN UPDATE BY DATE")

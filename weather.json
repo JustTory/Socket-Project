@@ -211,7 +211,8 @@
                 "HaiPhong": "Sunny",
                 "VungTau": "Sunny",
                 "QuangNinh": "Cloudy",
-                "MyTho": "Sunny"
+                "MyTho": "Sunny",
+                "Bac Giang": "Snowy"
             },
             "14": {
                 "TPHCM": "Windy",
@@ -221,7 +222,8 @@
                 "HaiPhong": "Windy",
                 "VungTau": "Cloudy",
                 "QuangNinh": "Snowy",
-                "MyTho": "Windy"
+                "MyTho": "Windy",
+                "Bac Giang": "Snowy"
             },
             "15": {
                 "TPHCM": "Windy",
@@ -231,7 +233,8 @@
                 "HaiPhong": "Cloudy",
                 "VungTau": "Sunny",
                 "QuangNinh": "Rainy",
-                "MyTho": "Rainy"
+                "MyTho": "Rainy",
+                "Bac Giang": "Snowy"
             },
             "16": {
                 "TPHCM": "Windy",
@@ -241,7 +244,8 @@
                 "HaiPhong": "Cloudy",
                 "VungTau": "Sunny",
                 "QuangNinh": "Windy",
-                "MyTho": "Snowy"
+                "MyTho": "Snowy",
+                "Bac Giang": "Snowy"
             },
             "17": {
                 "TPHCM": "Windy",
@@ -251,7 +255,8 @@
                 "HaiPhong": "Sunny",
                 "VungTau": "Cloudy",
                 "QuangNinh": "Cloudy",
-                "MyTho": "Rainy"
+                "MyTho": "Rainy",
+                "Bac Giang": "Snowy"
             },
             "18": {
                 "TPHCM": "Windy",
@@ -261,18 +266,19 @@
                 "HaiPhong": "Sunny",
                 "VungTau": "Windy",
                 "QuangNinh": "Windy",
-                "MyTho": "Rainy"
+                "MyTho": "Rainy",
+                "Bac Giang": "Snowy"
             },
             "19": {
-                "TPHCM": "Windy",
-                "HaNoi": "heh lmaooo",
-                "DaNang": "Rainy",
-                "Hue": "Cloudy",
-                "HaiPhong": "lol",
-                "VungTau": "lol",
-                "QuangNinh": "lol",
-                "MyTho": "lol",
-                "Bac Giang": "None"
+                "TPHCM": "Snowy",
+                "HaNoi": "Snowy",
+                "DaNang": "Snowy",
+                "Hue": "Snowy",
+                "HaiPhong": "Snowy",
+                "VungTau": "Snowy",
+                "QuangNinh": "Snowy",
+                "MyTho": "Snowy",
+                "Bac Giang": "Snowy"
             },
             "20": {
                 "TPHCM": "Snowy",
@@ -365,62 +371,32 @@
                 "MyTho": "Snowy"
             }
         },
-        "December": {
-            "18": {
-                "TPHCM": "Cloudy",
+        "July": {
+            "1": {
+                "TPHCM": "Sunny",
                 "HaNoi": "Sunny",
                 "DaNang": "Sunny",
-                "Hue": "Cloudy",
+                "Hue": "Sunny",
                 "HaiPhong": "Sunny",
-                "VungTau": "Cloudy",
-                "QuangNinh": "Windy",
-                "MyTho": "Rainy",
-                "dasfj asdf as": "None",
-                "Dao Ga": "None",
-                "Heh": "None"
-            }
-        },
-        "March": {
-            "1": {
-                "TPHCM": "Rainy",
-                "HaNoi": "Rainy",
-                "DaNang": "Rainy",
-                "Hue": "Snowy",
-                "HaiPhong": "Sunny",
-                "VungTau": "Cloudy",
+                "VungTau": "Sunny",
                 "QuangNinh": "Sunny",
-                "MyTho": "Windy"
+                "MyTho": "Sunny",
+                "Bac Giang": "Sunny"
             }
         }
     },
     "2022": {
         "June": {
-            "18": {
-                "TPHCM": "Sunny",
-                "HaNoi": "Sunny",
-                "DaNang": "Cloudy",
-                "Hue": "Snowy",
-                "HaiPhong": "Cloudy",
-                "VungTau": "Cloudy",
-                "QuangNinh": "Cloudy",
-                "MyTho": "Rainy",
-                "dasfj asdf as": "None",
-                "Dao Ga": "None",
-                "Heh": "None"
-            }
-        }
-    },
-    "2020": {
-        "January": {
-            "1": {
-                "TPHCM": "Snowy",
+            "19": {
+                "TPHCM": "Rainy",
                 "HaNoi": "Rainy",
-                "DaNang": "Sunny",
-                "Hue": "Cloudy",
-                "HaiPhong": "Cloudy",
-                "VungTau": "Cloudy",
-                "QuangNinh": "Snowy",
-                "MyTho": "Cloudy"
+                "DaNang": "Rainy",
+                "Hue": "Rainy",
+                "HaiPhong": "Rainy",
+                "VungTau": "Rainy",
+                "QuangNinh": "Rainy",
+                "MyTho": "Rainy",
+                "Bac Giang": "Rainy"
             }
         }
     }

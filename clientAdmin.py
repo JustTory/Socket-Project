@@ -42,8 +42,6 @@ def frameManager(serverResponse):
     elif (serverResponse[0] == "ADMIN ADD CITY: syntax error"):
         messagebox.showerror("Error", "City name can't be empty")
 
-    elif (serverResponse[0] == "ADMIN CHOOSE DATE: Date not found in database"):
-        messagebox.showerror("Error", "Date not found in database")
     elif (serverResponse[0] == "ADMIN UPDATE BY DATE: updated successfully" or serverResponse[0] == "ADMIN UPDATE BY CITY: updated successfully"):
         messagebox.showinfo("Success", "Data updated in database successfully")
     elif (serverResponse[0] == "ADMIN UPDATE BY DATE: error" or serverResponse[0] == "ADMIN UPDATE BY CITY: error"):
@@ -51,15 +49,15 @@ def frameManager(serverResponse):
 
     elif len(serverResponse) > 1:
         data = json.loads(serverResponse[1])
-        if (serverResponse[0] == "ADMIN CHOOSE DATE: success"):
-            setUpUWBDFrame(data)
-            showFrame(UWBDFrame)
-        elif(serverResponse[0] == "ADMIN GET CITY LIST: success"):
+        if(serverResponse[0] == "ADMIN GET CITY LIST: success"):
             setUpChooseCityFrame(data)
             showFrame(chooseCityFrame)
-        elif(serverResponse[0] == "ADMIN CHOOSE CITY: success"):
-            setUpUWBCFrame(data)
-            showFrame(UWBCFrame)
+        elif (serverResponse[0] == "ADMIN CHOOSE DATE: success"):
+            setUpUpdateDataFrame(data, "date")
+            showFrame(updateDataFrame)
+        elif (serverResponse[0] == "ADMIN CHOOSE CITY: success"):
+            setUpUpdateDataFrame(data, "city")
+            showFrame(updateDataFrame)
 
 def showFrame(frame):
     frame.tkraise()
@@ -69,27 +67,15 @@ def back(thisFrame, nextFrame):
         child.destroy()
     showFrame(nextFrame)
 
-def selectCity(event, weatherLabel, weatherEntry):
+def selectRow(event, weatherLabel, weatherOption):
     selection = event.widget.curselection()
     if selection:
         index = selection[0]
         item = event.widget.get(index)
         item = item.split(":")
-        cityName = item[0]
+        name = item[0]
         weather = item[1][1:]
-        weatherLabel.configure(text=cityName + "'s weather")
-        weatherEntry.delete(0, "end")
-        weatherEntry.insert(0, weather)
-
-def selectDate(event, weatherLabel, weatherOption):
-    selection = event.widget.curselection()
-    if selection:
-        index = selection[0]
-        item = event.widget.get(index)
-        item = item.split(":")
-        date = item[0]
-        weather = item[1][1:]
-        weatherLabel.configure(text=date + "'s weather")
+        weatherLabel.configure(text=name + "'s weather")
         pos = 0
         for i in weatherType:
             if i == weather:
@@ -189,33 +175,6 @@ def setUpChooseDateFrame():
 
     Button(chooseDateFrame, text="Choose", width=12, height=1, command=lambda: sendDateThread(dayOption.get(),monthOption.get(),yearOption.get() )).pack()
 
-def setUpUWBDFrame(data):
-    cityList = list(data.values())
-    cityList = cityList[0]
-
-    updateDate = list(data.keys())
-    updateDate = updateDate[0]
-
-    listBox = Listbox(UWBDFrame, width=30, selectmode=SINGLE, exportselection=False)
-    weatherLabel = Label(UWBDFrame, text="Weather value")
-    weatherEntry = Entry(UWBDFrame)
-    updateBtn = Button(UWBDFrame, text="Update", width=8, height=1, command=lambda: updateWeather(data, updateDate, listBox, weatherEntry.get()))
-    saveBtn = Button(UWBDFrame, text="Save changes", width=15, height=1, command=lambda: sendCityListThread(data))
-
-    for city in cityList:
-        listBox.insert(END, city + ": " + cityList[city])
-
-    Button(UWBDFrame, text="< Back", width=8, height=1, command=lambda: back(UWBDFrame, chooseDateFrame)).pack(side=TOP, anchor=NW)
-    Label(UWBDFrame, text="UPDATE WEATHER DATA").pack(pady=20)
-    Label(UWBDFrame, text=updateDate).pack()
-    listBox.pack(pady=(0,10))
-    weatherLabel.pack()
-    weatherEntry.pack(pady=(0,10))
-    updateBtn.pack(pady=(0,20))
-    saveBtn.pack()
-
-    listBox.bind('<<ListboxSelect>>', lambda event: selectCity(event, weatherLabel, weatherEntry))
-
 def setUpChooseCityFrame(data):
     cityList = list(data.values())
 
@@ -230,38 +189,45 @@ def setUpChooseCityFrame(data):
     cityLabel = Label(chooseCityFrame, text="")
     cityLabel.pack()
 
-    Button(chooseCityFrame, text="Select", width=15, height=1, command=lambda: sendCity(cityOption.get())).pack()
+    Button(chooseCityFrame, text="Select", width=15, height=1, command=lambda: sendCityThread(cityOption.get())).pack()
 
-def setUpUWBCFrame(data):
+def setUpUpdateDataFrame(data, type):
     weatherList = list(data.values())
     weatherList = weatherList[0]
+    updateType = list(data.keys())
+    updateType = updateType[0]
 
-    updateCity = list(data.keys())
-    updateCity = updateCity[0]
+    if type == "city":
+        title = "CITY"
+        backFrame = chooseCityFrame
+        command = "updatedcity"
+    elif type == "date":
+        title = "DATE"
+        backFrame = chooseDateFrame
+        command = "updateddate"
 
-    listBox = Listbox(UWBCFrame, width=30, selectmode=SINGLE, exportselection=False)
-    weatherLabel = Label(UWBCFrame, text="Weather value")
-    weatherChoose = StringVar(UWBCFrame)
-    weatherOption = ttk.Combobox(UWBCFrame, textvariable=weatherChoose,values=weatherType,width=15,justify='center',state="readonly")
+    listBox = Listbox(updateDataFrame, width=30, selectmode=SINGLE, exportselection=False)
+    weatherLabel = Label(updateDataFrame, text="Weather value")
+    weatherChoose = StringVar(updateDataFrame)
+    weatherOption = ttk.Combobox(updateDataFrame, textvariable=weatherChoose,values=weatherType,width=15,justify='center',state="readonly")
     weatherChoose = 0
-    weatherOption.current(weatherChoose )
-    updateBtn = Button(UWBCFrame, text="Update", width=8, height=1, command=lambda: updateWeather(data, updateCity, listBox, weatherOption.get()))
+    weatherOption.current(weatherChoose)
+    updateBtn = Button(updateDataFrame, text="Update", width=8, height=1, command=lambda: updateWeather(data, updateType, listBox, weatherOption.get()))
+    saveBtn = Button(updateDataFrame, text="Save changes", width=15, height=1, command=lambda: sendUpdatedDataThread(data, command))
 
-    saveBtn = Button(UWBCFrame, text="Save changes", width=15, height=1, command=lambda: sendDateList(data))
+    for name in weatherList:
+        listBox.insert(END, name + ": " + weatherList[name])
 
-    for weather in weatherList:
-        listBox.insert(END, weather + ": " + weatherList[weather])
-
-    Button(UWBCFrame, text="< Back", width=8, height=1, command=lambda: back(UWBCFrame, chooseCityFrame)).pack(side=TOP, anchor=NW)
-    Label(UWBCFrame, text="UPDATE WEATHER DATA BY CITY").pack(pady=20)
-    Label(UWBCFrame, text=updateCity).pack()
+    Button(updateDataFrame, text="< Back", width=8, height=1, command=lambda: back(updateDataFrame, backFrame)).pack(side=TOP, anchor=NW)
+    Label(updateDataFrame, text="UPDATE WEATHER DATA BY " + title).pack(pady=20)
+    Label(updateDataFrame, text=updateType).pack()
     listBox.pack(pady=(0,10))
     weatherLabel.pack()
     weatherOption.pack(pady=(0,10))
     updateBtn.pack(pady=(0,20))
     saveBtn.pack()
 
-    listBox.bind('<<ListboxSelect>>', lambda event: selectDate(event, weatherLabel, weatherOption))
+    listBox.bind('<<ListboxSelect>>', lambda event: selectRow(event, weatherLabel, weatherOption))
 
 # client functions
 def disconnectThread():
@@ -315,9 +281,9 @@ def sendUserInfo(usernameEntry, passwordEntry, type):
         frameManager(serverResponse)
 
 def addCityThread(cityNameEntry):
-    threadCity = Thread(target=addCity, args=(cityNameEntry,))
-    threadCity.daemon = True
-    threadCity.start()
+    threadAddCity = Thread(target=addCity, args=(cityNameEntry,))
+    threadAddCity.daemon = True
+    threadAddCity.start()
 def addCity(cityNameEntry):
     cityName = cityNameEntry.get()
     cityNameEntry.delete(0, 'end')
@@ -335,32 +301,29 @@ def sendDate(day, month, year):
         serverResponse = receive()
         frameManager(serverResponse)
 
-def sendCityListThread(data):
-    threadSendCityList = Thread(target=sendCityList, args=(data,))
-    threadSendCityList.daemon = True
-    threadSendCityList.start()
-def sendCityList(data):
-    jsonData = json.dumps(data)
-    message = "updateddate\n" + jsonData
-    if(send(message)):
-        serverResponse = receive()
-        frameManager(serverResponse)
-
 def getCityList():
     message = "getcitylist"
     if(send(message)):
         serverResponse = receive()
         frameManager(serverResponse)
 
+def sendCityThread(city):
+    threadSendCity = Thread(target=sendCity, args=(city,))
+    threadSendCity.daemon = True
+    threadSendCity.start()
 def sendCity(city):
     message = "choosecity\n%s" % (city)
     if(send(message)):
         serverResponse = receive()
         frameManager(serverResponse)
 
-def sendDateList(data):
+def sendUpdatedDataThread(data, command):
+    threadSendCityList = Thread(target=sendUpdatedData, args=(data, command,))
+    threadSendCityList.daemon = True
+    threadSendCityList.start()
+def sendUpdatedData(data, command):
     jsonData = json.dumps(data)
-    message = "updatedcity\n" + jsonData
+    message = command + "\n" + jsonData
     if(send(message)):
         serverResponse = receive()
         frameManager(serverResponse)
@@ -387,11 +350,10 @@ if __name__ == "__main__":
     mainMenuFrame = Frame(root)
     addCityFrame = Frame(root)
     chooseDateFrame = Frame(root)
-    UWBDFrame = Frame(root)
     chooseCityFrame = Frame(root)
-    UWBCFrame = Frame(root)
+    updateDataFrame = Frame(root)
 
-    for frame in (chooseSVFrame, signInFrame, mainMenuFrame, addCityFrame, chooseDateFrame, UWBDFrame, chooseCityFrame, UWBCFrame):
+    for frame in (chooseSVFrame, signInFrame, mainMenuFrame, addCityFrame, chooseDateFrame, chooseCityFrame, updateDataFrame):
         frame.grid(row=0, column=0, sticky='nsew')
 
     setUpChooseSVFrame()

@@ -104,11 +104,13 @@ def updateWeather(data, updateData, listBox, newWeather):
         oldItem = oldItem.split(":")
         name = oldItem[0]
         newItem = name + ": " + newWeather
-        listBox.delete(ANCHOR)
-        listBox.insert(ANCHOR, newItem)
-        data[updateData][name] = newWeather
+
+        if listBox.curselection()[0] < listBox.size():
+            listBox.delete(ANCHOR)
+            listBox.insert(ANCHOR, newItem)
+            data[updateData][name] = newWeather
     except:
-        print("end of list")
+        messagebox.showerror("Error", "Please select a row to update")
 
 # frame funtions
 def setUpChooseSVFrame():

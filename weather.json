@@ -204,7 +204,7 @@
                 "MyTho": "Windy"
             },
             "13": {
-                "TPHCM": "Sunny",
+                "TPHCM": "Windy",
                 "HaNoi": "Rainy",
                 "DaNang": "Cloudy",
                 "Hue": "Cloudy",
@@ -214,7 +214,7 @@
                 "MyTho": "Sunny"
             },
             "14": {
-                "TPHCM": "Sunny",
+                "TPHCM": "Windy",
                 "HaNoi": "Windy",
                 "DaNang": "Snowy",
                 "Hue": "Cloudy",
@@ -224,7 +224,7 @@
                 "MyTho": "Windy"
             },
             "15": {
-                "TPHCM": "Sunny",
+                "TPHCM": "Windy",
                 "HaNoi": "Snowy",
                 "DaNang": "Windy",
                 "Hue": "Cloudy",
@@ -234,7 +234,7 @@
                 "MyTho": "Rainy"
             },
             "16": {
-                "TPHCM": "Sunny",
+                "TPHCM": "Windy",
                 "HaNoi": "Windy",
                 "DaNang": "Windy",
                 "Hue": "Cloudy",
@@ -244,7 +244,7 @@
                 "MyTho": "Snowy"
             },
             "17": {
-                "TPHCM": "Sunny",
+                "TPHCM": "Windy",
                 "HaNoi": "Windy",
                 "DaNang": "Snowy",
                 "Hue": "Cloudy",
@@ -254,7 +254,7 @@
                 "MyTho": "Rainy"
             },
             "18": {
-                "TPHCM": "Sunny",
+                "TPHCM": "Windy",
                 "HaNoi": "Windy",
                 "DaNang": "Rainy",
                 "Hue": "Cloudy",
@@ -264,7 +264,7 @@
                 "MyTho": "Rainy"
             },
             "19": {
-                "TPHCM": "Sunny",
+                "TPHCM": "Windy",
                 "HaNoi": "heh lmaooo",
                 "DaNang": "Rainy",
                 "Hue": "Cloudy",

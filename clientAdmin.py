@@ -1,3 +1,5 @@
+# NHỚ BỎ SKIP LOGIN TRƯỚC KHI NỘP NHA BROOOOOOOOO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 import socket
 from tkinter import *
 from tkinter import ttk

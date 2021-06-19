@@ -44,16 +44,22 @@ def frameManager(serverResponse):
 
     elif (serverResponse[0] == "ADMIN CHOOSE DATE: Date not found in database"):
         messagebox.showerror("Error", "Date not found in database")
-    elif (serverResponse[0] == "ADMIN UPDATE BY DATE: updated successfully"):
+    elif (serverResponse[0] == "ADMIN UPDATE BY DATE: updated successfully" or serverResponse[0] == "ADMIN UPDATE BY CITY: updated successfully"):
         messagebox.showinfo("Success", "Data updated in database successfully")
-    elif (serverResponse[0] == "ADMIN UPDATE BY DATE: error"):
+    elif (serverResponse[0] == "ADMIN UPDATE BY DATE: error" or serverResponse[0] == "ADMIN UPDATE BY CITY: error"):
         messagebox.showerror("Error", "Something went wrong, can't update data in database")
 
     elif len(serverResponse) > 1:
+        data = json.loads(serverResponse[1])
         if (serverResponse[0] == "ADMIN CHOOSE DATE: success"):
-            data = json.loads(serverResponse[1])
             setUpUWBDFrame(data)
             showFrame(UWBDFrame)
+        elif(serverResponse[0] == "ADMIN GET CITY LIST: success"):
+            setUpChooseCityFrame(data)
+            showFrame(chooseCityFrame)
+        elif(serverResponse[0] == "ADMIN CHOOSE CITY: success"):
+            setUpUWBCFrame(data)
+            showFrame(UWBCFrame)
 
 def showFrame(frame):
     frame.tkraise()
@@ -75,17 +81,32 @@ def selectCity(event, weatherLabel, weatherEntry):
         weatherEntry.delete(0, "end")
         weatherEntry.insert(0, weather)
 
-def updateWeather(data, updateDate, listBox, newWeather):
-    oldItem = listBox.get(ANCHOR)
-    oldItem = oldItem.split(":")
+def selectDate(event, weatherLabel, weatherOption):
+    selection = event.widget.curselection()
+    if selection:
+        index = selection[0]
+        item = event.widget.get(index)
+        item = item.split(":")
+        date = item[0]
+        weather = item[1][1:]
+        weatherLabel.configure(text=date + "'s weather")
+        pos = 0
+        for i in weatherType:
+            if i == weather:
+                break
+            pos = pos + 1
+        if pos <= 5: weatherOption.current(pos)
+        else: weatherOption.current(0)
+
+def updateWeather(data, updateData, listBox, newWeather):
     try:
-        cityName = oldItem[0]
-        newItem = cityName + ": " + newWeather
+        oldItem = listBox.get(ANCHOR)
+        oldItem = oldItem.split(":")
+        name = oldItem[0]
+        newItem = name + ": " + newWeather
         listBox.delete(ANCHOR)
         listBox.insert(ANCHOR, newItem)
-
-        data[updateDate][cityName] = newWeather
-
+        data[updateData][name] = newWeather
     except:
         print("end of list")
 
@@ -93,7 +114,7 @@ def updateWeather(data, updateDate, listBox, newWeather):
 def setUpChooseSVFrame():
     Label(chooseSVFrame, text="SERVER IP").pack(pady=20)
     Label(chooseSVFrame, text="Input server's IP").pack()
-    serverIPEntry = Entry(chooseSVFrame)
+    serverIPEntry = Entry(chooseSVFrame, width=20)
     serverIPEntry.pack()
     serverIPEntry.focus()
 
@@ -119,7 +140,7 @@ def setUpMainMenuFrame():
     Label(mainMenuFrame, text="MAIN MENU").pack(pady=20)
     Button(mainMenuFrame, text="Add new city", width=15, height=1, command=lambda: showFrame(addCityFrame)).pack(pady=(0,15))
     Button(mainMenuFrame, text="Update weather data by date", width=25, height=1, command=lambda: showFrame(chooseDateFrame)).pack(pady=(0,15))
-    Button(mainMenuFrame, text="Update weather data by city", width=25, height=1, command=lambda: showFrame(UWBCFrame)).pack()
+    Button(mainMenuFrame, text="Update weather data by city", width=25, height=1, command=lambda: getCityList()).pack()
 
 def setUpAddCityFrame():
     Button(addCityFrame, text="< Back", width=8, height=1, command=lambda: showFrame(mainMenuFrame)).pack(side=TOP, anchor=NW)
@@ -139,7 +160,7 @@ def setUpChooseDateFrame():
 
     Label(chooseDateFrame, text = "Choose day").pack()
     dayChoose = StringVar(chooseDateFrame)
-    dayOption = ttk.Combobox(chooseDateFrame, textvariable=dayChoose, values=dayList, width=10, state="readonly")
+    dayOption = ttk.Combobox(chooseDateFrame, textvariable=dayChoose, values=dayList, width=10,justify='center',state="readonly")
     dayChoose = dayList.index(DAY)
     dayOption.current(dayChoose)
     dayOption.pack(pady=(0,15))
@@ -149,7 +170,7 @@ def setUpChooseDateFrame():
 
     Label(chooseDateFrame, text = "Choose Month").pack()
     monthChoose = StringVar(chooseDateFrame)
-    monthOption = ttk.Combobox(chooseDateFrame, textvariable=monthChoose, value=monthList,width=10,state="readonly")
+    monthOption = ttk.Combobox(chooseDateFrame, textvariable=monthChoose, value=monthList,width=10,justify='center',state="readonly")
     monthChoose = monthList.index(MONTH)
     monthOption.current(monthChoose)
     monthOption.pack(pady=(0,15))
@@ -159,7 +180,7 @@ def setUpChooseDateFrame():
 
     Label(chooseDateFrame, text = "Choose Year").pack()
     yearChoose = StringVar(chooseDateFrame)
-    yearOption = ttk.Combobox(chooseDateFrame, textvariable = yearChoose, values=yearList,width=10,state="readonly")
+    yearOption = ttk.Combobox(chooseDateFrame, textvariable = yearChoose, values=yearList,width=10,justify='center',state="readonly")
     yearChoose = yearList.index(YEAR)
     yearOption.current(yearChoose)
     yearOption.pack(pady=(0,20))
@@ -173,7 +194,7 @@ def setUpUWBDFrame(data):
     updateDate = list(data.keys())
     updateDate = updateDate[0]
 
-    listBox = Listbox(UWBDFrame, width=30, selectmode=SINGLE)
+    listBox = Listbox(UWBDFrame, width=30, selectmode=SINGLE, exportselection=False)
     weatherLabel = Label(UWBDFrame, text="Weather value")
     weatherEntry = Entry(UWBDFrame)
     updateBtn = Button(UWBDFrame, text="Update", width=8, height=1, command=lambda: updateWeather(data, updateDate, listBox, weatherEntry.get()))
@@ -193,9 +214,52 @@ def setUpUWBDFrame(data):
 
     listBox.bind('<<ListboxSelect>>', lambda event: selectCity(event, weatherLabel, weatherEntry))
 
-def setUpUWBCFrame():
-    Button(UWBCFrame, text="< Back", width=8, height=1, command=lambda: showFrame(mainMenuFrame)).pack(side=TOP, anchor=NW)
+def setUpChooseCityFrame(data):
+    cityList = list(data.values())
+
+    Button(chooseCityFrame, text="< Back", width=8, height=1, command=lambda: back(chooseCityFrame, mainMenuFrame)).pack(side=TOP, anchor=NW)
+    Label(chooseCityFrame, text = "CHOOSE CITY").pack(pady=20)
+    cityChoose = StringVar(chooseCityFrame)
+    cityOption = ttk.Combobox(chooseCityFrame, textvariable=cityChoose,values=cityList,width=20,justify='center',state="readonly")
+    cityChoose = 0
+    cityOption.current(cityChoose)
+    cityOption.pack()
+
+    cityLabel = Label(chooseCityFrame, text="")
+    cityLabel.pack()
+
+    Button(chooseCityFrame, text="Select", width=15, height=1, command=lambda: sendCity(cityOption.get())).pack()
+
+def setUpUWBCFrame(data):
+    weatherList = list(data.values())
+    weatherList = weatherList[0]
+
+    updateCity = list(data.keys())
+    updateCity = updateCity[0]
+
+    listBox = Listbox(UWBCFrame, width=30, selectmode=SINGLE, exportselection=False)
+    weatherLabel = Label(UWBCFrame, text="Weather value")
+    weatherChoose = StringVar(UWBCFrame)
+    weatherOption = ttk.Combobox(UWBCFrame, textvariable=weatherChoose,values=weatherType,width=15,justify='center',state="readonly")
+    weatherChoose = 0
+    weatherOption.current(weatherChoose )
+    updateBtn = Button(UWBCFrame, text="Update", width=8, height=1, command=lambda: updateWeather(data, updateCity, listBox, weatherOption.get()))
+
+    saveBtn = Button(UWBCFrame, text="Save changes", width=15, height=1, command=lambda: sendDateList(data))
+
+    for weather in weatherList:
+        listBox.insert(END, weather + ": " + weatherList[weather])
+
+    Button(UWBCFrame, text="< Back", width=8, height=1, command=lambda: back(UWBCFrame, chooseCityFrame)).pack(side=TOP, anchor=NW)
     Label(UWBCFrame, text="UPDATE WEATHER DATA BY CITY").pack(pady=20)
+    Label(UWBCFrame, text=updateCity).pack()
+    listBox.pack(pady=(0,10))
+    weatherLabel.pack()
+    weatherOption.pack(pady=(0,10))
+    updateBtn.pack(pady=(0,20))
+    saveBtn.pack()
+
+    listBox.bind('<<ListboxSelect>>', lambda event: selectDate(event, weatherLabel, weatherOption))
 
 # client functions
 def disconnectThread():
@@ -280,12 +344,33 @@ def sendCityList(data):
         serverResponse = receive()
         frameManager(serverResponse)
 
+def getCityList():
+    message = "getcitylist"
+    if(send(message)):
+        serverResponse = receive()
+        frameManager(serverResponse)
+
+def sendCity(city):
+    message = "choosecity\n%s" % (city)
+    if(send(message)):
+        serverResponse = receive()
+        frameManager(serverResponse)
+
+def sendDateList(data):
+    jsonData = json.dumps(data)
+    message = "updatedcity\n" + jsonData
+    if(send(message)):
+        serverResponse = receive()
+        frameManager(serverResponse)
+
 # main function
 if __name__ == "__main__":
     today = date.today()
     DAY = int(today.strftime("%d"))
     MONTH = today.strftime("%B")
     YEAR = today.strftime("%Y")
+
+    weatherType = ['null', 'Rainy', 'Sunny', 'Cloudy', 'Windy', 'Snowy']
 
     PORT = 65432
     root = Tk()
@@ -301,9 +386,10 @@ if __name__ == "__main__":
     addCityFrame = Frame(root)
     chooseDateFrame = Frame(root)
     UWBDFrame = Frame(root)
+    chooseCityFrame = Frame(root)
     UWBCFrame = Frame(root)
 
-    for frame in (chooseSVFrame, signInFrame, mainMenuFrame, addCityFrame, chooseDateFrame, UWBDFrame, UWBCFrame):
+    for frame in (chooseSVFrame, signInFrame, mainMenuFrame, addCityFrame, chooseDateFrame, UWBDFrame, chooseCityFrame, UWBCFrame):
         frame.grid(row=0, column=0, sticky='nsew')
 
     setUpChooseSVFrame()
@@ -311,7 +397,6 @@ if __name__ == "__main__":
     setUpMainMenuFrame()
     setUpAddCityFrame()
     setUpChooseDateFrame()
-    setUpUWBCFrame()
 
     Thread(target=showFrame, args=(chooseSVFrame,)).start()
 

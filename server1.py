@@ -382,7 +382,7 @@ if __name__ == "__main__":
     cityData = cityData
     weatherData = data
     
-    generateRandomWeather()
+    # generateRandomWeather()
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((HOST, PORT))

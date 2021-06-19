@@ -221,7 +221,7 @@ if __name__ == "__main__":
     YEAR = today.strftime("%Y")
 
     cityJson = open("city.json")
-    cityData = json.load(cityJson)['cities']
+    cityData = json.load(cityJson)
 
     PORT = 65432
     root = Tk()

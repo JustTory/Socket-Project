@@ -1,251 +1,60 @@
 {
-    "weather": {
-        "2021": {
-            "May": {
-                "24": {
-                    "TPHCM": "A",
-                    "HaNoi": "A"
-                },
-                "25": {
-                    "TPHCM": "B",
-                    "HaNoi": "B"
-                },
-                "26": {
-                    "TPHCM": "C",
-                    "HaNoi": "C"
-                },
-                "27": {
-                    "TPHCM": "D",
-                    "HaNoi": "D"
-                },
-                "28": {
-                    "TPHCM": "A",
-                    "HaNoi": "A"
-                },
-                "29": {
-                    "TPHCM": "B",
-                    "HaNoi": "B"
-                },
-                "30": {
-                    "TPHCM": "C",
-                    "HaNoi": "C"
-                },
-                "31": {
-                    "TPHCM": "D",
-                    "HaNoi": "D"
-                }
-            },
-            "June": {
-                "1": {
-                    "TPHCM": "A",
-                    "HaNoi": "A"
-                },
-                "2": {
-                    "TPHCM": "B",
-                    "HaNoi": "B"
-                },
-                "3": {
-                    "TPHCM": "C",
-                    "HaNoi": "C"
-                },
-                "4": {
-                    "TPHCM": "D",
-                    "HaNoi": "D"
-                },
-                "5": {
-                    "TPHCM": "A",
-                    "HaNoi": "A"
-                },
-                "6": {
-                    "TPHCM": "B",
-                    "HaNoi": "B"
-                },
-                "7": {
-                    "TPHCM": "C",
-                    "HaNoi": "C"
-                },
-                "8": {
-                    "TPHCM": "D",
-                    "HaNoi": "D"
-                },
-                "9": {
-                    "TPHCM": "A",
-                    "HaNoi": "A"
-                },
-                "10": {
-                    "TPHCM": "B",
-                    "HaNoi": "B"
-                },
-                "11": {
-                    "TPHCM": "C",
-                    "HaNoi": "C"
-                },
-                "12": {
-                    "TPHCM": "D",
-                    "HaNoi": "D"
-                },
-                "13": {
-                    "TPHCM": "A",
-                    "HaNoi": "A"
-                },
-                "14": {
-                    "TPHCM": "B",
-                    "HaNoi": "B"
-                },
-                "15": {
-                    "TPHCM": "heh",
-                    "HaNoi": "C",
-                    "DaNang": "None",
-                    "Hue": "None",
-                    "HaiPhong": "None",
-                    "VungTau": "None",
-                    "QuangNinh": "None",
-                    "MyTho": "ga",
-                    "dasfj asdf as": "None",
-                    "Dao Ga": "None",
-                    "Heh": "None"
-                },
-                "16": {
-                    "TPHCM": "D",
-                    "HaNoi": "D"
-                },
-                "17": {
-                    "TPHCM": "A",
-                    "HaNoi": "A"
-                },
-                "18": {
-                    "TPHCM": "nice",
-                    "HaNoi": "no",
-                    "DaNang": "lel",
-                    "Hue": "heh",
-                    "HaiPhong": "heh",
-                    "VungTau": "heh",
-                    "QuangNinh": "heh",
-                    "MyTho": "ok"
-                },
-                "19": {
-                    "TPHCM": "nopls",
-                    "HaNoi": "C",
-                    "DaNang": "None",
-                    "Hue": "None",
-                    "HaiPhong": "None",
-                    "VungTau": "None",
-                    "QuangNinh": "None",
-                    "MyTho": "pls"
-                },
-                "20": {
-                    "TPHCM": "D",
-                    "HaNoi": "D"
-                },
-                "21": {
-                    "TPHCM": "A",
-                    "HaNoi": "A"
-                },
-                "22": {
-                    "TPHCM": "B",
-                    "HaNoi": "B"
-                },
-                "23": {
-                    "TPHCM": "C",
-                    "HaNoi": "C"
-                },
-                "24": {
-                    "TPHCM": "D",
-                    "HaNoi": "D"
-                },
-                "31": {},
-                "26": {
-                    "TPHCM": "new",
-                    "HaNoi": "None",
-                    "DaNang": "None",
-                    "Hue": "None",
-                    "HaiPhong": "None",
-                    "VungTau": "None",
-                    "QuangNinh": "None",
-                    "MyTho": "None"
-                },
-                "30": {
-                    "TPHCM": "new day",
-                    "HaNoi": "None",
-                    "DaNang": "None",
-                    "Hue": "None",
-                    "HaiPhong": "None",
-                    "VungTau": "None",
-                    "QuangNinh": "None",
-                    "MyTho": "None",
-                    "dasfj asdf as": "None",
-                    "Dao Ga": "None",
-                    "Heh": "None"
-                },
-                "25": {
-                    "TPHCM": "brrrt",
-                    "HaNoi": "None",
-                    "DaNang": "None",
-                    "Hue": "None",
-                    "HaiPhong": "None",
-                    "VungTau": "None",
-                    "QuangNinh": "None",
-                    "MyTho": "None"
-                }
-            },
-            "December": {
-                "18": {
-                    "TPHCM": "None",
-                    "HaNoi": "December",
-                    "DaNang": "December",
-                    "Hue": "December",
-                    "HaiPhong": "December",
-                    "VungTau": "December",
-                    "QuangNinh": "December",
-                    "MyTho": "None",
-                    "dasfj asdf as": "None",
-                    "Dao Ga": "None",
-                    "Heh": "None"
-                }
-            },
-            "March": {
-                "1": {
-                    "TPHCM": "PLS WORK MOM",
-                    "HaNoi": "None",
-                    "DaNang": "None",
-                    "Hue": "None",
-                    "HaiPhong": "None",
-                    "VungTau": "None",
-                    "QuangNinh": "None",
-                    "MyTho": "None"
-                }
-            }
+    "2021": {
+        "May": {
+            "24": "Windy",
+            "25": "Sunny",
+            "26": "Rainy",
+            "27": "Windy",
+            "28": "Windy",
+            "29": "Sunny",
+            "30": "Windy",
+            "31": "Rainy"
         },
-        "2022": {
-            "June": {
-                "18": {
-                    "TPHCM": "heh",
-                    "HaNoi": "None",
-                    "DaNang": "None",
-                    "Hue": "None",
-                    "HaiPhong": "None",
-                    "VungTau": "None",
-                    "QuangNinh": "None",
-                    "MyTho": "None",
-                    "dasfj asdf as": "None",
-                    "Dao Ga": "None",
-                    "Heh": "None"
-                }
-            }
+        "June": {
+            "1": "Windy",
+            "2": "Windy",
+            "3": "Windy",
+            "4": "Snowy",
+            "5": "Sunny",
+            "6": "Snowy",
+            "7": "Snowy",
+            "8": "Sunny",
+            "9": "Sunny",
+            "10": "Sunny",
+            "11": "Snowy",
+            "12": "Sunny",
+            "13": "Cloudy",
+            "14": "Cloudy",
+            "15": "Cloudy",
+            "16": "Rainy",
+            "17": "Snowy",
+            "18": "Windy",
+            "19": "Cloudy",
+            "20": "Sunny",
+            "21": "Windy",
+            "22": "Sunny",
+            "23": "Sunny",
+            "24": "Snowy",
+            "31": "Cloudy",
+            "26": "Sunny",
+            "30": "Windy",
+            "25": "Sunny"
         },
-        "2020": {
-            "January": {
-                "1": {
-                    "TPHCM": "di ngu",
-                    "HaNoi": "None",
-                    "DaNang": "None",
-                    "Hue": "None",
-                    "HaiPhong": "None",
-                    "VungTau": "None",
-                    "QuangNinh": "None",
-                    "MyTho": "None"
-                }
-            }
+        "December": {
+            "18": "Rainy"
+        },
+        "March": {
+            "1": "Snowy"
+        }
+    },
+    "2022": {
+        "June": {
+            "18": "Snowy"
+        }
+    },
+    "2020": {
+        "January": {
+            "1": "Cloudy"
         }
     }
 }

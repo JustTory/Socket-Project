@@ -1,57 +1,55 @@
 {
-    "users": {
-        "0": {
-            "isAdmin": true,
-            "username": "admin",
-            "password": "admin"
-        },
-        "1": {
-            "username": "dao",
-            "password": "123"
-        },
-        "2": {
-            "username": "tory",
-            "password": "hehe"
-        },
-        "3": {
-            "username": "test",
-            "password": "test"
-        },
-        "4": {
-            "username": "heh",
-            "password": "cringe"
-        },
-        "5": {
-            "username": "bruh",
-            "password": "bruh"
-        },
-        "6": {
-            "username": "new",
-            "password": "heh"
-        },
-        "7": {
-            "username": "tester",
-            "password": "123"
-        },
-        "8": {
-            "username": "newboi",
-            "password": "hehe"
-        },
-        "9": {
-            "username": "mom",
-            "password": "asdfa"
-        },
-        "10": {
-            "username": "hehehehe",
-            "password": "aasadf"
-        },
-        "11": {
-            "username": "newtest",
-            "password": "newtest"
-        },
-        "12": {
-            "username": "plswork",
-            "password": "plswork"
-        }
+    "0": {
+        "isAdmin": true,
+        "username": "admin",
+        "password": "admin"
+    },
+    "1": {
+        "username": "dao",
+        "password": "123"
+    },
+    "2": {
+        "username": "tory",
+        "password": "hehe"
+    },
+    "3": {
+        "username": "test",
+        "password": "test"
+    },
+    "4": {
+        "username": "heh",
+        "password": "cringe"
+    },
+    "5": {
+        "username": "bruh",
+        "password": "bruh"
+    },
+    "6": {
+        "username": "new",
+        "password": "heh"
+    },
+    "7": {
+        "username": "tester",
+        "password": "123"
+    },
+    "8": {
+        "username": "newboi",
+        "password": "hehe"
+    },
+    "9": {
+        "username": "mom",
+        "password": "asdfa"
+    },
+    "10": {
+        "username": "hehehehe",
+        "password": "aasadf"
+    },
+    "11": {
+        "username": "newtest",
+        "password": "newtest"
+    },
+    "12": {
+        "username": "plswork",
+        "password": "plswork"
     }
 }

@@ -3,18 +3,19 @@ import socket
 import json
 from threading import Thread
 from datetime import date
+import random
 
 # helper functions
 def checkExistUsername(username):
-    for user in userData["users"]:
-        if userData["users"][user]["username"] == username:
+    for user in userData:
+        if userData[user]["username"] == username:
             return True
     return False
 
 def createNewUser(username, password):
     userJson = open("user.json")
     userData = json.load(userJson)
-    newUser = {len(userData["users"]): {"username": username,"password": password}}
+    newUser = {len(userData): {"username": username,"password": password}}
     with open("user.json", "r+") as file:
         fileData = json.load(file)
         fileData["users"].update(newUser)
@@ -24,7 +25,7 @@ def createNewUser(username, password):
 def checkLogIn(username, password):
     userJson = open("user.json")
     userData = json.load(userJson)
-    for user in userData["users"].values():
+    for user in userData.values():
         if user["username"] == username and user["password"] == password:
             try:
                 user['isAdmin']
@@ -35,7 +36,7 @@ def checkLogIn(username, password):
 def checkExistsCity(cityName):
     cityJson = open("city.json")
     cityData = json.load(cityJson)
-    for city in cityData["cities"].values():
+    for city in cityData.values():
         if city["cityName"] == cityName:
             return True
     return False
@@ -98,10 +99,10 @@ def commandManager(commandArr):
 def createNewCity(cityName):
     cityJson = open("city.json")
     cityData = json.load(cityJson)
-    newCity= {len(cityData["cities"]): {"cityName": cityName}}
+    newCity= {cityName: {"cityName": cityName}}
     with open("city.json", "r+") as file:
         fileData = json.load(file)
-        fileData["cities"].update(newCity)
+        fileData.update(newCity)
         file.seek(0)
         json.dump(fileData, file, indent = 4)
 
@@ -109,7 +110,7 @@ def checkExistsDate(day, month, year):
     weatherJson = open("weather.json")
     weatherData = json.load(weatherJson)
     try:
-        weatherData["weather"][year][month][day]
+        weatherData[year][month][day]
         return True
     except:
         return False
@@ -119,7 +120,7 @@ def getWeather(day, month, year, cityName):
     weatherData = json.load(weatherJson)
     if checkExistsDate(day, month ,year):
         try:
-            weather = weatherData["weather"][year][month][day][cityName]
+            weather = weatherData[year][month][day][cityName]
             return weather
         except:
             return False
@@ -131,7 +132,7 @@ def getAllCities(day, month, year):
     weatherData = json.load(weatherJson)
 
     res = '{"%s %s %s": {' % (month, day, year)
-    for city in cityData["cities"].values():
+    for city in cityData.values():
         weather = getWeather(day, month, year, city["cityName"])
         if weather == False: weather = None
         res += '"%s": "%s",' % (city["cityName"], weather)
@@ -156,12 +157,12 @@ def updateWeatherByDate(newData):
         month = updateDate[0]
         day = updateDate[1]
 
-        try: weatherData["weather"][year]
-        except: weatherData["weather"][year] = {}
-        try: weatherData["weather"][year][month]
-        except: weatherData["weather"][year][month] = {}
+        try: weatherData[year]
+        except: weatherData[year] = {}
+        try: weatherData[year][month]
+        except: weatherData[year][month] = {}
 
-        weatherData["weather"][year][month][day] = cityList
+        weatherData[year][month][day] = cityList
         weatherJson = open("weather.json", "w")
         json.dump(weatherData, weatherJson)
 
@@ -348,6 +349,17 @@ def adminSection(client, clientAddr):
 
         else: return False
 
+def generateRandomWeather():
+    weatherType = ['Rainy', 'Sunny', 'Cloudy','Windy','Snowy']
+    for year in weatherData:   
+        for month in weatherData[year]:  
+            for day in  weatherData[year][month]:
+                for city in cityData: 
+                    weatherIndex = random.randint(0, len(weatherType)-1)  
+                    weatherData[year][month][day] = weatherType[weatherIndex]
+    with open("weather.json", "w") as outfile:
+        json.dump(weatherData, outfile)
+
 # main function
 if __name__ == "__main__":
     today = date.today()
@@ -367,8 +379,10 @@ if __name__ == "__main__":
     data = json.load(weatherJson)
     userJson = open("user.json")
     userData = json.load(userJson)
-    cityData = cityData["cities"]
-    weatherData = data["weather"]
+    cityData = cityData
+    weatherData = data
+    
+    generateRandomWeather()
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((HOST, PORT))

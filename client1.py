@@ -88,6 +88,8 @@ def setUpMainMenuFrame():
     Button(mainMenuFrame, text="Select a city", width=15, height=1, command=lambda: showFrame(weatherCity)).pack()
 
 def showWeatherByCity():
+    cityJson = open("city.json")
+    cityData = json.load(cityJson)
     Label(weatherCity, text = "CITY DATA").grid(row=0,column=1,sticky="WE",pady=20)
 
     cityList= list(cityData)
@@ -219,9 +221,6 @@ if __name__ == "__main__":
     DAY = int(today.strftime("%d"))
     MONTH = today.strftime("%B")
     YEAR = today.strftime("%Y")
-
-    cityJson = open("city.json")
-    cityData = json.load(cityJson)
 
     PORT = 65432
     root = Tk()

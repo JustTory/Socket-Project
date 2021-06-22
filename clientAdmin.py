@@ -249,7 +249,7 @@ def connectServer(entry):
     global client # client socket
     host = entry.get()
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    serverAddr = ("localhost", PORT)
+    serverAddr = (host, PORT)
     try:
         client.connect(serverAddr)
         print('Connected to server: ' + str(serverAddr))
@@ -264,7 +264,7 @@ def sendUserInfo(usernameEntry, passwordEntry, type):
     password = passwordEntry.get()
     passwordEntry.delete(0, 'end')
 
-    if(send(type + " " + "admin" + " " + "admin")):
+    if(send(type + " " + username + " " + password)):
         serverResponse = receive()
         if (serverResponse == "success"):
             showFrame(mainMenuFrame)

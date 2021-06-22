@@ -433,9 +433,6 @@ if __name__ == "__main__":
     YEAR = today.strftime("%Y")
     MONTHS = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "Setemper", "October", "November", "December"]
 
-    HOST = '127.0.0.1'
-    PORT = 65432
-
     clientAddrs = {}
 
     userJson = open("user.json")
@@ -446,10 +443,17 @@ if __name__ == "__main__":
     weatherData = json.load(weatherJson)
     cityData = json.load(cityJson)
 
-    generateRandomWeather()
+    #generateRandomWeather()
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    hostname = socket.gethostname()
+    HOST = socket.gethostbyname(hostname)
+    PORT = 65432
+
+    print("Server IP: ", HOST)
     server.bind((HOST, PORT))
+
     server.listen(5)
     print("Server 1 is online, wating for connections...")
 

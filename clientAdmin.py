@@ -25,42 +25,6 @@ def receive():
         print("Server has disconnected")
     return msg
 
-def frameManager(serverResponse):
-    print(serverResponse)
-    serverResponse = serverResponse.split("\n")
-
-    if (serverResponse[0] == "SIGN IN ADMIN: success"):
-        showFrame(mainMenuFrame)
-        messagebox.showinfo("Success", "You have signed in successfully")
-    elif (serverResponse[0] == "SIGN IN ADMIN: info incorrect"):
-        messagebox.showerror("Error", "Incorrect admin username or password")
-    elif (serverResponse[0] == "SIGN IN ADMIN: syntax error"):
-        messagebox.showerror("Error", "Username or password can't be empty")
-
-    elif (serverResponse[0] == "ADMIN ADD CITY: success"):
-        messagebox.showinfo("Success", "You have added a new city successfully")
-    elif (serverResponse[0] == "ADMIN ADD CITY: city already existed"):
-        messagebox.showerror("Error", "City already existed")
-    elif (serverResponse[0] == "ADMIN ADD CITY: syntax error"):
-        messagebox.showerror("Error", "City name can't be empty")
-
-    elif (serverResponse[0] == "ADMIN UPDATE BY DATE: updated successfully" or serverResponse[0] == "ADMIN UPDATE BY CITY: updated successfully"):
-        messagebox.showinfo("Success", "Data updated in database successfully")
-    elif (serverResponse[0] == "ADMIN UPDATE BY DATE: error" or serverResponse[0] == "ADMIN UPDATE BY CITY: error"):
-        messagebox.showerror("Error", "Something went wrong, can't update data in database")
-
-    elif len(serverResponse) > 1:
-        data = json.loads(serverResponse[1])
-        if(serverResponse[0] == "ADMIN GET CITY LIST: success"):
-            setUpChooseCityFrame(data)
-            showFrame(chooseCityFrame)
-        elif (serverResponse[0] == "ADMIN CHOOSE DATE: success"):
-            setUpUpdateDataFrame(data, "date")
-            showFrame(updateDataFrame)
-        elif (serverResponse[0] == "ADMIN CHOOSE CITY: success"):
-            setUpUpdateDataFrame(data, "city")
-            showFrame(updateDataFrame)
-
 def showFrame(frame):
     frame.tkraise()
 
@@ -76,15 +40,18 @@ def selectRow(event, weatherLabel, weatherOption):
         item = event.widget.get(index)
         item = item.split(":")
         name = item[0]
-        weather = item[1][1:]
+        weather = item[1][1:] # delete first space char
         weatherLabel.configure(text=name + "'s weather")
-        pos = 0
-        for i in weatherType:
-            if i == weather:
-                break
-            pos = pos + 1
-        if pos <= 5: weatherOption.current(pos)
-        else: weatherOption.current(0)
+
+        pos = weatherType.index(weather)
+
+        # for i in weatherType:
+        #     if i == weather:
+        #         break
+        #     pos = pos + 1
+
+        if pos == -1 : weatherOption.current(0)
+        else: weatherOption.current(pos)
 
 def updateWeather(data, updateData, listBox, newWeather):
     try:
@@ -146,7 +113,7 @@ def setUpChooseDateFrame():
     Label(chooseDateFrame, text="CHOOSE DATE").pack(pady=20)
 
     #Day
-    dayList = list(range(32))
+    dayList = list(range(1,32))
 
     Label(chooseDateFrame, text = "Choose day").pack()
     dayChoose = StringVar(chooseDateFrame)
@@ -208,7 +175,7 @@ def setUpUpdateDataFrame(data, type):
         backFrame = chooseDateFrame
         command = "updateddate"
 
-    listBox = Listbox(updateDataFrame, width=30, selectmode=SINGLE, exportselection=False)
+    listBox = Listbox(updateDataFrame, width=35, selectmode=SINGLE, exportselection=False)
     weatherLabel = Label(updateDataFrame, text="Weather value")
     weatherChoose = StringVar(updateDataFrame)
     weatherOption = ttk.Combobox(updateDataFrame, textvariable=weatherChoose,values=weatherType,width=15,justify='center',state="readonly")
@@ -231,17 +198,38 @@ def setUpUpdateDataFrame(data, type):
 
     listBox.bind('<<ListboxSelect>>', lambda event: selectRow(event, weatherLabel, weatherOption))
 
-# client functions
+
+# thread functions
 def disconnectThread():
     threadDisconnect = Thread(target=disconnectServer)
     threadDisconnect.daemon = True
     threadDisconnect.start()
-def disconnectServer():
-    send("exit")
-    client.close()
-    print("disconnected from server")
-    showFrame(chooseSVFrame)
+def connectThread(entry):
+    threadConnect = Thread(target=connectServer, args=(entry,))
+    threadConnect.daemon = True
+    threadConnect.start()
+def sendUserInfoThread(usernameEntry, passwordEntry, type):
+    threadSend = Thread(target=sendUserInfo, args=(usernameEntry, passwordEntry, type,))
+    threadSend.daemon = True
+    threadSend.start()
+def addCityThread(cityNameEntry):
+    threadAddCity = Thread(target=addCity, args=(cityNameEntry,))
+    threadAddCity.daemon = True
+    threadAddCity.start()
+def sendDateThread(day, month, year):
+    threadDate = Thread(target=sendDate, args=(day, month, year,))
+    threadDate.daemon = True
+    threadDate.start()
+def sendCityThread(city):
+    threadSendCity = Thread(target=sendCity, args=(city,))
+    threadSendCity.daemon = True
+    threadSendCity.start()
+def sendUpdatedDataThread(data, command):
+    threadSendCityList = Thread(target=sendUpdatedData, args=(data, command,))
+    threadSendCityList.daemon = True
+    threadSendCityList.start()
 
+# client functions
 def exitApp():
     try:
         client
@@ -251,10 +239,12 @@ def exitApp():
         print("closing app")
     root.destroy()
 
-def connectThread(entry):
-    threadConnect = Thread(target=connectServer, args=(entry,))
-    threadConnect.daemon = True
-    threadConnect.start()
+def disconnectServer():
+    send("exit")
+    client.close()
+    print("disconnected from server")
+    showFrame(chooseSVFrame)
+
 def connectServer(entry):
     global client # client socket
     host = entry.get()
@@ -268,10 +258,6 @@ def connectServer(entry):
         print("Could not find server's IP or request timeout")
         messagebox.showerror("Error", "Could not find server's IP or request timeout")
 
-def sendUserInfoThread(usernameEntry, passwordEntry, type):
-    threadSend = Thread(target=sendUserInfo, args=(usernameEntry, passwordEntry, type,))
-    threadSend.daemon = True
-    threadSend.start()
 def sendUserInfo(usernameEntry, passwordEntry, type):
     username = usernameEntry.get()
     usernameEntry.delete(0, 'end')
@@ -280,55 +266,63 @@ def sendUserInfo(usernameEntry, passwordEntry, type):
 
     if(send(type + " " + "admin" + " " + "admin")):
         serverResponse = receive()
-        frameManager(serverResponse)
+        if (serverResponse == "success"):
+            showFrame(mainMenuFrame)
+            messagebox.showinfo("Success", "You have signed in successfully")
+        elif (serverResponse == "info incorrect"):
+            messagebox.showerror("Error", "Incorrect admin username or password")
+        elif (serverResponse[0] == "syntax error"):
+            messagebox.showerror("Error", "Username or password can't be empty")
 
-def addCityThread(cityNameEntry):
-    threadAddCity = Thread(target=addCity, args=(cityNameEntry,))
-    threadAddCity.daemon = True
-    threadAddCity.start()
 def addCity(cityNameEntry):
     cityName = cityNameEntry.get()
     cityNameEntry.delete(0, 'end')
-    if(send("addcity\n" + cityName)):
+    if(cityName != ""):
+        msg = "addcity\n" + cityName
+    else:
+        msg = "addcity"
+    if(send(msg)):
         serverResponse = receive()
-        frameManager(serverResponse)
+        if (serverResponse == "success"):
+            messagebox.showinfo("Success", "You have added a new city successfully")
+        elif (serverResponse == "city already existed"):
+            messagebox.showerror("Error", "City already existed")
+        elif (serverResponse == "syntax error"):
+            messagebox.showerror("Error", "City name can't be empty")
 
-def sendDateThread(day, month, year):
-    threadDate = Thread(target=sendDate, args=(day, month, year,))
-    threadDate.daemon = True
-    threadDate.start()
 def sendDate(day, month, year):
     message = "choosedate\n%s\n%s\n%s" % (day, month, year)
     if(send(message)):
         serverResponse = receive()
-        frameManager(serverResponse)
+        data = json.loads(serverResponse)
+        setUpUpdateDataFrame(data, "date")
+        showFrame(updateDataFrame)
 
 def getCityList():
     message = "getcitylist"
     if(send(message)):
         serverResponse = receive()
-        frameManager(serverResponse)
+        data = json.loads(serverResponse)
+        setUpChooseCityFrame(data)
+        showFrame(chooseCityFrame)
 
-def sendCityThread(city):
-    threadSendCity = Thread(target=sendCity, args=(city,))
-    threadSendCity.daemon = True
-    threadSendCity.start()
 def sendCity(city):
     message = "choosecity\n%s" % (city)
     if(send(message)):
         serverResponse = receive()
-        frameManager(serverResponse)
+        data = json.loads(serverResponse)
+        setUpUpdateDataFrame(data, "city")
+        showFrame(updateDataFrame)
 
-def sendUpdatedDataThread(data, command):
-    threadSendCityList = Thread(target=sendUpdatedData, args=(data, command,))
-    threadSendCityList.daemon = True
-    threadSendCityList.start()
 def sendUpdatedData(data, command):
     jsonData = json.dumps(data)
     message = command + "\n" + jsonData
     if(send(message)):
         serverResponse = receive()
-        frameManager(serverResponse)
+        if (serverResponse == "success"):
+            messagebox.showinfo("Success", "Data updated in database successfully")
+        elif (serverResponse == "error"):
+            messagebox.showerror("Error", "Something went wrong, can't update data in database")
 
 # main function
 if __name__ == "__main__":

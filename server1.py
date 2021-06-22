@@ -162,15 +162,20 @@ def updateWeatherByDate(newData):
     try:
         data = json.loads(newData)
         print(data)
-        updateDate = list(data.keys())
-        updateDate = updateDate[0]
-        updateDate = updateDate.split()
-        cityList = list(data.values())
-        cityList = cityList[0]
+        dataDate = list(data.keys())
+        dataDate = dataDate[0]
+        dataDate = dataDate.split()
+        dataCity = list(data.values())
+        dataCity = dataCity[0]
 
-        year = updateDate[2]
-        month = updateDate[0]
-        day = updateDate[1]
+        cityList = {}
+        for city in dataCity:
+            if(dataCity[city] != "null"):
+                cityList[city] = dataCity[city]
+
+        year = dataDate[2]
+        month = dataDate[0]
+        day = dataDate[1]
 
         try: weatherData[year]
         except: weatherData[year] = {}
@@ -306,14 +311,14 @@ def logInSection(client, clientAddr):
                     password = data[2]
                     userType = checkLogIn(username, password)
                     if userType == "isAdmin":
-                        client.sendall(bytes("SIGN IN ADMIN: success", "utf8"))
+                        client.sendall(bytes("success", "utf8"))
                         print(clientAddr, "SIGN IN ADMIN: success")
                         return "admin"
                     else:
-                        client.sendall(bytes("SIGN IN ADMIN: info incorrect", "utf8"))
+                        client.sendall(bytes("info incorrect", "utf8"))
                         print(clientAddr, "SIGN IN ADMIN: info incorrect")
                 else:
-                    client.sendall(bytes("SIGN IN ADMIN: syntax error", "utf8"))
+                    client.sendall(bytes("syntax error", "utf8"))
                     print(clientAddr, "SIGN IN ADMIN: syntax error")
 
             elif reqType == "exit":
@@ -338,7 +343,6 @@ def userSection(client, clientAddr):
             client.sendall(bytes(response, "utf8"))
             print(clientAddr, response)
 
-
         else: return
 
 def adminSection(client, clientAddr):
@@ -352,57 +356,53 @@ def adminSection(client, clientAddr):
                     newCityName = data[1]
                     if checkExistsCity(newCityName) == False:
                         createNewCity(newCityName)
-                        client.sendall(bytes("ADMIN ADD CITY: success", "utf8"))
+                        client.sendall(bytes("success", "utf8"))
                         print(clientAddr, "ADMIN ADD CITY: success")
 
                     else:
-                        client.sendall(bytes("ADMIN ADD CITY: city already existed", "utf8"))
+                        client.sendall(bytes("city already existed", "utf8"))
                         print(clientAddr, "ADMIN ADD CITY: city already existed")
 
                 else:
-                    client.sendall(bytes("ADMIN ADD CITY: syntax error", "utf8"))
+                    client.sendall(bytes("syntax error", "utf8"))
                     print(clientAddr, "ADMIN ADD CITY: syntax error")
 
             elif reqType == "choosedate":
                 print(clientAddr, "ADMIN CHOOSE DATE: ", data)
-                if len(data) == 4:
-                    res = getAllCities(data[1], data[2], data[3])
-                    print(res)
-                    client.sendall(bytes("ADMIN CHOOSE DATE: success\n" + res, "utf8"))
-                    print("ADMIN CHOOSE DATE: city list sent successfully")
+                res = getAllCities(data[1], data[2], data[3])
+                print(res)
+                client.sendall(bytes(res, "utf8"))
+                print("ADMIN CHOOSE DATE: city list sent successfully")
 
             elif reqType == "updateddate":
                 print(clientAddr, "ADMIN UPDATE BY DATE")
-                if len(data) == 2:
-                    if updateWeatherByDate(data[1]):
-                        client.sendall(bytes("ADMIN UPDATE BY DATE: updated successfully", "utf8"))
-                        print("ADMIN UPDATE BY DATE: updated successfully")
-                    else:
-                        client.sendall(bytes("ADMIN UPDATE BY DATE: error", "utf8"))
-                        print("ADMIN UPDATE BY DATE: error")
+                if updateWeatherByDate(data[1]):
+                    client.sendall(bytes("success", "utf8"))
+                    print("ADMIN UPDATE BY DATE: updated successfully")
+                else:
+                    client.sendall(bytes("error", "utf8"))
+                    print("ADMIN UPDATE BY DATE: error")
 
             elif reqType == "getcitylist":
                 print(clientAddr, "ADMIN GET CITY LIST")
                 res = getCityList()
-                client.sendall(bytes("ADMIN GET CITY LIST: success\n" + res, "utf8"))
+                client.sendall(bytes(res, "utf8"))
 
             elif reqType == "choosecity":
                 print(clientAddr, "ADMIN CHOOSE CITY: ", data[1])
-                if len(data) == 2:
-                    res = getWeatherByCityJson(data[1], 7)
-                    print(res)
-                    client.sendall(bytes("ADMIN CHOOSE CITY: success\n" + res, "utf8"))
-                    print("ADMIN CHOOSE CITY: weather list by city sent successfully")
+                res = getWeatherByCityJson(data[1], 7)
+                print(res)
+                client.sendall(bytes(res, "utf8"))
+                print("success")
 
             elif reqType == "updatedcity":
                 print(clientAddr, "ADMIN UPDATE BY CITY")
-                if len(data) == 2:
-                    if updateWeatherByCity(data[1]):
-                        client.sendall(bytes("ADMIN UPDATE BY CITY: updated successfully", "utf8"))
-                        print("ADMIN UPDATE BY CITY: updated successfully")
-                    else:
-                        client.sendall(bytes("ADMIN UPDATE BY CITY: error", "utf8"))
-                        print("ADMIN UPDATE BY CITY: error")
+                if updateWeatherByCity(data[1]):
+                    client.sendall(bytes("success", "utf8"))
+                    print("ADMIN UPDATE BY CITY: updated successfully")
+                else:
+                    client.sendall(bytes("error", "utf8"))
+                    print("ADMIN UPDATE BY CITY: error")
 
             elif reqType == "exit":
                 disconnectClient(client, clientAddr)
@@ -446,7 +446,7 @@ if __name__ == "__main__":
     weatherData = json.load(weatherJson)
     cityData = json.load(cityJson)
 
-    # generateRandomWeather()
+    generateRandomWeather()
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((HOST, PORT))

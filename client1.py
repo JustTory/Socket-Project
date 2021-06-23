@@ -55,6 +55,7 @@ def setUpChooseSVFrame():
     Button(chooseSVFrame, text="Connect", height="1", width="10", command=lambda:connectThread(serverIPEntry)).pack(pady=10)
 
 def setUpSignInFrame():
+    Button(signInFrame, text="< Disconnect", width=10, height=1, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
     Label(signInFrame, text="SIGN IN").pack(pady=20)
     Label(signInFrame, text="Username").pack()
     usernameEntry = Entry(signInFrame)
@@ -69,6 +70,7 @@ def setUpSignInFrame():
     Button(signInFrame, text="Don't have an account? Sign up", width=30, height=1, command=lambda: showFrame(signUpFrame)).pack()
 
 def setUpSignUpFrame():
+    Button(signUpFrame, text="< Disconnect", width=10, height=1, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
     Label(signUpFrame, text="CREATE ACCOUNT").pack(pady=20)
     Label(signUpFrame, text="Username").pack()
     usernameEntry = Entry(signUpFrame)
@@ -85,12 +87,21 @@ def setUpMainMenuFrame():
     Button(mainMenuFrame, text="< Disconnect", width=10, height=1, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
     Label(mainMenuFrame, text="MAIN MENU").pack(pady=20)
     Button(mainMenuFrame, text="List all cities", width=15, height=1, command=lambda: showFrame(weatherDate)).pack()
-    Button(mainMenuFrame, text="Select a city", width=15, height=1, command=lambda: showFrame(weatherCity)).pack()
+    Button(mainMenuFrame, text="Select a city", width=15, height=1, command=lambda: getAllCity()).pack()
 
+def getAllCity():
+    # get City JSON
+    send("/getCity")
+    global cityList 
+    cityList = receive()
+    cityList = cityList.split("\n")
+
+    showWeatherByCity()
+    showFrame(weatherCity)
 def showWeatherByCity():
+    Button(weatherCity, text="< Back", width=8, height=1, command=lambda: back(weatherCity, mainMenuFrame)).grid(row = 0, column=0)
     Label(weatherCity, text = "CITY DATA").grid(row=0,column=1,sticky="WE",pady=20)
 
-    cityList= list(cityData)
 
     Label(weatherCity, text = "Choose a city").grid(pady=5,row=1, column=0, sticky="W", padx=(30,5))
     cityChoose = StringVar(weatherCity)
@@ -105,6 +116,7 @@ def showWeatherByCity():
     Button(weatherCity, text="Submit", width=15, height=1, command=lambda: sendCityWeatherThread(cityOption.get(),cityLabel)).grid(row=2,column=1, pady=(15,5))
 
 def showWeatherByDate():
+    Button(weatherDate, text="< Back", width=8, height=1, command=lambda: back(weatherDate, mainMenuFrame)).grid(row = 0, column=0)
     Label(weatherDate, text = "WEATHER DATA").grid(row=0,column=1,sticky="WE",pady=20)
 
     #Day
@@ -157,6 +169,10 @@ def exitApp():
     except NameError:
         print("closing app")
     root.destroy()
+def back(thisFrame, nextFrame):
+    for child in thisFrame.winfo_children():
+        child.destroy()
+    showFrame(nextFrame)
 
 def connectServer(entry):
     global client # client socket
@@ -230,9 +246,6 @@ if __name__ == "__main__":
     MONTH = today.strftime("%B")
     YEAR = today.strftime("%Y")
 
-    cityJson = open("city.json")
-    cityData = json.load(cityJson)
-
     PORT = 65432
     root = Tk()
     root.geometry("400x400")
@@ -256,7 +269,7 @@ if __name__ == "__main__":
     setUpSignUpFrame()
     setUpMainMenuFrame()
     showWeatherByDate()
-    showWeatherByCity()
+
 
     Thread(target=showFrame, args=(chooseSVFrame,)).start()
     root.protocol("WM_DELETE_WINDOW", exitApp) # handle when click "X" on tkinter app

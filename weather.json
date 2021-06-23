@@ -10,9 +10,7 @@
                 "VungTau": "Cloudy",
                 "QuangNinh": "Snowy",
                 "MyTho": "Rainy",
-                "Bac Giang": "Windy",
-                "Heheboi": "Windy",
-                "Dung loi ma lam on": "Sunny"
+                "Bac Giang": "Windy"
             },
             "25": {
                 "TPHCM": "Rainy",
@@ -23,9 +21,7 @@
                 "VungTau": "Windy",
                 "QuangNinh": "Rainy",
                 "MyTho": "Windy",
-                "Bac Giang": "Sunny",
-                "Heheboi": "Cloudy",
-                "Dung loi ma lam on": "Rainy"
+                "Bac Giang": "Sunny"
             },
             "26": {
                 "TPHCM": "Windy",
@@ -36,9 +32,7 @@
                 "VungTau": "Snowy",
                 "QuangNinh": "Windy",
                 "MyTho": "Snowy",
-                "Bac Giang": "Rainy",
-                "Heheboi": "Rainy",
-                "Dung loi ma lam on": "Sunny"
+                "Bac Giang": "Rainy"
             },
             "27": {
                 "TPHCM": "Sunny",
@@ -49,9 +43,7 @@
                 "VungTau": "Sunny",
                 "QuangNinh": "Cloudy",
                 "MyTho": "Windy",
-                "Bac Giang": "Rainy",
-                "Heheboi": "Cloudy",
-                "Dung loi ma lam on": "Sunny"
+                "Bac Giang": "Rainy"
             },
             "28": {
                 "TPHCM": "Sunny",
@@ -62,9 +54,7 @@
                 "VungTau": "Rainy",
                 "QuangNinh": "Windy",
                 "MyTho": "Sunny",
-                "Bac Giang": "Cloudy",
-                "Heheboi": "Windy",
-                "Dung loi ma lam on": "Rainy"
+                "Bac Giang": "Cloudy"
             },
             "29": {
                 "TPHCM": "Sunny",
@@ -75,9 +65,7 @@
                 "VungTau": "Cloudy",
                 "QuangNinh": "Rainy",
                 "MyTho": "Sunny",
-                "Bac Giang": "Windy",
-                "Heheboi": "Windy",
-                "Dung loi ma lam on": "Windy"
+                "Bac Giang": "Windy"
             },
             "30": {
                 "TPHCM": "Windy",
@@ -88,9 +76,7 @@
                 "VungTau": "Sunny",
                 "QuangNinh": "Windy",
                 "MyTho": "Sunny",
-                "Bac Giang": "Windy",
-                "Heheboi": "Windy",
-                "Dung loi ma lam on": "Sunny"
+                "Bac Giang": "Windy"
             },
             "31": {
                 "TPHCM": "Sunny",
@@ -101,9 +87,7 @@
                 "VungTau": "Windy",
                 "QuangNinh": "Snowy",
                 "MyTho": "Sunny",
-                "Bac Giang": "Cloudy",
-                "Heheboi": "Windy",
-                "Dung loi ma lam on": "Snowy"
+                "Bac Giang": "Cloudy"
             }
         },
         "June": {
@@ -116,9 +100,7 @@
                 "VungTau": "Sunny",
                 "QuangNinh": "Sunny",
                 "MyTho": "Snowy",
-                "Bac Giang": "Rainy",
-                "Heheboi": "Snowy",
-                "Dung loi ma lam on": "Rainy"
+                "Bac Giang": "Rainy"
             },
             "2": {
                 "TPHCM": "Cloudy",
@@ -129,9 +111,7 @@
                 "VungTau": "Sunny",
                 "QuangNinh": "Snowy",
                 "MyTho": "Sunny",
-                "Bac Giang": "Sunny",
-                "Heheboi": "Cloudy",
-                "Dung loi ma lam on": "Rainy"
+                "Bac Giang": "Sunny"
             },
             "3": {
                 "TPHCM": "Windy",
@@ -142,9 +122,7 @@
                 "VungTau": "Sunny",
                 "QuangNinh": "Cloudy",
                 "MyTho": "Sunny",
-                "Bac Giang": "Sunny",
-                "Heheboi": "Snowy",
-                "Dung loi ma lam on": "Snowy"
+                "Bac Giang": "Sunny"
             },
             "4": {
                 "TPHCM": "Windy",
@@ -155,9 +133,7 @@
                 "VungTau": "Cloudy",
                 "QuangNinh": "Cloudy",
                 "MyTho": "Cloudy",
-                "Bac Giang": "Snowy",
-                "Heheboi": "Rainy",
-                "Dung loi ma lam on": "Windy"
+                "Bac Giang": "Snowy"
             },
             "5": {
                 "TPHCM": "Sunny",
@@ -168,9 +144,7 @@
                 "VungTau": "Snowy",
                 "QuangNinh": "Snowy",
                 "MyTho": "Snowy",
-                "Bac Giang": "Snowy",
-                "Heheboi": "Rainy",
-                "Dung loi ma lam on": "Sunny"
+                "Bac Giang": "Snowy"
             },
             "6": {
                 "TPHCM": "Rainy",
@@ -181,9 +155,7 @@
                 "VungTau": "Sunny",
                 "QuangNinh": "Cloudy",
                 "MyTho": "Windy",
-                "Bac Giang": "Rainy",
-                "Heheboi": "Snowy",
-                "Dung loi ma lam on": "Rainy"
+                "Bac Giang": "Rainy"
             },
             "7": {
                 "TPHCM": "Cloudy",
@@ -194,9 +166,7 @@
                 "VungTau": "Snowy",
                 "QuangNinh": "Rainy",
                 "MyTho": "Sunny",
-                "Bac Giang": "Rainy",
-                "Heheboi": "Rainy",
-                "Dung loi ma lam on": "Sunny"
+                "Bac Giang": "Rainy"
             },
             "8": {
                 "TPHCM": "Windy",
@@ -207,9 +177,7 @@
                 "VungTau": "Cloudy",
                 "QuangNinh": "Cloudy",
                 "MyTho": "Cloudy",
-                "Bac Giang": "Rainy",
-                "Heheboi": "Snowy",
-                "Dung loi ma lam on": "Snowy"
+                "Bac Giang": "Rainy"
             },
             "9": {
                 "TPHCM": "Sunny",
@@ -220,9 +188,7 @@
                 "VungTau": "Sunny",
                 "QuangNinh": "Cloudy",
                 "MyTho": "Sunny",
-                "Bac Giang": "Snowy",
-                "Heheboi": "Cloudy",
-                "Dung loi ma lam on": "Rainy"
+                "Bac Giang": "Snowy"
             },
             "10": {
                 "TPHCM": "Windy",
@@ -233,9 +199,7 @@
                 "VungTau": "Snowy",
                 "QuangNinh": "Windy",
                 "MyTho": "Windy",
-                "Bac Giang": "Snowy",
-                "Heheboi": "Cloudy",
-                "Dung loi ma lam on": "Sunny"
+                "Bac Giang": "Snowy"
             },
             "11": {
                 "TPHCM": "Cloudy",
@@ -246,9 +210,7 @@
                 "VungTau": "Rainy",
                 "QuangNinh": "Rainy",
                 "MyTho": "Windy",
-                "Bac Giang": "Cloudy",
-                "Heheboi": "Rainy",
-                "Dung loi ma lam on": "Windy"
+                "Bac Giang": "Cloudy"
             },
             "12": {
                 "TPHCM": "Cloudy",
@@ -259,9 +221,7 @@
                 "VungTau": "Cloudy",
                 "QuangNinh": "Windy",
                 "MyTho": "Snowy",
-                "Bac Giang": "Sunny",
-                "Heheboi": "Snowy",
-                "Dung loi ma lam on": "Rainy"
+                "Bac Giang": "Sunny"
             },
             "13": {
                 "TPHCM": "Cloudy",
@@ -272,9 +232,7 @@
                 "VungTau": "Rainy",
                 "QuangNinh": "Snowy",
                 "MyTho": "Snowy",
-                "Bac Giang": "Rainy",
-                "Heheboi": "Rainy",
-                "Dung loi ma lam on": "Sunny"
+                "Bac Giang": "Rainy"
             },
             "14": {
                 "TPHCM": "Sunny",
@@ -285,9 +243,7 @@
                 "VungTau": "Snowy",
                 "QuangNinh": "Windy",
                 "MyTho": "Sunny",
-                "Bac Giang": "Cloudy",
-                "Heheboi": "Snowy",
-                "Dung loi ma lam on": "Rainy"
+                "Bac Giang": "Cloudy"
             },
             "15": {
                 "TPHCM": "Cloudy",
@@ -298,9 +254,7 @@
                 "VungTau": "Rainy",
                 "QuangNinh": "Cloudy",
                 "MyTho": "Windy",
-                "Bac Giang": "Snowy",
-                "Heheboi": "Rainy",
-                "Dung loi ma lam on": "Cloudy"
+                "Bac Giang": "Snowy"
             },
             "16": {
                 "TPHCM": "Sunny",
@@ -311,9 +265,7 @@
                 "VungTau": "Cloudy",
                 "QuangNinh": "Cloudy",
                 "MyTho": "Snowy",
-                "Bac Giang": "Snowy",
-                "Heheboi": "Windy",
-                "Dung loi ma lam on": "Rainy"
+                "Bac Giang": "Snowy"
             },
             "17": {
                 "TPHCM": "Windy",
@@ -324,9 +276,7 @@
                 "VungTau": "Rainy",
                 "QuangNinh": "Cloudy",
                 "MyTho": "Windy",
-                "Bac Giang": "Cloudy",
-                "Heheboi": "Sunny",
-                "Dung loi ma lam on": "Windy"
+                "Bac Giang": "Cloudy"
             },
             "18": {
                 "TPHCM": "Rainy",
@@ -337,9 +287,7 @@
                 "VungTau": "Windy",
                 "QuangNinh": "Windy",
                 "MyTho": "Cloudy",
-                "Bac Giang": "Snowy",
-                "Heheboi": "Rainy",
-                "Dung loi ma lam on": "Windy"
+                "Bac Giang": "Snowy"
             },
             "19": {
                 "TPHCM": "Rainy",
@@ -350,9 +298,7 @@
                 "VungTau": "Cloudy",
                 "QuangNinh": "Windy",
                 "MyTho": "Sunny",
-                "Bac Giang": "Snowy",
-                "Heheboi": "Snowy",
-                "Dung loi ma lam on": "Snowy"
+                "Bac Giang": "Snowy"
             },
             "20": {
                 "TPHCM": "Sunny",
@@ -363,9 +309,7 @@
                 "VungTau": "Sunny",
                 "QuangNinh": "Cloudy",
                 "MyTho": "Windy",
-                "Bac Giang": "Rainy",
-                "Heheboi": "Cloudy",
-                "Dung loi ma lam on": "Snowy"
+                "Bac Giang": "Rainy"
             },
             "21": {
                 "TPHCM": "Rainy",
@@ -376,9 +320,7 @@
                 "VungTau": "Cloudy",
                 "QuangNinh": "Snowy",
                 "MyTho": "Rainy",
-                "Bac Giang": "Cloudy",
-                "Heheboi": "Rainy",
-                "Dung loi ma lam on": "Sunny"
+                "Bac Giang": "Cloudy"
             },
             "22": {
                 "HaNoi": "Cloudy",
@@ -388,9 +330,7 @@
                 "VungTau": "Cloudy",
                 "QuangNinh": "Sunny",
                 "MyTho": "Rainy",
-                "Bac Giang": "Sunny",
-                "Heheboi": "Snowy",
-                "Dung loi ma lam on": "Windy"
+                "Bac Giang": "Sunny"
             },
             "23": {
                 "TPHCM": "Rainy",
@@ -401,9 +341,7 @@
                 "VungTau": "Cloudy",
                 "QuangNinh": "Rainy",
                 "MyTho": "Cloudy",
-                "Bac Giang": "Snowy",
-                "Heheboi": "Rainy",
-                "Dung loi ma lam on": "Windy"
+                "Bac Giang": "Snowy"
             },
             "24": {
                 "TPHCM": "Snowy",
@@ -414,9 +352,7 @@
                 "VungTau": "Snowy",
                 "QuangNinh": "Snowy",
                 "MyTho": "Sunny",
-                "Bac Giang": "Cloudy",
-                "Heheboi": "Snowy",
-                "Dung loi ma lam on": "Cloudy"
+                "Bac Giang": "Cloudy"
             },
             "31": {
                 "TPHCM": "Sunny",
@@ -427,9 +363,7 @@
                 "VungTau": "Windy",
                 "QuangNinh": "Windy",
                 "MyTho": "Sunny",
-                "Bac Giang": "Sunny",
-                "Heheboi": "Windy",
-                "Dung loi ma lam on": "Rainy"
+                "Bac Giang": "Sunny"
             },
             "26": {
                 "TPHCM": "Windy",
@@ -440,9 +374,7 @@
                 "VungTau": "Snowy",
                 "QuangNinh": "Cloudy",
                 "MyTho": "Windy",
-                "Bac Giang": "Windy",
-                "Heheboi": "Rainy",
-                "Dung loi ma lam on": "Rainy"
+                "Bac Giang": "Windy"
             },
             "30": {
                 "TPHCM": "Rainy",
@@ -453,9 +385,7 @@
                 "VungTau": "Cloudy",
                 "QuangNinh": "Sunny",
                 "MyTho": "Snowy",
-                "Bac Giang": "Snowy",
-                "Heheboi": "Cloudy",
-                "Dung loi ma lam on": "Snowy"
+                "Bac Giang": "Snowy"
             },
             "25": {
                 "TPHCM": "Windy",
@@ -466,9 +396,7 @@
                 "VungTau": "Rainy",
                 "QuangNinh": "Sunny",
                 "MyTho": "Snowy",
-                "Bac Giang": "Rainy",
-                "Heheboi": "Rainy",
-                "Dung loi ma lam on": "Sunny"
+                "Bac Giang": "Rainy"
             }
         },
         "July": {
@@ -481,9 +409,7 @@
                 "VungTau": "Snowy",
                 "QuangNinh": "Sunny",
                 "MyTho": "Snowy",
-                "Bac Giang": "Sunny",
-                "Heheboi": "Snowy",
-                "Dung loi ma lam on": "Cloudy"
+                "Bac Giang": "Sunny"
             }
         },
         "January": {
@@ -496,9 +422,7 @@
                 "VungTau": "Cloudy",
                 "QuangNinh": "Snowy",
                 "MyTho": "Snowy",
-                "Bac Giang": "Sunny",
-                "Heheboi": "Snowy",
-                "Dung loi ma lam on": "Windy"
+                "Bac Giang": "Sunny"
             }
         },
         "Febuary": {
@@ -511,9 +435,7 @@
                 "VungTau": "Cloudy",
                 "QuangNinh": "Cloudy",
                 "MyTho": "Cloudy",
-                "Bac Giang": "Rainy",
-                "Heheboi": "Cloudy",
-                "Dung loi ma lam on": "Snowy"
+                "Bac Giang": "Rainy"
             }
         }
     },
@@ -528,9 +450,7 @@
                 "VungTau": "Windy",
                 "QuangNinh": "Rainy",
                 "MyTho": "Cloudy",
-                "Bac Giang": "Windy",
-                "Heheboi": "Snowy",
-                "Dung loi ma lam on": "Rainy"
+                "Bac Giang": "Windy"
             }
         }
     },
@@ -545,9 +465,7 @@
                 "VungTau": "Cloudy",
                 "QuangNinh": "Sunny",
                 "MyTho": "Cloudy",
-                "Bac Giang": "Sunny",
-                "Heheboi": "Snowy",
-                "Dung loi ma lam on": "Cloudy"
+                "Bac Giang": "Sunny"
             }
         }
     }

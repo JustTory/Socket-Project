@@ -129,7 +129,10 @@ def getAllCity():
     res = ""
     for city in temp:
         res += city + "\n"
+    print(res)
+    res = res[:-1]
     return res
+
 def createNewCity(cityName):
     global cityData
     newCity= {cityName: {"cityName": cityName}}

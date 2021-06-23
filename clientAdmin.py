@@ -69,7 +69,7 @@ def updateWeather(data, updateData, listBox, newWeather):
 def setUpChooseSVFrame():
     Label(chooseSVFrame, text="SERVER'S IP", font = FONT, bg='white').pack(pady=25)
     serverIPEntry = Entry(chooseSVFrame, width=25, font = FONT, highlightthickness=1, highlightbackground = "black", bd=0)
-    serverIPEntry.pack()
+    serverIPEntry.pack(ipady=5)
     serverIPEntry.focus()
 
     Button(chooseSVFrame, text="Connect", height="1", width="10", font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda:connectThread(serverIPEntry)).pack(pady=20)
@@ -80,12 +80,12 @@ def setUpSignInFrame():
     Label(signInFrame, text="Admin username", font = FONT, bg='white').pack()
     usernameEntry = Entry(signInFrame, width=25, font = FONT, highlightthickness=1, highlightbackground = "black", bd=0)
     #usernameEntry.bind("<Return>", (lambda event: sendUserInfoThread(usernameEntry, passwordEntry, "signinadmin")))
-    usernameEntry.pack()
+    usernameEntry.pack(ipady=5)
 
     Label(signInFrame, text="Admin password", font = FONT, bg='white').pack(pady=(15,0))
     passwordEntry = Entry(signInFrame, show= '*', width=25, font = FONT, highlightthickness=1, highlightbackground = "black", bd=0)
     #passwordEntry.bind("<Return>", (lambda event: sendUserInfoThread(usernameEntry, passwordEntry, "signinadmin")))
-    passwordEntry.pack()
+    passwordEntry.pack(ipady=5)
 
     Button(signInFrame, text="Login", width=10, height=1, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: sendUserInfoThread(usernameEntry, passwordEntry, "signinadmin")).pack(pady=(25))
 
@@ -101,7 +101,7 @@ def setUpAddCityFrame():
     Label(addCityFrame, text="ADD CITY", font = FONT, bg='white').pack(pady=20)
     Label(addCityFrame, text="New city name", font = FONT, bg='white').pack()
     cityNameEntry = Entry(addCityFrame, width=25, font = FONT, highlightthickness=1, highlightbackground = "black", bd=0)
-    cityNameEntry.pack()
+    cityNameEntry.pack(ipady=5)
 
     Button(addCityFrame, text="Add", width=10, height=1, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: addCityThread(cityNameEntry)).pack(pady=(20,10))
 

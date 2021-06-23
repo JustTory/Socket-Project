@@ -23,23 +23,7 @@ def receive():
         print("Server has disconnected")
     return msg
 
-def frameManager(serverResponse):
-    print(serverResponse)
-    if (serverResponse == "SIGN IN: success"):
-        showFrame(mainMenuFrame)
-        messagebox.showinfo("Success", "You have signed in successfully")
-    elif (serverResponse == "SIGN IN: info incorrect"):
-        messagebox.showerror("Error", "Incorrect username or password")
-    elif (serverResponse == "SIGN IN: syntax error"):
-        messagebox.showerror("Error", "Username or password can't be empty")
 
-    elif (serverResponse == "SIGN UP: success"):
-        messagebox.showinfo("Success", "You have created an account successfully")
-        showFrame(mainMenuFrame)
-    elif (serverResponse == "SIGN UP: username already existed"):
-        messagebox.showerror("Error", "Username already exists")
-    elif (serverResponse == "SIGN UP: syntax error"):
-        messagebox.showerror("Error", "Username or password can't be empty")
 
 def showFrame(frame):
     frame.tkraise()
@@ -96,9 +80,9 @@ def getAllCity():
     cityList = receive()
     cityList = cityList.split("\n")
 
-    showWeatherByCity()
+    setUpWeatherByCity()
     showFrame(weatherCity)
-def showWeatherByCity():
+def setUpWeatherByCity():
     Button(weatherCity, text="< Back", width=8, height=1, command=lambda: back(weatherCity, mainMenuFrame)).grid(row = 0, column=0)
     Label(weatherCity, text = "CITY DATA").grid(row=0,column=1,sticky="WE",pady=20)
 
@@ -115,7 +99,7 @@ def showWeatherByCity():
 
     Button(weatherCity, text="Submit", width=15, height=1, command=lambda: sendCityWeatherThread(cityOption.get(),cityLabel)).grid(row=2,column=1, pady=(15,5))
 
-def showWeatherByDate():
+def setUpWeatherByDate():
     Button(weatherDate, text="< Back", width=8, height=1, command=lambda: back(weatherDate, mainMenuFrame)).grid(row = 0, column=0)
     Label(weatherDate, text = "WEATHER DATA").grid(row=0,column=1,sticky="WE",pady=20)
 
@@ -173,7 +157,7 @@ def back(thisFrame, nextFrame):
     for child in thisFrame.winfo_children():
         child.destroy()
 
-    showWeatherByDate()
+    setUpWeatherByDate()
     showFrame(nextFrame)
 
 def connectServer(entry):
@@ -195,9 +179,27 @@ def sendUserInfo(usernameEntry, passwordEntry, type):
     passwordEntry.delete(0, 'end')
     if(send(type + " " + username + " " + password)):
         serverResponse = receive()
-        frameManager(serverResponse)
 
-def sendAllWeathers(day,month, year, myLabel):
+        if (type == "signin"):
+            if (serverResponse == "success"):
+                showFrame(mainMenuFrame)
+                messagebox.showinfo("Success", "You have signed in successfully")
+            elif (serverResponse == "fail"):
+                messagebox.showerror("Error", "Incorrect username or password")
+
+        else:
+            if (serverResponse == "success"):
+                messagebox.showinfo("Success", "You have created an account successfully")
+                showFrame(mainMenuFrame)
+            elif (serverResponse == "fail"):
+                messagebox.showerror("Error", "Username already exists")
+
+        if (serverResponse == "syntax"):
+            messagebox.showerror("Error", "Username or password can't be empty")
+            
+
+
+def showAllWeathers(day,month, year, myLabel):
     datetime = day + " " + month + " " + year
     message = "/list %s" % datetime
     send(message)
@@ -206,7 +208,7 @@ def sendAllWeathers(day,month, year, myLabel):
     data = ("[Date: %s]\n" % (datetime)) + data
     myLabel['text'] = data
 
-def sendCityWeather(city,label):
+def showCityWeather(city,label):
     message = "/city %s" % (city)
     send(message)
     data = receive()
@@ -232,12 +234,12 @@ def sendUserInfoThread(usernameEntry, passwordEntry, type):
     threadSend.start()
 
 def sendAllWeathersThread(day,month, year, myLabel):
-    threadSendWeather = Thread(target=sendAllWeathers, args=(day,month, year, myLabel,))
+    threadSendWeather = Thread(target=showAllWeathers, args=(day,month, year, myLabel,))
     threadSendWeather.daemon = True
     threadSendWeather.start()
 def sendCityWeatherThread(city,label):
 
-    thread = Thread(target=sendCityWeather, args=(city, label,))
+    thread = Thread(target=showCityWeather, args=(city, label,))
     thread.daemon = True
     thread.start()
 
@@ -270,7 +272,7 @@ if __name__ == "__main__":
     setUpSignInFrame()
     setUpSignUpFrame()
     setUpMainMenuFrame()
-    showWeatherByDate()
+    setUpWeatherByDate()
 
 
     Thread(target=showFrame, args=(chooseSVFrame,)).start()

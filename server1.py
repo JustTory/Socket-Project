@@ -288,14 +288,14 @@ def logInSection(client, clientAddr):
                     password = data[2]
                     userType = checkLogIn(username, password)
                     if userType != False:
-                        client.sendall(bytes("SIGN IN: success", "utf8"))
+                        client.sendall(bytes("success", "utf8"))
                         print(clientAddr, "SIGN IN: success")
                         return "user"
                     else:
-                        client.sendall(bytes("SIGN IN: info incorrect", "utf8"))
+                        client.sendall(bytes("fail", "utf8"))
                         print(clientAddr, "SIGN IN: info incorrect")
                 else:
-                    client.sendall(bytes("SIGN IN: syntax error", "utf8"))
+                    client.sendall(bytes("syntax", "utf8"))
                     print(clientAddr, "SIGN IN: syntax error")
 
             elif reqType == "signup":
@@ -305,14 +305,14 @@ def logInSection(client, clientAddr):
                     password = data[2]
                     if checkExistUsername(username) == False:
                         createNewUser(username, password)
-                        client.sendall(bytes("SIGN UP: success", "utf8"))
+                        client.sendall(bytes("success", "utf8"))
                         print(clientAddr, "SIGN UP: success")
                         return "user"
                     else:
-                        client.sendall(bytes("SIGN UP: username already existed", "utf8"))
+                        client.sendall(bytes("fail", "utf8"))
                         print(clientAddr, "SIGN UP: username already existed")
                 else:
-                    client.sendall(bytes("SIGN UP: syntax error", "utf8"))
+                    client.sendall(bytes("syntax", "utf8"))
                     print(clientAddr, "SIGN UP: syntax error")
 
             elif reqType == "signinadmin":

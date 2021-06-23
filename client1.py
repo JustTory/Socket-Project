@@ -23,8 +23,6 @@ def receive():
         print("Server has disconnected")
     return msg
 
-
-
 def showFrame(frame):
     frame.tkraise()
 
@@ -76,7 +74,7 @@ def setUpMainMenuFrame():
 def getAllCity():
     # get City JSON
     send("/getCity")
-    global cityList 
+    global cityList
     cityList = receive()
     cityList = cityList.split("\n")
 
@@ -140,8 +138,10 @@ def setUpWeatherByDate():
 
 # client functions
 def disconnectServer():
+    global client
     send("exit")
     client.close()
+    del client
     print("disconnected from server")
     showFrame(chooseSVFrame)
 
@@ -196,7 +196,7 @@ def sendUserInfo(usernameEntry, passwordEntry, type):
 
         if (serverResponse == "syntax"):
             messagebox.showerror("Error", "Username or password can't be empty")
-            
+
 
 
 def showAllWeathers(day,month, year, myLabel):

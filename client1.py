@@ -172,6 +172,8 @@ def exitApp():
 def back(thisFrame, nextFrame):
     for child in thisFrame.winfo_children():
         child.destroy()
+
+    showWeatherByDate()
     showFrame(nextFrame)
 
 def connectServer(entry):

@@ -67,7 +67,7 @@ def updateWeather(data, updateData, listBox, newWeather):
 
 # frame funtions
 def setUpChooseSVFrame():
-    Label(chooseSVFrame, text="SERVER'S IP", font = FONT, bg='white').pack(pady=25)
+    Label(chooseSVFrame, text="SERVER'S IP", font = FONT, bg='white').pack(pady=(60,30))
     serverIPEntry = Entry(chooseSVFrame, width=25, font = FONT, highlightthickness=1, highlightbackground = "black", bd=0)
     serverIPEntry.pack(ipady=5)
     serverIPEntry.focus()
@@ -76,29 +76,27 @@ def setUpChooseSVFrame():
 
 def setUpSignInFrame():
     Button(signInFrame, text="Disconnect", width=11, height=1, font = FONT, fg='white', bg='#d9534f', bd=0, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
-    Label(signInFrame, text="SIGN IN", font = FONT, bg='white').pack(pady=20)
+    Label(signInFrame, text="SIGN IN", font = FONT, bg='white').pack(pady=(30,40))
     Label(signInFrame, text="Admin username", font = FONT, bg='white').pack()
     usernameEntry = Entry(signInFrame, width=25, font = FONT, highlightthickness=1, highlightbackground = "black", bd=0)
-    #usernameEntry.bind("<Return>", (lambda event: sendUserInfoThread(usernameEntry, passwordEntry, "signinadmin")))
     usernameEntry.pack(ipady=5)
 
     Label(signInFrame, text="Admin password", font = FONT, bg='white').pack(pady=(15,0))
     passwordEntry = Entry(signInFrame, show= '*', width=25, font = FONT, highlightthickness=1, highlightbackground = "black", bd=0)
-    #passwordEntry.bind("<Return>", (lambda event: sendUserInfoThread(usernameEntry, passwordEntry, "signinadmin")))
     passwordEntry.pack(ipady=5)
 
     Button(signInFrame, text="Login", width=10, height=1, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: sendUserInfoThread(usernameEntry, passwordEntry, "signinadmin")).pack(pady=(25))
 
 def setUpMainMenuFrame():
     Button(mainMenuFrame, text="Disconnect", width=11, height=1, font = FONT, fg='white', bg='#d9534f', bd=0, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
-    Label(mainMenuFrame, text="MAIN MENU", font = FONT, bg='white').pack(pady=(20, 35))
+    Label(mainMenuFrame, text="MAIN MENU", font = FONT, bg='white').pack(pady=(30,40))
     Button(mainMenuFrame, text="Add new city", width=15, height=2, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: showFrame(addCityFrame)).pack(pady=(0,25))
     Button(mainMenuFrame, text="Update weather data by date", width=30, height=2, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: showFrame(chooseDateFrame)).pack(pady=(0, 25))
     Button(mainMenuFrame, text="Update weather data by city", width=30, height=2, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: getCityList()).pack()
 
 def setUpAddCityFrame():
     Button(addCityFrame, text="< Back", width=8, height=1, font = FONT, fg='white', bg='#d9534f', bd=0, command=lambda: showFrame(mainMenuFrame)).pack(side=TOP, anchor=NW)
-    Label(addCityFrame, text="ADD CITY", font = FONT, bg='white').pack(pady=20)
+    Label(addCityFrame, text="ADD CITY", font = FONT, bg='white').pack(pady=(30,40))
     Label(addCityFrame, text="New city name", font = FONT, bg='white').pack()
     cityNameEntry = Entry(addCityFrame, width=25, font = FONT, highlightthickness=1, highlightbackground = "black", bd=0)
     cityNameEntry.pack(ipady=5)
@@ -107,7 +105,7 @@ def setUpAddCityFrame():
 
 def setUpChooseDateFrame():
     Button(chooseDateFrame, text="< Back", width=8, height=1, font = FONT, fg='white', bg='#d9534f', bd=0, command=lambda: showFrame(mainMenuFrame)).pack(side=TOP, anchor=NW)
-    Label(chooseDateFrame, text="CHOOSE DATE", font = FONT, bg='white').pack(pady=20)
+    Label(chooseDateFrame, text="CHOOSE DATE", font = FONT, bg='white').pack(pady=(30,40))
 
     #Day
     dayList = list(range(1,32))
@@ -145,7 +143,7 @@ def setUpChooseCityFrame(data):
     cityList = list(data.values())
 
     Button(chooseCityFrame, text="< Back", width=8, height=1, font = FONT, fg='white', bg='#d9534f', bd=0, command=lambda: back(chooseCityFrame, mainMenuFrame)).pack(side=TOP, anchor=NW)
-    Label(chooseCityFrame, text = "CHOOSE CITY", font = FONT, bg='white').pack(pady=25)
+    Label(chooseCityFrame, text = "CHOOSE CITY", font = FONT, bg='white').pack(pady=(30,40))
     cityChoose = StringVar(chooseCityFrame)
     cityOption = ttk.Combobox(chooseCityFrame, textvariable=cityChoose,values=cityList,width=20,justify='center',state="readonly", font = FONT)
     cityChoose = 0
@@ -182,7 +180,7 @@ def setUpUpdateDataFrame(data, type):
         listBox.insert(END, name + ": " + weatherList[name])
 
     Button(updateDataFrame, text="< Back", width=8, height=1, font = FONT, fg='white', bg='#d9534f', bd=0, command=lambda: back(updateDataFrame, backFrame)).pack(side=TOP, anchor=NW)
-    Label(updateDataFrame, text="UPDATE WEATHER DATA BY " + title, font = FONT, bg='white').pack(pady=20)
+    Label(updateDataFrame, text="UPDATE WEATHER DATA BY " + title, font = FONT, bg='white').pack(pady=(30,40))
     Label(updateDataFrame, text=updateType, font = FONT, bg='white').pack()
     listBox.pack(pady=(0,15))
     weatherLabel.pack()
@@ -339,8 +337,8 @@ if __name__ == "__main__":
     FONT = ("Tahoma", 14)
 
     root = Tk()
-    root.geometry("600x700")
-    root.title("Weathery App - Admin")
+    root.geometry("700x700")
+    root.title("Weathery - Admin")
 
     root.rowconfigure(0, weight=1)
     root.columnconfigure(0, weight=1)

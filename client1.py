@@ -28,48 +28,47 @@ def showFrame(frame):
 
 # frame functions
 def setUpChooseSVFrame():
-    Label(chooseSVFrame, text="SERVER IP").pack(pady=20)
-    Label(chooseSVFrame, text="Input server's IP").pack()
-    serverIPEntry = Entry(chooseSVFrame)
-    serverIPEntry.pack()
+    Label(chooseSVFrame, text="SERVER'S IP", font = FONT, bg='white').pack(pady=(60,30))
+    serverIPEntry = Entry(chooseSVFrame, width=25, font = FONT, highlightthickness=1, highlightbackground = "black", bd=0)
+    serverIPEntry.pack(ipady=5)
     serverIPEntry.focus()
 
-    Button(chooseSVFrame, text="Connect", height="1", width="10", command=lambda:connectThread(serverIPEntry)).pack(pady=10)
+    Button(chooseSVFrame, text="Connect", height="1", width="10", font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda:connectThread(serverIPEntry)).pack(pady=20)
 
 def setUpSignInFrame():
-    Button(signInFrame, text="< Disconnect", width=10, height=1, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
-    Label(signInFrame, text="SIGN IN").pack(pady=20)
-    Label(signInFrame, text="Username").pack()
-    usernameEntry = Entry(signInFrame)
-    usernameEntry.pack()
+    Button(signInFrame, text="Disconnect", width=11, height=1, font = FONT, fg='white', bg='#d9534f', bd=0, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
+    Label(signInFrame, text="SIGN IN", font = FONT, bg='white').pack(pady=(30,40))
+    Label(signInFrame, text="Username", font = FONT, bg='white').pack()
+    usernameEntry = Entry(signInFrame, width=25, font = FONT, highlightthickness=1, highlightbackground = "black", bd=0)
+    usernameEntry.pack(ipady=5)
 
-    Label(signInFrame, text="Password").pack(pady=(10,0))
-    passwordEntry = Entry(signInFrame, show= '*')
-    passwordEntry.pack()
+    Label(signInFrame, text="Password", font = FONT, bg='white').pack(pady=(20,0))
+    passwordEntry = Entry(signInFrame, show= '*', width=25, font = FONT, highlightthickness=1, highlightbackground = "black", bd=0)
+    passwordEntry.pack(ipady=5)
 
 
-    Button(signInFrame, text="Login", width=10, height=1, command=lambda: sendUserInfoThread(usernameEntry, passwordEntry, "signin")).pack(pady=(20,10))
-    Button(signInFrame, text="Don't have an account? Sign up", width=30, height=1, command=lambda: showFrame(signUpFrame)).pack()
+    Button(signInFrame, text="Login", width=10, height=1, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: sendUserInfoThread(usernameEntry, passwordEntry, "signin")).pack(pady=(30,20))
+    Button(signInFrame, text="Don't have an account? Sign up", width=30, height=1, font = FONT, fg='white', bg='#5cb85c', bd=0, command=lambda: showFrame(signUpFrame)).pack()
 
 def setUpSignUpFrame():
-    Button(signUpFrame, text="< Disconnect", width=10, height=1, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
-    Label(signUpFrame, text="CREATE ACCOUNT").pack(pady=20)
-    Label(signUpFrame, text="Username").pack()
-    usernameEntry = Entry(signUpFrame)
-    usernameEntry.pack()
+    Button(signUpFrame, text="Disconnect", width=11, height=1, font = FONT, fg='white', bg='#d9534f', bd=0, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
+    Label(signUpFrame, text="CREATE ACCOUNT", font = FONT, bg='white').pack(pady=(30,40))
+    Label(signUpFrame, text="Username", font = FONT, bg='white').pack()
+    usernameEntry = Entry(signUpFrame, width=25, font = FONT, highlightthickness=1, highlightbackground = "black", bd=0)
+    usernameEntry.pack(ipady=5)
 
-    Label(signUpFrame, text="Password").pack(pady=(10,0))
-    passwordEntry = Entry(signUpFrame, show= '*')
-    passwordEntry.pack()
+    Label(signUpFrame, text="Password", font = FONT, bg='white').pack(pady=(20,0))
+    passwordEntry = Entry(signUpFrame, show= '*', width=25, font = FONT, highlightthickness=1, highlightbackground = "black", bd=0)
+    passwordEntry.pack(ipady=5)
 
-    Button(signUpFrame, text="Create account", width=15, height=1, command=lambda: sendUserInfoThread(usernameEntry, passwordEntry, "signup")).pack(pady=(20,10))
-    Button(signUpFrame, text="Already have an account? Sign in", width=30, height=1, command=lambda: showFrame(signInFrame)).pack()
+    Button(signUpFrame, text="Create account", width=15, height=1, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: sendUserInfoThread(usernameEntry, passwordEntry, "signup")).pack(pady=(30,20))
+    Button(signUpFrame, text="Already have an account? Sign in", width=30, height=1, font = FONT, fg='white', bg='#5cb85c', bd=0, command=lambda: showFrame(signInFrame)).pack()
 
 def setUpMainMenuFrame():
-    Button(mainMenuFrame, text="< Disconnect", width=10, height=1, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
-    Label(mainMenuFrame, text="MAIN MENU").pack(pady=20)
-    Button(mainMenuFrame, text="List all cities", width=15, height=1, command=lambda: showFrame(weatherDate)).pack()
-    Button(mainMenuFrame, text="Select a city", width=15, height=1, command=lambda: getAllCity()).pack()
+    Button(mainMenuFrame, text="Disconnect", width=11, height=1, font = FONT, fg='white', bg='#d9534f', bd=0, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
+    Label(mainMenuFrame, text="MAIN MENU", font = FONT, bg='white').pack(pady=(30,40))
+    Button(mainMenuFrame, text="View weather by date", width=25, height=2, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: showFrame(weatherDate)).pack(pady=(0,20))
+    Button(mainMenuFrame, text="View weather by city", width=25, height=2, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: getAllCity()).pack()
 
 def getAllCity():
     # get City JSON
@@ -81,32 +80,31 @@ def getAllCity():
     setUpWeatherByCity()
     showFrame(weatherCity)
 def setUpWeatherByCity():
-    Button(weatherCity, text="< Back", width=8, height=1, command=lambda: back(weatherCity, mainMenuFrame)).grid(row = 0, column=0)
-    Label(weatherCity, text = "CITY DATA").grid(row=0,column=1,sticky="WE",pady=20)
+    Button(weatherCity, text="< Back", width=8, height=1, font = FONT, fg='white', bg='#d9534f', bd=0, command=lambda: back(weatherCity, mainMenuFrame)).grid(row = 0, column=0, sticky="NW")
+    Label(weatherCity, text = "CITY DATA", font = FONT, bg='white').grid(row=0,column=1,sticky="WE",pady=50)
 
-
-    Label(weatherCity, text = "Choose a city").grid(pady=5,row=1, column=0, sticky="W", padx=(30,5))
+    Label(weatherCity, text = "City", font = FONT, bg='white').grid(pady=5,row=1, column=0, sticky="W", padx=(180,5))
     cityChoose = StringVar(weatherCity)
-    cityOption = ttk.Combobox(weatherCity, textvariable=cityChoose,values=cityList,width=15,justify='center',state="readonly")
+    cityOption = ttk.Combobox(weatherCity, textvariable=cityChoose,values=cityList,width=20,justify='center',state="readonly",font = FONT)
     cityChoose = 0
     cityOption.current(cityChoose)
     cityOption.grid(row = 1, column=1)
 
-    cityLabel = Label(weatherCity, text="")
+    cityLabel = Label(weatherCity, text="", font = FONT, bg='white')
     cityLabel.grid(row = 3,column=1, pady = 5)
 
-    Button(weatherCity, text="Submit", width=15, height=1, command=lambda: sendCityWeatherThread(cityOption.get(),cityLabel)).grid(row=2,column=1, pady=(15,5))
+    Button(weatherCity, text="Submit", width=15, height=1, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: sendCityWeatherThread(cityOption.get(),cityLabel)).grid(row=2,column=1, pady=(15,30))
 
 def setUpWeatherByDate():
-    Button(weatherDate, text="< Back", width=8, height=1, command=lambda: back(weatherDate, mainMenuFrame)).grid(row = 0, column=0)
-    Label(weatherDate, text = "WEATHER DATA").grid(row=0,column=1,sticky="WE",pady=20)
+    Button(weatherDate, text="< Back", width=8, height=1, font = FONT, fg='white', bg='#d9534f', bd=0, command=lambda: back(weatherDate, mainMenuFrame)).grid(row = 0, column=0, sticky="NW")
+    Label(weatherDate, text = "WEATHER DATA", font = FONT, bg='white').grid(row=0,column=1,sticky="WE",pady=50)
 
     #Day
     dayList = list(range(32))
 
-    Label(weatherDate, text = "Choose day").grid(pady=5,row=1, column=0, sticky="W", padx=(30,5))
+    Label(weatherDate, text = "Day", font = FONT, bg='white').grid(pady=5,row=1, column=0, sticky="W", padx=(170,5) )
     dayChoose = StringVar(weatherDate)
-    dayOption = ttk.Combobox(weatherDate, textvariable=dayChoose, values=dayList,width=10,state="readonly")
+    dayOption = ttk.Combobox(weatherDate, textvariable=dayChoose, values=dayList,width=20,state="readonly", justify='center',font = FONT)
     dayChoose = dayList.index(DAY)
     dayOption.current(dayChoose)
     dayOption.grid(row = 1, column=1)
@@ -114,9 +112,9 @@ def setUpWeatherByDate():
     #Month
     monthList = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "Setemper", "October", "November", "December"]
 
-    Label(weatherDate, text = "Choose Month").grid(pady=5,row=2, column=0, sticky="W", padx=(30,5))
+    Label(weatherDate, text = "Month", font = FONT, bg='white').grid(pady=5,row=2, column=0, sticky="W", padx=(170,5))
     monthChoose = StringVar(weatherDate)
-    monthOption = ttk.Combobox(weatherDate, textvariable=monthChoose, value=monthList,width=10,state="readonly")
+    monthOption = ttk.Combobox(weatherDate, textvariable=monthChoose, value=monthList,width=20,state="readonly", justify='center',font = FONT)
     monthChoose = monthList.index(MONTH)
     monthOption.current(monthChoose)
     monthOption.grid(row = 2, column=1)
@@ -124,17 +122,17 @@ def setUpWeatherByDate():
     #Year
     yearList = ["2020","2021","2022"]
 
-    Label(weatherDate, text = "Choose Year").grid(pady=5,row=3, column=0, sticky="W", padx=(30,5))
+    Label(weatherDate, text = "Year", font = FONT, bg='white').grid(pady=5,row=3, column=0, sticky="W", padx=(170,5))
     yearChoose = StringVar(weatherDate)
-    yearOption = ttk.Combobox(weatherDate, textvariable = yearChoose, values=yearList,width=10,state="readonly")
+    yearOption = ttk.Combobox(weatherDate, textvariable = yearChoose, values=yearList,width=20,state="readonly", justify='center',font = FONT)
     yearChoose = yearList.index(YEAR)
     yearOption.current(yearChoose)
     yearOption.grid(row = 3, column=1)
 
-    myLabel = Label(weatherDate, text="")
+    myLabel = Label(weatherDate, text="", font = FONT, bg='white')
     myLabel.grid(row = 5,column=1, pady = 5)
 
-    Button(weatherDate, text="Submit", width=10, height=1, command=lambda: sendAllWeathersThread(dayOption.get(),monthOption.get(),yearOption.get(),myLabel )).grid(row=4,column=1,pady=(15,5))
+    Button(weatherDate, text="Submit", width=10, height=1, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: sendAllWeathersThread(dayOption.get(),monthOption.get(),yearOption.get(),myLabel )).grid(row=4,column=1,pady=(15,30))
 
 # client functions
 def disconnectServer():
@@ -251,19 +249,22 @@ if __name__ == "__main__":
     YEAR = today.strftime("%Y")
 
     PORT = 65432
+
+    FONT = ("Tahoma", 14)
+
     root = Tk()
-    root.geometry("400x400")
-    root.title("Weathery App")
+    root.geometry("700x700")
+    root.title("Weathery - Client")
 
     root.rowconfigure(0, weight=1)
     root.columnconfigure(0, weight=1)
 
-    chooseSVFrame = Frame(root)
-    signInFrame = Frame(root)
-    signUpFrame = Frame(root)
-    mainMenuFrame = Frame(root)
-    weatherDate = Frame(root)
-    weatherCity = Frame(root)
+    chooseSVFrame = Frame(root, bg='white')
+    signInFrame = Frame(root, bg='white')
+    signUpFrame = Frame(root, bg='white')
+    mainMenuFrame = Frame(root, bg='white')
+    weatherDate = Frame(root, bg='white')
+    weatherCity = Frame(root, bg='white')
 
     for frame in (chooseSVFrame, signInFrame, signUpFrame, mainMenuFrame, weatherDate,weatherCity):
         frame.grid(row=0, column=0, sticky='nsew')

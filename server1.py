@@ -79,17 +79,25 @@ def getWeatherByDate(day, month, year):
 
 def commandManager(commandArr):
     print(commandArr)
+    data_transfer = "Error"
     if commandArr[0] == "/help":
-        return "\n/city [city_name]\n[city_name]: TPHCM, HaNoi, DaNang, Hue"
+        data_transfer= "\n/city [city_name]\n[city_name]: TPHCM, HaNoi, DaNang, Hue"
     if (commandArr[0] == "/list"):
         data_transfer = getWeatherByDate(commandArr[1], commandArr[2], commandArr[3])
-        return data_transfer
     if (commandArr[0] == "/city"):
         data_transfer = getWeatherByCity(commandArr[1],7)
-        return data_transfer
-    else:
-        return "unknown command"
+    if (commandArr[0] == "/getCity"):
+        data_transfer = getAllCity()
+        
+    
+    return data_transfer
 
+def getAllCity():
+    temp = list(cityData)
+    res = ""
+    for city in temp:
+        res += city + "\n"
+    return res
 def createNewCity(cityName):
     newCity= {cityName: {"cityName": cityName}}
     with open("city.json", "r+") as file:
@@ -97,6 +105,8 @@ def createNewCity(cityName):
         fileData.update(newCity)
         file.seek(0)
         json.dump(fileData, file, indent = 4)
+        global cityData
+        cityData = fileData
 
 def checkExistsDate(day, month, year):
     try:
@@ -125,8 +135,6 @@ def getAllCities(day, month, year):
 
 def updateWeatherByDate(newData):
     try:
-
-
         data = json.loads(newData)
         print(data)
         updateDate = list(data.keys())

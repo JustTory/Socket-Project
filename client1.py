@@ -55,6 +55,7 @@ def setUpChooseSVFrame():
     Button(chooseSVFrame, text="Connect", height="1", width="10", command=lambda:connectThread(serverIPEntry)).pack(pady=10)
 
 def setUpSignInFrame():
+    Button(signInFrame, text="< Disconnect", width=10, height=1, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
     Label(signInFrame, text="SIGN IN").pack(pady=20)
     Label(signInFrame, text="Username").pack()
     usernameEntry = Entry(signInFrame)
@@ -65,10 +66,11 @@ def setUpSignInFrame():
     passwordEntry.pack()
 
 
-    Button(signInFrame, text="Login", width=10, height=1, command=lambda: sendUserInfo(usernameEntry, passwordEntry, "signin")).pack(pady=(20,10))
+    Button(signInFrame, text="Login", width=10, height=1, command=lambda: sendUserInfoThread(usernameEntry, passwordEntry, "signin")).pack(pady=(20,10))
     Button(signInFrame, text="Don't have an account? Sign up", width=30, height=1, command=lambda: showFrame(signUpFrame)).pack()
 
 def setUpSignUpFrame():
+    Button(signUpFrame, text="< Disconnect", width=10, height=1, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
     Label(signUpFrame, text="CREATE ACCOUNT").pack(pady=20)
     Label(signUpFrame, text="Username").pack()
     usernameEntry = Entry(signUpFrame)
@@ -78,21 +80,28 @@ def setUpSignUpFrame():
     passwordEntry = Entry(signUpFrame, show= '*')
     passwordEntry.pack()
 
-    Button(signUpFrame, text="Create account", width=15, height=1, command=lambda: sendUserInfo(usernameEntry, passwordEntry, "signup")).pack(pady=(20,10))
+    Button(signUpFrame, text="Create account", width=15, height=1, command=lambda: sendUserInfoThread(usernameEntry, passwordEntry, "signup")).pack(pady=(20,10))
     Button(signUpFrame, text="Already have an account? Sign in", width=30, height=1, command=lambda: showFrame(signInFrame)).pack()
 
 def setUpMainMenuFrame():
     Button(mainMenuFrame, text="< Disconnect", width=10, height=1, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
     Label(mainMenuFrame, text="MAIN MENU").pack(pady=20)
     Button(mainMenuFrame, text="List all cities", width=15, height=1, command=lambda: showFrame(weatherDate)).pack()
-    Button(mainMenuFrame, text="Select a city", width=15, height=1, command=lambda: showFrame(weatherCity)).pack()
+    Button(mainMenuFrame, text="Select a city", width=15, height=1, command=lambda: getAllCity()).pack()
 
+def getAllCity():
+    # get City JSON
+    send("/getCity")
+    global cityList 
+    cityList = receive()
+    cityList = cityList.split("\n")
+
+    showWeatherByCity()
+    showFrame(weatherCity)
 def showWeatherByCity():
-    cityJson = open("city.json")
-    cityData = json.load(cityJson)
+    Button(weatherCity, text="< Back", width=8, height=1, command=lambda: back(weatherCity, mainMenuFrame)).grid(row = 0, column=0)
     Label(weatherCity, text = "CITY DATA").grid(row=0,column=1,sticky="WE",pady=20)
 
-    cityList= list(cityData)
 
     Label(weatherCity, text = "Choose a city").grid(pady=5,row=1, column=0, sticky="W", padx=(30,5))
     cityChoose = StringVar(weatherCity)
@@ -104,9 +113,10 @@ def showWeatherByCity():
     cityLabel = Label(weatherCity, text="")
     cityLabel.grid(row = 3,column=1, pady = 5)
 
-    Button(weatherCity, text="Submit", width=15, height=1, command=lambda: sendCityWeather(cityOption.get(),cityLabel)).grid(row=2,column=1, pady=(15,5))
+    Button(weatherCity, text="Submit", width=15, height=1, command=lambda: sendCityWeatherThread(cityOption.get(),cityLabel)).grid(row=2,column=1, pady=(15,5))
 
 def showWeatherByDate():
+    Button(weatherDate, text="< Back", width=8, height=1, command=lambda: back(weatherDate, mainMenuFrame)).grid(row = 0, column=0)
     Label(weatherDate, text = "WEATHER DATA").grid(row=0,column=1,sticky="WE",pady=20)
 
     #Day
@@ -145,10 +155,6 @@ def showWeatherByDate():
     Button(weatherDate, text="Submit", width=10, height=1, command=lambda: sendAllWeathersThread(dayOption.get(),monthOption.get(),yearOption.get(),myLabel )).grid(row=4,column=1,pady=(15,5))
 
 # client functions
-def disconnectThread():
-    threadDisconnect = Thread(target=disconnectServer)
-    threadDisconnect.daemon = True
-    threadDisconnect.start()
 def disconnectServer():
     send("exit")
     client.close()
@@ -163,11 +169,13 @@ def exitApp():
     except NameError:
         print("closing app")
     root.destroy()
+def back(thisFrame, nextFrame):
+    for child in thisFrame.winfo_children():
+        child.destroy()
 
-def connectThread(entry):
-    threadConnect = Thread(target=connectServer, args=(entry,))
-    threadConnect.daemon = True
-    threadConnect.start()
+    showWeatherByDate()
+    showFrame(nextFrame)
+
 def connectServer(entry):
     global client # client socket
     host = entry.get()
@@ -180,11 +188,6 @@ def connectServer(entry):
     except:
         print("Could not find server's IP or request timeout")
         messagebox.showerror("Error", "Could not find server's IP or request timeout")
-
-def sendUserInfoThread(usernameEntry, passwordEntry, type):
-    threadSend = Thread(target=sendUserInfo, args=(usernameEntry, passwordEntry, type,))
-    threadSend.daemon = True
-    threadSend.start()
 def sendUserInfo(usernameEntry, passwordEntry, type):
     username = usernameEntry.get()
     usernameEntry.delete(0, 'end')
@@ -194,10 +197,6 @@ def sendUserInfo(usernameEntry, passwordEntry, type):
         serverResponse = receive()
         frameManager(serverResponse)
 
-def sendAllWeathersThread(day,month, year, myLabel):
-    threadSendWeather = Thread(target=sendAllWeathers, args=(day,month, year, myLabel,))
-    threadSendWeather.daemon = True
-    threadSendWeather.start()
 def sendAllWeathers(day,month, year, myLabel):
     datetime = day + " " + month + " " + year
     message = "/list %s" % datetime
@@ -214,6 +213,33 @@ def sendCityWeather(city,label):
 
     data = ("[%s]\n" % (city)) + data
     label['text'] = data
+
+# Thread function
+def disconnectThread():
+    threadDisconnect = Thread(target=disconnectServer)
+    threadDisconnect.daemon = True
+    threadDisconnect.start()
+
+def connectThread(entry):
+    threadConnect = Thread(target=connectServer, args=(entry,))
+    threadConnect.daemon = True
+    threadConnect.start()
+
+
+def sendUserInfoThread(usernameEntry, passwordEntry, type):
+    threadSend = Thread(target=sendUserInfo, args=(usernameEntry, passwordEntry, type,))
+    threadSend.daemon = True
+    threadSend.start()
+
+def sendAllWeathersThread(day,month, year, myLabel):
+    threadSendWeather = Thread(target=sendAllWeathers, args=(day,month, year, myLabel,))
+    threadSendWeather.daemon = True
+    threadSendWeather.start()
+def sendCityWeatherThread(city,label):
+
+    thread = Thread(target=sendCityWeather, args=(city, label,))
+    thread.daemon = True
+    thread.start()
 
 # main functions
 if __name__ == "__main__":
@@ -245,7 +271,7 @@ if __name__ == "__main__":
     setUpSignUpFrame()
     setUpMainMenuFrame()
     showWeatherByDate()
-    showWeatherByCity()
+
 
     Thread(target=showFrame, args=(chooseSVFrame,)).start()
     root.protocol("WM_DELETE_WINDOW", exitApp) # handle when click "X" on tkinter app

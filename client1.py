@@ -277,7 +277,5 @@ if __name__ == "__main__":
     root.protocol("WM_DELETE_WINDOW", exitApp) # handle when click "X" on tkinter app
     root.mainloop()
 
-    root.mainloop()
-
 
 

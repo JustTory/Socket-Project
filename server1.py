@@ -13,12 +13,14 @@ def checkExistUsername(username):
     return False
 
 def createNewUser(username, password):
+    global userData
     newUser = {len(userData): {"username": username,"password": password}}
     with open("user.json", "r+") as file:
         fileData = json.load(file)
         fileData.update(newUser)
         file.seek(0)
         json.dump(fileData, file, indent = 4)
+        userData = fileData
 
 def checkLogIn(username, password):
     for user in userData.values():
@@ -62,6 +64,36 @@ def getWeatherByCity(city, numDay):
             month_loop = PrevMonth
     return res
 
+def getWeatherByCityJson(city, numDay):
+    res = '{"%s": {' % (city)
+    day_loop = DAY
+    month_loop = MONTH
+    year_loop = YEAR
+
+    if (int(DAY) - numDay - 1 < 0):
+        index = MONTHS.index(MONTH)
+        PrevMonth = MONTHS[index-1]
+        keys = list(weatherData[YEAR][PrevMonth])
+        lastDayofPrevMonth = keys[-1]
+
+    for i in range(numDay):
+        try:
+            date_data = weatherData[year_loop][month_loop][day_loop]
+            if (date_data[city]):
+                weather = date_data[city]
+        except:
+            weather = "null"
+
+        res += '"%s %s %s": "%s",' % (month_loop,day_loop.zfill(2), year_loop,weather)
+        day_loop = str(int(day_loop) - 1)
+        if (int(day_loop) <= 0):
+            day_loop = lastDayofPrevMonth
+            month_loop = PrevMonth
+
+    res = res[:-1]
+    res += "}}"
+    return res
+
 def getWeatherByDate(day, month, year):
     allCity = list(cityData)
     try:
@@ -88,8 +120,8 @@ def commandManager(commandArr):
         data_transfer = getWeatherByCity(commandArr[1],7)
     if (commandArr[0] == "/getCity"):
         data_transfer = getAllCity()
-        
-    
+
+
     return data_transfer
 
 def getAllCity():
@@ -99,13 +131,13 @@ def getAllCity():
         res += city + "\n"
     return res
 def createNewCity(cityName):
+    global cityData
     newCity= {cityName: {"cityName": cityName}}
     with open("city.json", "r+") as file:
         fileData = json.load(file)
         fileData.update(newCity)
         file.seek(0)
         json.dump(fileData, file, indent = 4)
-        global cityData
         cityData = fileData
 
 def checkExistsDate(day, month, year):
@@ -122,12 +154,13 @@ def getWeather(day, month, year, cityName):
             return weather
         except:
             return False
+    else: return False
 
 def getAllCities(day, month, year):
     res = '{"%s %s %s": {' % (month, day, year)
     for city in cityData.values():
         weather = getWeather(day, month, year, city["cityName"])
-        if weather == False: weather = None
+        if weather == False: weather = "null"
         res += '"%s": "%s",' % (city["cityName"], weather)
     res = res[:-1]
     res += '}}'
@@ -137,15 +170,20 @@ def updateWeatherByDate(newData):
     try:
         data = json.loads(newData)
         print(data)
-        updateDate = list(data.keys())
-        updateDate = updateDate[0]
-        updateDate = updateDate.split()
-        cityList = list(data.values())
-        cityList = cityList[0]
+        dataDate = list(data.keys())
+        dataDate = dataDate[0]
+        dataDate = dataDate.split()
+        dataCity = list(data.values())
+        dataCity = dataCity[0]
 
-        year = updateDate[2]
-        month = updateDate[0]
-        day = updateDate[1]
+        cityList = {}
+        for city in dataCity:
+            if(dataCity[city] != "null"):
+                cityList[city] = dataCity[city]
+
+        year = dataDate[2]
+        month = dataDate[0]
+        day = dataDate[1]
 
         try: weatherData[year]
         except: weatherData[year] = {}
@@ -160,6 +198,39 @@ def updateWeatherByDate(newData):
     except:
         print("Error updating to json file")
         return False
+
+def updateWeatherByCity(newData):
+    data = json.loads(newData)
+    print(data)
+
+    city = list(data.keys())
+    city = city[0]
+    weatherList = list(data.values())
+    weatherList = weatherList[0]
+
+    try:
+        for weather in weatherList:
+            date = weather.split()
+            year = date[2]
+            month = date[0]
+            day = date[1]
+            weatherData[year][month][day][city] = weatherList[weather]
+
+        weatherJson = open("weather.json", "w")
+        json.dump(weatherData, weatherJson)
+        return True
+
+    except:
+        print("Error updating to json file")
+        return False
+
+def getCityList():
+    res = '{'
+    for city in cityData.keys():
+        res += '"%s": "%s",' % (city, cityData[city]["cityName"])
+    res = res[:-1]
+    res += '}'
+    return res
 
 # server functions
 def acceptClientConnections():
@@ -248,14 +319,14 @@ def logInSection(client, clientAddr):
                     password = data[2]
                     userType = checkLogIn(username, password)
                     if userType == "isAdmin":
-                        client.sendall(bytes("SIGN IN ADMIN: success", "utf8"))
+                        client.sendall(bytes("success", "utf8"))
                         print(clientAddr, "SIGN IN ADMIN: success")
                         return "admin"
                     else:
-                        client.sendall(bytes("SIGN IN ADMIN: info incorrect", "utf8"))
+                        client.sendall(bytes("info incorrect", "utf8"))
                         print(clientAddr, "SIGN IN ADMIN: info incorrect")
                 else:
-                    client.sendall(bytes("SIGN IN ADMIN: syntax error", "utf8"))
+                    client.sendall(bytes("syntax error", "utf8"))
                     print(clientAddr, "SIGN IN ADMIN: syntax error")
 
             elif reqType == "exit":
@@ -280,7 +351,6 @@ def userSection(client, clientAddr):
             client.sendall(bytes(response, "utf8"))
             print(clientAddr, response)
 
-
         else: return
 
 def adminSection(client, clientAddr):
@@ -294,40 +364,53 @@ def adminSection(client, clientAddr):
                     newCityName = data[1]
                     if checkExistsCity(newCityName) == False:
                         createNewCity(newCityName)
-                        client.sendall(bytes("ADMIN ADD CITY: success", "utf8"))
+                        client.sendall(bytes("success", "utf8"))
                         print(clientAddr, "ADMIN ADD CITY: success")
 
                     else:
-                        client.sendall(bytes("ADMIN ADD CITY: city already existed", "utf8"))
+                        client.sendall(bytes("city already existed", "utf8"))
                         print(clientAddr, "ADMIN ADD CITY: city already existed")
 
                 else:
-                    client.sendall(bytes("ADMIN ADD CITY: syntax error", "utf8"))
+                    client.sendall(bytes("syntax error", "utf8"))
                     print(clientAddr, "ADMIN ADD CITY: syntax error")
 
             elif reqType == "choosedate":
                 print(clientAddr, "ADMIN CHOOSE DATE: ", data)
-                if len(data) == 4:
-                    res = getAllCities(data[1], data[2], data[3])
-                    if res == False:
-                        client.sendall(bytes("ADMIN CHOOSE DATE: Date not found in database", "utf8"))
-                        print(clientAddr, "ADMIN CHOOSE DATE: Date not found in database")
-                    else:
-                        client.sendall(bytes("ADMIN CHOOSE DATE: success\n" + res, "utf8"))
-                        print("ADMIN CHOOSE DATE: city list sent successfully")
+                res = getAllCities(data[1], data[2], data[3])
+                print(res)
+                client.sendall(bytes(res, "utf8"))
+                print("ADMIN CHOOSE DATE: city list sent successfully")
 
             elif reqType == "updateddate":
                 print(clientAddr, "ADMIN UPDATE BY DATE")
-                if len(data) == 2:
-                    if updateWeatherByDate(data[1]):
-                        client.sendall(bytes("ADMIN UPDATE BY DATE: updated successfully", "utf8"))
-                        print("ADMIN UPDATE BY DATE: updated successfully")
-                    else:
-                        client.sendall(bytes("ADMIN UPDATE BY DATE: error", "utf8"))
-                        print("ADMIN UPDATE BY DATE: error")
+                if updateWeatherByDate(data[1]):
+                    client.sendall(bytes("success", "utf8"))
+                    print("ADMIN UPDATE BY DATE: updated successfully")
+                else:
+                    client.sendall(bytes("error", "utf8"))
+                    print("ADMIN UPDATE BY DATE: error")
+
+            elif reqType == "getcitylist":
+                print(clientAddr, "ADMIN GET CITY LIST")
+                res = getCityList()
+                client.sendall(bytes(res, "utf8"))
 
             elif reqType == "choosecity":
-                print(clientAddr, "ADMIN CHOOSE CITY")
+                print(clientAddr, "ADMIN CHOOSE CITY: ", data[1])
+                res = getWeatherByCityJson(data[1], 7)
+                print(res)
+                client.sendall(bytes(res, "utf8"))
+                print("success")
+
+            elif reqType == "updatedcity":
+                print(clientAddr, "ADMIN UPDATE BY CITY")
+                if updateWeatherByCity(data[1]):
+                    client.sendall(bytes("success", "utf8"))
+                    print("ADMIN UPDATE BY CITY: updated successfully")
+                else:
+                    client.sendall(bytes("error", "utf8"))
+                    print("ADMIN UPDATE BY CITY: error")
 
             elif reqType == "exit":
                 disconnectClient(client, clientAddr)
@@ -340,12 +423,12 @@ def adminSection(client, clientAddr):
         else: return False
 
 def generateRandomWeather():
-    weatherType = ['Rainy', 'Sunny', 'Cloudy','Windy','Snowy']
-    for year in weatherData:   
-        for month in weatherData[year]:  
+    weatherType = ['Rainy', 'Sunny', 'Cloudy', 'Windy', 'Snowy']
+    for year in weatherData:
+        for month in weatherData[year]:
             for day in  weatherData[year][month]:
-                for city in cityData: 
-                    weatherIndex = random.randint(0, len(weatherType)-1)  
+                for city in cityData:
+                    weatherIndex = random.randint(0, len(weatherType)-1)
                     weatherData[year][month][day][city] = weatherType[weatherIndex]
     with open("weather.json", "w") as outfile:
         json.dump(weatherData, outfile)
@@ -358,24 +441,29 @@ if __name__ == "__main__":
     YEAR = today.strftime("%Y")
     MONTHS = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "Setemper", "October", "November", "December"]
 
-    HOST = '127.0.0.1'
-    PORT = 65432
-
     clientAddrs = {}
 
+    userJson = open("user.json")
     weatherJson = open("weather.json")
     cityJson = open("city.json")
-    cityData = json.load(cityJson)
-    data = json.load(weatherJson)
-    userJson = open("user.json")
+
     userData = json.load(userJson)
-    cityData = cityData
-    weatherData = data
-    
-    # generateRandomWeather()
+    weatherData = json.load(weatherJson)
+    cityData = json.load(cityJson)
+
+    #generateRandomWeather()
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    hostname = socket.gethostname()
+    if (hostname == "MACs-MacBook-Pro.local"):
+        hostname = "localhost"
+    HOST = socket.gethostbyname(hostname)
+    PORT = 65432
+
+    print("Server IP: ", HOST)
     server.bind((HOST, PORT))
+
     server.listen(5)
     print("Server 1 is online, wating for connections...")
 

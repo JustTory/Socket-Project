@@ -67,7 +67,7 @@ def updateWeather(data, updateData, listBox, newWeather):
 
 # frame funtions
 def setUpChooseSVFrame():
-    Label(chooseSVFrame, text="SERVER'S IP", font = FONT, bg='white').pack(pady=(60,30))
+    Label(chooseSVFrame, text="Server's IP", font = LABELFONT, bg='white').pack(pady=(60,30))
     serverIPEntry = Entry(chooseSVFrame, width=25, font = FONT, highlightthickness=1, highlightbackground = "black", bd=0)
     serverIPEntry.pack(ipady=5)
     serverIPEntry.focus()
@@ -76,7 +76,7 @@ def setUpChooseSVFrame():
 
 def setUpSignInFrame():
     Button(signInFrame, text="Disconnect", width=11, height=1, font = FONT, fg='white', bg='#d9534f', bd=0, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
-    Label(signInFrame, text="SIGN IN", font = FONT, bg='white').pack(pady=(30,40))
+    Label(signInFrame, text="Sign In", font = LABELFONT, bg='white').pack(pady=(30,40))
     Label(signInFrame, text="Admin username", font = FONT, bg='white').pack()
     usernameEntry = Entry(signInFrame, width=25, font = FONT, highlightthickness=1, highlightbackground = "black", bd=0)
     usernameEntry.pack(ipady=5)
@@ -89,14 +89,14 @@ def setUpSignInFrame():
 
 def setUpMainMenuFrame():
     Button(mainMenuFrame, text="Disconnect", width=11, height=1, font = FONT, fg='white', bg='#d9534f', bd=0, command=lambda: disconnectThread()).pack(side=TOP, anchor=NW)
-    Label(mainMenuFrame, text="MAIN MENU", font = FONT, bg='white').pack(pady=(30,40))
+    Label(mainMenuFrame, text="Main Menu", font = LABELFONT, bg='white').pack(pady=(30,40))
     Button(mainMenuFrame, text="Add new city", width=15, height=2, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: showFrame(addCityFrame)).pack(pady=(0,25))
     Button(mainMenuFrame, text="Update weather data by date", width=30, height=2, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: showFrame(chooseDateFrame)).pack(pady=(0, 25))
     Button(mainMenuFrame, text="Update weather data by city", width=30, height=2, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: getCityList()).pack()
 
 def setUpAddCityFrame():
-    Button(addCityFrame, text="< Back", width=8, height=1, font = FONT, fg='white', bg='#d9534f', bd=0, command=lambda: showFrame(mainMenuFrame)).pack(side=TOP, anchor=NW)
-    Label(addCityFrame, text="ADD CITY", font = FONT, bg='white').pack(pady=(30,40))
+    Button(addCityFrame, text="< Back", width=8, height=1, font = FONT, fg='black', bg='#f7f7f7', bd=0, command=lambda: showFrame(mainMenuFrame)).pack(side=TOP, anchor=NW)
+    Label(addCityFrame, text="Add City", font = LABELFONT, bg='white').pack(pady=(30,40))
     Label(addCityFrame, text="New city name", font = FONT, bg='white').pack()
     cityNameEntry = Entry(addCityFrame, width=25, font = FONT, highlightthickness=1, highlightbackground = "black", bd=0)
     cityNameEntry.pack(ipady=5)
@@ -104,8 +104,8 @@ def setUpAddCityFrame():
     Button(addCityFrame, text="Add", width=10, height=1, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: addCityThread(cityNameEntry)).pack(pady=(20,10))
 
 def setUpChooseDateFrame():
-    Button(chooseDateFrame, text="< Back", width=8, height=1, font = FONT, fg='white', bg='#d9534f', bd=0, command=lambda: showFrame(mainMenuFrame)).pack(side=TOP, anchor=NW)
-    Label(chooseDateFrame, text="CHOOSE DATE", font = FONT, bg='white').pack(pady=(30,40))
+    Button(chooseDateFrame, text="< Back", width=8, height=1, font = FONT, fg='black', bg='#f7f7f7', bd=0, command=lambda: showFrame(mainMenuFrame)).pack(side=TOP, anchor=NW)
+    Label(chooseDateFrame, text="Select Date", font = LABELFONT, bg='white').pack(pady=(30,40))
 
     #Day
     dayList = list(range(1,32))
@@ -115,7 +115,7 @@ def setUpChooseDateFrame():
     dayOption = ttk.Combobox(chooseDateFrame, textvariable=dayChoose, values=dayList, width=10,justify='center',state="readonly",font = FONT)
     dayChoose = dayList.index(DAY)
     dayOption.current(dayChoose)
-    dayOption.pack(pady=(0,20))
+    dayOption.pack(pady=(0,20), ipady= 5)
 
     #Month
     monthList = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "Setemper", "October", "November", "December"]
@@ -125,7 +125,7 @@ def setUpChooseDateFrame():
     monthOption = ttk.Combobox(chooseDateFrame, textvariable=monthChoose, value=monthList,width=10,justify='center',state="readonly", font = FONT)
     monthChoose = monthList.index(MONTH)
     monthOption.current(monthChoose)
-    monthOption.pack(pady=(0,20))
+    monthOption.pack(pady=(0,20), ipady= 5)
 
     #Year
     yearList = ["2020","2021","2022"]
@@ -135,20 +135,20 @@ def setUpChooseDateFrame():
     yearOption = ttk.Combobox(chooseDateFrame, textvariable = yearChoose, values=yearList,width=10,justify='center',state="readonly", font = FONT)
     yearChoose = yearList.index(YEAR)
     yearOption.current(yearChoose)
-    yearOption.pack(pady=(0,30))
+    yearOption.pack(pady=(0,30), ipady= 5)
 
     Button(chooseDateFrame, text="Choose", width=12, height=1, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: sendDateThread(dayOption.get(),monthOption.get(),yearOption.get() )).pack()
 
 def setUpChooseCityFrame(data):
     cityList = list(data.values())
 
-    Button(chooseCityFrame, text="< Back", width=8, height=1, font = FONT, fg='white', bg='#d9534f', bd=0, command=lambda: back(chooseCityFrame, mainMenuFrame)).pack(side=TOP, anchor=NW)
-    Label(chooseCityFrame, text = "CHOOSE CITY", font = FONT, bg='white').pack(pady=(30,40))
+    Button(chooseCityFrame, text="< Back", width=8, height=1, font = FONT, fg='black', bg='#f7f7f7', bd=0, command=lambda: back(chooseCityFrame, mainMenuFrame)).pack(side=TOP, anchor=NW)
+    Label(chooseCityFrame, text = "Select City", font = LABELFONT, bg='white').pack(pady=(30,40))
     cityChoose = StringVar(chooseCityFrame)
     cityOption = ttk.Combobox(chooseCityFrame, textvariable=cityChoose,values=cityList,width=20,justify='center',state="readonly", font = FONT)
     cityChoose = 0
     cityOption.current(cityChoose)
-    cityOption.pack(pady=(0,20))
+    cityOption.pack(pady=(0,20), ipady= 5)
 
     Button(chooseCityFrame, text="Select", width=15, height=1, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: sendCityThread(cityOption.get())).pack()
 
@@ -159,11 +159,11 @@ def setUpUpdateDataFrame(data, type):
     updateType = updateType[0]
 
     if type == "city":
-        title = "CITY"
+        title = "city"
         backFrame = chooseCityFrame
         command = "updatedcity"
     elif type == "date":
-        title = "DATE"
+        title = "date"
         backFrame = chooseDateFrame
         command = "updateddate"
 
@@ -179,12 +179,12 @@ def setUpUpdateDataFrame(data, type):
     for name in weatherList:
         listBox.insert(END, name + ": " + weatherList[name])
 
-    Button(updateDataFrame, text="< Back", width=8, height=1, font = FONT, fg='white', bg='#d9534f', bd=0, command=lambda: back(updateDataFrame, backFrame)).pack(side=TOP, anchor=NW)
-    Label(updateDataFrame, text="UPDATE WEATHER DATA BY " + title, font = FONT, bg='white').pack(pady=(30,40))
+    Button(updateDataFrame, text="< Back", width=8, height=1, font = FONT, fg='black', bg='#f7f7f7', bd=0, command=lambda: back(updateDataFrame, backFrame)).pack(side=TOP, anchor=NW)
+    Label(updateDataFrame, text="Update weather data by " + title, font = LABELFONT, bg='white').pack(pady=(30,40))
     Label(updateDataFrame, text=updateType, font = FONT, bg='white').pack()
     listBox.pack(pady=(0,15))
     weatherLabel.pack()
-    weatherOption.pack(pady=(0,15))
+    weatherOption.pack(pady=(0,15), ipady= 5)
     updateBtn.pack(pady=(0,30))
     saveBtn.pack()
 
@@ -336,6 +336,7 @@ if __name__ == "__main__":
     PORT = 65432
 
     FONT = ("Tahoma", 14)
+    LABELFONT = ("Tahoma", 20, "bold")
 
     root = Tk()
     root.geometry("700x700")

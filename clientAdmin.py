@@ -192,7 +192,6 @@ def setUpUpdateDataFrame(data, type):
 
     listBox.bind('<<ListboxSelect>>', lambda event: selectRow(event, weatherLabel, weatherOption))
 
-
 # thread functions
 def disconnectThread():
     threadDisconnect = Thread(target=disconnectServer)
@@ -234,8 +233,10 @@ def exitApp():
     root.destroy()
 
 def disconnectServer():
+    global client
     send("exit")
     client.close()
+    del client
     print("disconnected from server")
     showFrame(chooseSVFrame)
 

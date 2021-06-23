@@ -202,19 +202,19 @@ def sendUserInfo(usernameEntry, passwordEntry, type):
 def showAllWeathers(day,month, year, myLabel):
     datetime = day + " " + month + " " + year
     message = "/list %s" % datetime
-    send(message)
-    data = receive()
+    if (send(message)):
+        data = receive()
 
-    data = ("[Date: %s]\n" % (datetime)) + data
-    myLabel['text'] = data
+        data = ("[Date: %s]\n" % (datetime)) + data
+        myLabel['text'] = data
 
 def showCityWeather(city,label):
     message = "/city %s" % (city)
-    send(message)
-    data = receive()
+    if (send(message)):
+        data = receive()
 
-    data = ("[%s]\n" % (city)) + data
-    label['text'] = data
+        data = ("[%s]\n" % (city)) + data
+        label['text'] = data
 
 # Thread function
 def disconnectThread():

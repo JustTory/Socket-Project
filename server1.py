@@ -448,6 +448,8 @@ if __name__ == "__main__":
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     hostname = socket.gethostname()
+    if (hostname == "MACs-MacBook-Pro.local"):
+        hostname = "localhost"
     HOST = socket.gethostbyname(hostname)
     PORT = 65432
 

@@ -1,5 +1,3 @@
-# NHỚ BỎ SKIP LOGIN TRƯỚC KHI NỘP NHA BROOOOOOOOO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 import socket
 from tkinter import *
 from tkinter import ttk
@@ -266,12 +264,13 @@ def sendUserInfo(usernameEntry, passwordEntry, type):
 
     if(send(type + " " + username + " " + password)):
         serverResponse = receive()
+        print(serverResponse)
         if (serverResponse == "success"):
             showFrame(mainMenuFrame)
             messagebox.showinfo("Success", "You have signed in successfully")
         elif (serverResponse == "info incorrect"):
             messagebox.showerror("Error", "Incorrect admin username or password")
-        elif (serverResponse[0] == "syntax error"):
+        elif (serverResponse == "syntax error"):
             messagebox.showerror("Error", "Username or password can't be empty")
 
 def addCity(cityNameEntry):
@@ -283,6 +282,7 @@ def addCity(cityNameEntry):
         msg = "addcity"
     if(send(msg)):
         serverResponse = receive()
+        print(serverResponse)
         if (serverResponse == "success"):
             messagebox.showinfo("Success", "You have added a new city successfully")
         elif (serverResponse == "city already existed"):
@@ -295,6 +295,7 @@ def sendDate(day, month, year):
     if(send(message)):
         serverResponse = receive()
         data = json.loads(serverResponse)
+        print(data)
         setUpUpdateDataFrame(data, "date")
         showFrame(updateDataFrame)
 
@@ -303,6 +304,7 @@ def getCityList():
     if(send(message)):
         serverResponse = receive()
         data = json.loads(serverResponse)
+        print(data)
         setUpChooseCityFrame(data)
         showFrame(chooseCityFrame)
 
@@ -311,6 +313,7 @@ def sendCity(city):
     if(send(message)):
         serverResponse = receive()
         data = json.loads(serverResponse)
+        print(data)
         setUpUpdateDataFrame(data, "city")
         showFrame(updateDataFrame)
 
@@ -319,6 +322,7 @@ def sendUpdatedData(data, command):
     message = command + "\n" + jsonData
     if(send(message)):
         serverResponse = receive()
+        print(serverResponse)
         if (serverResponse == "success"):
             messagebox.showinfo("Success", "Data updated in database successfully")
         elif (serverResponse == "error"):

@@ -170,6 +170,7 @@ def connectServer(entry):
     except:
         print("Could not find server's IP or request timeout")
         messagebox.showerror("Error", "Could not find server's IP or request timeout")
+        del client
 def sendUserInfo(usernameEntry, passwordEntry, type):
     username = usernameEntry.get()
     usernameEntry.delete(0, 'end')

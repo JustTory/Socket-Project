@@ -3,27 +3,30 @@
         "cityName": "TPHCM"
     },
     "HaNoi": {
-        "cityName": "HaNoi"
+        "cityName": "Ha Noi"
     },
     "DaNang": {
-        "cityName": "DaNang"
+        "cityName": "Da Nang"
     },
     "Hue": {
         "cityName": "Hue"
     },
     "HaiPhong": {
-        "cityName": "HaiPhong"
+        "cityName": "Hai Phong"
     },
     "VungTau": {
-        "cityName": "VungTau"
+        "cityName": "Vung Tau"
     },
     "QuangNinh": {
-        "cityName": "QuangNinh"
+        "cityName": "Quang Ninh"
     },
     "MyTho": {
-        "cityName": "MyTho"
+        "cityName": "My Tho"
     },
-    "Bac Giang": {
+    "BacGiang": {
         "cityName": "Bac Giang"
+    },
+    "BenTre": {
+        "cityName": "Ben Tre"
     }
 }

@@ -55,7 +55,7 @@ def getWeatherByCity(city, numDay):
             if (date_data[city]):
                 weather = date_data[city]
         except:
-            weather = "NaN"
+            weather = "null"
 
         res += "%-5s %s, %s: %s\n" % (month_loop,day_loop.zfill(2), year_loop,weather)
         day_loop = str(int(day_loop) - 1)
@@ -79,6 +79,7 @@ def getWeatherByCityJson(city, numDay):
     for i in range(numDay):
         try:
             date_data = weatherData[year_loop][month_loop][day_loop]
+            city = city.replace(" ", "")
             if (date_data[city]):
                 weather = date_data[city]
         except:
@@ -105,7 +106,7 @@ def getWeatherByDate(day, month, year):
         try:
             status = date_data[city]
         except:
-            status = "NaN"
+            status = "null"
         res += "%s: %s\n" % (city, status)
     return res
 
@@ -135,7 +136,8 @@ def getAllCity():
 
 def createNewCity(cityName):
     global cityData
-    newCity= {cityName: {"cityName": cityName}}
+    keyCity = cityName.replace(" ", "")
+    newCity= {keyCity: {"cityName": cityName}}
     with open("city.json", "r+") as file:
         fileData = json.load(file)
         fileData.update(newCity)
@@ -151,6 +153,7 @@ def checkExistsDate(day, month, year):
         return False
 
 def getWeather(day, month, year, cityName):
+    cityName = cityName.replace(" ", "")
     if checkExistsDate(day, month ,year):
         try:
             weather = weatherData[year][month][day][cityName]

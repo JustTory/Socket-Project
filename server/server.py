@@ -185,7 +185,8 @@ def updateWeatherByDate(newData):
         cityList = {}
         for city in dataCity:
             if(dataCity[city] != "null"):
-                cityList[city] = dataCity[city]
+                cityKey = city.replace(" ", "")
+                cityList[cityKey] = dataCity[city]
 
         year = dataDate[2]
         month = dataDate[0]
@@ -210,7 +211,7 @@ def updateWeatherByCity(newData):
     print(data)
 
     city = list(data.keys())
-    city = city[0]
+    city = city[0].replace(" ", "")
     weatherList = list(data.values())
     weatherList = weatherList[0]
 

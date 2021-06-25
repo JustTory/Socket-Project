@@ -207,6 +207,7 @@ def showAllWeathers(day,month, year, myLabel):
         myLabel['text'] = data
 
 def showCityWeather(city,label):
+    city.replace(" ","")
     message = "/city %s" % (city)
     if (send(message)):
         data = receive()
@@ -236,7 +237,6 @@ def sendAllWeathersThread(day,month, year, myLabel):
     threadSendWeather.daemon = True
     threadSendWeather.start()
 def sendCityWeatherThread(city,label):
-
     thread = Thread(target=showCityWeather, args=(city, label,))
     thread.daemon = True
     thread.start()

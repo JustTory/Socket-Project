@@ -106,7 +106,7 @@ def getWeatherByDate(day, month, year):
             status = date_data[city]
         except:
             status = "NaN"
-        res += "%s: %s\n" % (city, status)
+        res += "%s: %s\n" % (cityData[city]['cityName'], status)
     return res
 
 def commandManager(commandArr):

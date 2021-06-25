@@ -107,7 +107,7 @@ def getWeatherByDate(day, month, year):
             status = date_data[city]
         except:
             status = "null"
-        res += "%s: %s\n" % (city, status)
+        res += "%s: %s\n" % (cityData[city]['cityName'], status)
     return res
 
 def commandManager(commandArr):
@@ -129,7 +129,7 @@ def getAllCity():
     temp = list(cityData)
     res = ""
     for city in temp:
-        res += city + "\n"
+        res += cityData[city]['cityName'] + "\n"
     print(res)
     res = res[:-1]
     return res

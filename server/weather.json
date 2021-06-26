@@ -337,7 +337,8 @@
                 "Qu\u1ea3ngNinh": "Rainy",
                 "M\u1ef9Tho": "Sunny",
                 "B\u1eafcGiang": "Snowy",
-                "B\u1ebfnTre": "Rainy"
+                "B\u1ebfnTre": "Rainy",
+                "Vinh": "Windy"
             },
             "21": {
                 "TPHCM": "Windy",
@@ -349,7 +350,8 @@
                 "Qu\u1ea3ngNinh": "Snowy",
                 "M\u1ef9Tho": "Snowy",
                 "B\u1eafcGiang": "Windy",
-                "B\u1ebfnTre": "Rainy"
+                "B\u1ebfnTre": "Rainy",
+                "Vinh": "Sunny"
             },
             "22": {
                 "TPHCM": "Cloudy",
@@ -361,7 +363,8 @@
                 "Qu\u1ea3ngNinh": "Rainy",
                 "M\u1ef9Tho": "Sunny",
                 "B\u1eafcGiang": "Sunny",
-                "B\u1ebfnTre": "Windy"
+                "B\u1ebfnTre": "Windy",
+                "Vinh": "Sunny"
             },
             "23": {
                 "TPHCM": "Rainy",
@@ -373,7 +376,8 @@
                 "Qu\u1ea3ngNinh": "Sunny",
                 "M\u1ef9Tho": "Sunny",
                 "B\u1eafcGiang": "Windy",
-                "B\u1ebfnTre": "Sunny"
+                "B\u1ebfnTre": "Sunny",
+                "Vinh": "Sunny"
             },
             "24": {
                 "TPHCM": "Sunny",
@@ -385,7 +389,8 @@
                 "Qu\u1ea3ngNinh": "Windy",
                 "M\u1ef9Tho": "Snowy",
                 "B\u1eafcGiang": "Snowy",
-                "B\u1ebfnTre": "Snowy"
+                "B\u1ebfnTre": "Snowy",
+                "Vinh": "Windy"
             },
             "25": {
                 "TPHCM": "Rainy",
@@ -397,7 +402,8 @@
                 "Qu\u1ea3ngNinh": "Sunny",
                 "M\u1ef9Tho": "Windy",
                 "B\u1eafcGiang": "Snowy",
-                "B\u1ebfnTre": "Snowy"
+                "B\u1ebfnTre": "Snowy",
+                "Vinh": "Rainy"
             },
             "26": {
                 "TPHCM": "Sunny",
@@ -409,7 +415,8 @@
                 "Qu\u1ea3ngNinh": "Cloudy",
                 "M\u1ef9Tho": "Rainy",
                 "B\u1eafcGiang": "Rainy",
-                "B\u1ebfnTre": "Cloudy"
+                "B\u1ebfnTre": "Cloudy",
+                "Vinh": "Rainy"
             },
             "27": {
                 "TPHCM": "Rainy",

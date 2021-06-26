@@ -92,7 +92,7 @@ def setUpMainMenuFrame():
     Label(mainMenuFrame, text="Main Menu", font = LABELFONT, bg='white').pack(pady=(30,40))
     Button(mainMenuFrame, text="Add new city", width=15, height=2, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: showFrame(addCityFrame)).pack(pady=(0,25))
     Button(mainMenuFrame, text="Update weather data by date", width=30, height=2, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: showFrame(chooseDateFrame)).pack(pady=(0, 25))
-    Button(mainMenuFrame, text="Update weather data by city", width=30, height=2, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: getCityList()).pack()
+    Button(mainMenuFrame, text="Update weather data by city", width=30, height=2, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: getCityListThread()).pack()
 
 def setUpAddCityFrame():
     Button(addCityFrame, text="< Back", width=8, height=1, font = FONT, fg='black', bg='#f7f7f7', bd=0, command=lambda: showFrame(mainMenuFrame)).pack(side=TOP, anchor=NW)
@@ -209,6 +209,10 @@ def addCityThread(cityNameEntry):
     threadAddCity.start()
 def sendDateThread(day, month, year):
     threadDate = Thread(target=sendDate, args=(day, month, year,))
+    threadDate.daemon = True
+    threadDate.start()
+def getCityListThread():
+    threadDate = Thread(target=getCityList)
     threadDate.daemon = True
     threadDate.start()
 def sendCityThread(city):

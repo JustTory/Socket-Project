@@ -361,7 +361,7 @@ if __name__ == "__main__":
     LABELFONT = ("Tahoma", 20, "bold")
 
     root = Tk()
-    root.geometry("700x700")
+    root.geometry("700x800")
     root.title("Weathery - Admin")
 
     root.rowconfigure(0, weight=1)

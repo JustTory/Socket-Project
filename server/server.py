@@ -220,14 +220,16 @@ def updateWeatherByCity(newData):
             month = date[0]
             day = date[1]
 
-            try: weatherData[year]
-            except: weatherData[year] = {}
-            try: weatherData[year][month]
-            except: weatherData[year][month] = {}
-            try: weatherData[year][month][day]
-            except: weatherData[year][month][day] = {}
-
-            weatherData[year][month][day][city] = weatherList[weather]
+            if weatherList[weather] != "null":
+                try: weatherData[year]
+                except: weatherData[year] = {}
+                try: weatherData[year][month]
+                except: weatherData[year][month] = {}
+                try: weatherData[year][month][day]
+                except: weatherData[year][month][day] = {}
+                weatherData[year][month][day][city] = weatherList[weather]
+            else:
+                weatherData[year][month][day].pop(city)
 
         weatherJson = open("weather.json", "w")
         json.dump(weatherData, weatherJson)

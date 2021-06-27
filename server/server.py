@@ -78,7 +78,7 @@ def getWeatherByCityJson(city, numDay):
         except:
             weather = "null"
 
-        res += '"%s %s %s": "%-6s",' % (month_loop,day_loop.zfill(2), year_loop,weather)
+        res += '"%s %s %s": "%s",' % (month_loop,day_loop.zfill(2), year_loop,weather)
         day_loop = str(int(day_loop) + 1)
 
         monthInt = MONTHS.index(month_loop) + 1

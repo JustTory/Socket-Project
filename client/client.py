@@ -118,38 +118,34 @@ def setUpWeatherByDate():
     Button(weatherDate, text="< Back", width=8, height=1, font = FONT, fg='black', bg='#f7f7f7', bd=0, command=lambda: back(weatherDate, mainMenuFrame)).grid(row = 0, column=0, sticky="NW")
     Label(weatherDate, text = "Weather Data", font = LABELFONT, bg='white').grid(row=0,column=1,sticky="WE",pady=50)
 
-    #choose
-    dayList = list(range(1, 32))
-    dayChoose = StringVar(weatherDate)
-    dayChoose = dayList.index(DAY)
-
-    global monthList
-    monthList = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "Setemper", "October", "November", "December"]
-    monthChoose = StringVar(weatherDate)
-    monthChoose = monthList.index(MONTH)
-
-    global yearList
-    yearList = ["2020","2021","2022"]
-    yearChoose = StringVar(weatherDate)
-    yearChoose = yearList.index(YEAR)
     #Day
+    dayList = list(range(1, 32))
     Label(weatherDate, text = "Day", font = FONT, bg='white').grid(pady=15,row=1, column=0, sticky="W", padx=(170,5) )
-    
+    dayChoose = StringVar(weatherDate)
     dayOption = ttk.Combobox(weatherDate, textvariable=dayChoose, values=dayList,width=20,state="readonly", justify='center',font = FONT)
-    
+    dayChoose = dayList.index(DAY)
     dayOption.current(dayChoose)
     dayOption.grid(row = 1, column=1, ipady= 5)
 
     #Month
+    global monthList
+    monthList = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "Setemper", "October", "November", "December"]
     Label(weatherDate, text = "Month", font = FONT, bg='white').grid(pady=15,row=2, column=0, sticky="W", padx=(170,5))
+    monthChoose = StringVar(weatherDate)
     monthOption = ttk.Combobox(weatherDate, textvariable=monthChoose, value=monthList,width=20,state="readonly", justify='center',font = FONT)
+    monthChoose = monthList.index(MONTH)
     monthOption.current(monthChoose)
     monthOption.bind("<<ComboboxSelected>>",lambda event: onDateChange(dayOption,dayChoose,monthOption,yearOption))
     monthOption.grid(row = 2, column=1, ipady= 5)
 
     #Year
+    global yearList
+    yearList = ["2020","2021","2022"]
+    yearChoose = StringVar(weatherDate)
     Label(weatherDate, text = "Year", font = FONT, bg='white').grid(pady=15,row=3, column=0, sticky="W", padx=(170,5))
+    yearChoose = yearList.index(YEAR)
     yearOption = ttk.Combobox(weatherDate, textvariable = yearChoose, values=yearList,width=20,state="readonly", justify='center',font = FONT)
+
     yearOption.current(yearChoose)
     
     yearOption.bind("<<ComboboxSelected>>", lambda event:onDateChange(dayOption,dayChoose,monthOption,yearOption))

@@ -357,6 +357,7 @@ def logInSection(client, clientAddr):
 def userSection(client, clientAddr):
     while True:
         data = receiveUserReq(client, clientAddr)
+        print(clientAddr, " request ", data)
         if data:
             reqType = data[0]
             if reqType == "exit":
@@ -365,9 +366,7 @@ def userSection(client, clientAddr):
 
             response = commandManager(data)
             client.sendall(bytes(response, "utf8"))
-            if response != "Error":
-                print(clientAddr, "Request sent successfully")
-            else:
+            if response == "Error":
                 print(clientAddr, "Request sent error")
         else: return
 

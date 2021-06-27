@@ -231,8 +231,8 @@ def showAllWeathers(day,month, year, myLabel):
         myLabel['text'] = data
 
 def showCityWeather(city,label):
-    city = city.replace(" ","")
-    message = "/city %s" % (city)
+    sendCity = city.replace(" ","")
+    message = "/city %s" % (sendCity)
     if (send(message)):
         data = receive()
 

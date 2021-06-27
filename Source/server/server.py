@@ -229,7 +229,8 @@ def updateWeatherByCity(newData):
                 except: weatherData[year][month][day] = {}
                 weatherData[year][month][day][city] = weatherList[weather]
             else:
-                weatherData[year][month][day].pop(city)
+                try: weatherData[year][month][day].pop(city)
+                except: pass
 
         weatherJson = open("weather.json", "w")
         json.dump(weatherData, weatherJson)

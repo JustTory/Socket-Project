@@ -60,7 +60,7 @@ def getWeatherByCity(city, numDay):
         if (int(day_loop) > dayMargin):
             day_loop = "1"
             month_loop = MONTHS[monthInt]
-        
+
     return res
 
 def getWeatherByCityJson(city, numDay):
@@ -78,7 +78,7 @@ def getWeatherByCityJson(city, numDay):
         except:
             weather = "null"
 
-        res += '"%s %s %s": "%s",' % (month_loop,day_loop.zfill(2), year_loop,weather)
+        res += '"%s %s %s": "%s",' % (month_loop,day_loop, year_loop,weather)
         day_loop = str(int(day_loop) + 1)
 
         monthInt = MONTHS.index(month_loop) + 1
@@ -87,7 +87,7 @@ def getWeatherByCityJson(city, numDay):
         if (int(day_loop) > dayMargin):
             day_loop = "1"
             month_loop = MONTHS[monthInt]
-       
+
 
     res = res[:-1]
     res += "}}"
@@ -219,6 +219,14 @@ def updateWeatherByCity(newData):
             year = date[2]
             month = date[0]
             day = date[1]
+
+            try: weatherData[year]
+            except: weatherData[year] = {}
+            try: weatherData[year][month]
+            except: weatherData[year][month] = {}
+            try: weatherData[year][month][day]
+            except: weatherData[year][month][day] = {}
+
             weatherData[year][month][day][city] = weatherList[weather]
 
         weatherJson = open("weather.json", "w")

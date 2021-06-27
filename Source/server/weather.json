@@ -593,6 +593,20 @@
                 "Vinh": "Sunny",
                 "C\u1ea7nTh\u01a1": "Sunny"
             },
+            "5": {
+                "TPHCM": "Sunny",
+                "H\u00e0N\u1ed9i": "Sunny",
+                "\u0110\u00e0N\u1eb5ng": "Snowy",
+                "Hu\u1ebf": "Cloudy",
+                "V\u0169ngT\u00e0u": "Rainy",
+                "Qu\u1ea3ngNinh": "Rainy",
+                "M\u1ef9Tho": "Sunny",
+                "B\u1eafcGiang": "Snowy",
+                "B\u1ebfnTre": "Sunny",
+                "H\u1ea3iPh\u00f2ng": "Cloudy",
+                "Vinh": "Windy",
+                "C\u1ea7nTh\u01a1": "Windy"
+            },
             "6": {
                 "TPHCM": "Windy",
                 "H\u00e0N\u1ed9i": "Cloudy",
@@ -1014,6 +1028,20 @@
                 "B\u1ebfnTre": "Sunny",
                 "Vinh": "Rainy",
                 "C\u1ea7nTh\u01a1": "Windy"
+            },
+            "5": {
+                "TPHCM": "Cloudy",
+                "H\u00e0N\u1ed9i": "Cloudy",
+                "\u0110\u00e0N\u1eb5ng": "Cloudy",
+                "Hu\u1ebf": "Cloudy",
+                "V\u0169ngT\u00e0u": "Rainy",
+                "Qu\u1ea3ngNinh": "Rainy",
+                "M\u1ef9Tho": "Sunny",
+                "B\u1eafcGiang": "Cloudy",
+                "B\u1ebfnTre": "Sunny",
+                "H\u1ea3iPh\u00f2ng": "Cloudy",
+                "Vinh": "Windy",
+                "C\u1ea7nTh\u01a1": "Cloudy"
             },
             "6": {
                 "TPHCM": "Cloudy",

@@ -39,9 +39,9 @@ def onDateChange(dayOption, dayChoose,monthOption, yearOption):
         dayChoose = dayMargin-1
         dayOption.current(dayChoose)
 
-    dayList = list(range(1, dayMargin+1)) 
+    dayList = list(range(1, dayMargin+1))
     dayOption['values'] = dayList
-    
+
 
 def showFrame(frame):
     frame.tkraise()
@@ -145,9 +145,7 @@ def setUpWeatherByDate():
     Label(weatherDate, text = "Year", font = FONT, bg='white').grid(pady=15,row=3, column=0, sticky="W", padx=(170,5))
     yearChoose = yearList.index(YEAR)
     yearOption = ttk.Combobox(weatherDate, textvariable = yearChoose, values=yearList,width=20,state="readonly", justify='center',font = FONT)
-
     yearOption.current(yearChoose)
-    
     yearOption.bind("<<ComboboxSelected>>", lambda event:onDateChange(dayOption,dayChoose,monthOption,yearOption))
     yearOption.grid(row = 3, column=1, ipady= 5)
 
@@ -155,7 +153,7 @@ def setUpWeatherByDate():
     myLabel.grid(row = 5,column=1, pady = 5)
 
     dayMargin = calendar.monthrange(int(YEAR), monthChoose)[1]
-    dayOption['values'] = list(range(1, dayMargin)) 
+    dayOption['values'] = list(range(1, dayMargin))
 
     Button(weatherDate, text="Submit", width=15, height=1, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: sendAllWeathersThread(dayOption.get(),monthOption.get(),yearOption.get(),myLabel )).grid(row=4,column=1,pady=(25,30))
 

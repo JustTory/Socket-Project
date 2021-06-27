@@ -5,24 +5,9 @@ from tkinter import messagebox
 from threading import Thread
 from datetime import date
 import json
+import calendar
 
 # helper functions
-def send(msg):
-    try:
-        client.sendall(bytes(msg, "utf8"))
-        return True
-    except:
-        print("Server is offline or request timeout")
-        messagebox.showerror("Error", "Server is offline or request timeout")
-        showFrame(chooseSVFrame)
-        return False
-
-def receive():
-    msg = client.recv(1024).decode("utf8")
-    if len(msg) == 0:
-        print("Server has disconnected")
-    return msg
-
 def showFrame(frame):
     frame.tkraise()
 
@@ -43,11 +28,6 @@ def selectRow(event, weatherLabel, weatherOption):
 
         pos = weatherType.index(weather)
 
-        # for i in weatherType:
-        #     if i == weather:
-        #         break
-        #     pos = pos + 1
-
         if pos == -1 : weatherOption.current(0)
         else: weatherOption.current(pos)
 
@@ -64,6 +44,24 @@ def updateWeather(data, updateData, listBox, newWeather):
             data[updateData][name] = newWeather
     except:
         messagebox.showerror("Error", "Please select a row to update")
+
+def onDateChange(dayOption, dayChoose, monthOption, yearOption):
+    newdayChoose = dayOption.get()
+    monthChoose = monthOption.get()
+    yearChoose = yearOption.get()
+
+    day = int(newdayChoose)
+    month = monthList.index(monthChoose) + 1
+    year = int(yearChoose)
+
+    dayMargin = calendar.monthrange(year,month)[1]
+
+    if ( day > dayMargin ):
+        dayChoose = dayMargin-1
+        dayOption.current(dayChoose)
+
+    dayList = list(range(1, dayMargin+1))
+    dayOption['values'] = dayList
 
 # frame funtions
 def setUpChooseSVFrame():
@@ -118,6 +116,7 @@ def setUpChooseDateFrame():
     dayOption.pack(pady=(0,20), ipady= 5)
 
     #Month
+    global monthList
     monthList = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "Setemper", "October", "November", "December"]
 
     Label(chooseDateFrame, text = "Month", font = FONT, bg='white').pack()
@@ -125,6 +124,7 @@ def setUpChooseDateFrame():
     monthOption = ttk.Combobox(chooseDateFrame, textvariable=monthChoose, value=monthList,width=10,justify='center',state="readonly", font = FONT)
     monthChoose = monthList.index(MONTH)
     monthOption.current(monthChoose)
+    monthOption.bind("<<ComboboxSelected>>",lambda event: onDateChange(dayOption,dayChoose,monthOption,yearOption))
     monthOption.pack(pady=(0,20), ipady= 5)
 
     #Year
@@ -135,6 +135,7 @@ def setUpChooseDateFrame():
     yearOption = ttk.Combobox(chooseDateFrame, textvariable = yearChoose, values=yearList,width=10,justify='center',state="readonly", font = FONT)
     yearChoose = yearList.index(YEAR)
     yearOption.current(yearChoose)
+    yearOption.bind("<<ComboboxSelected>>", lambda event:onDateChange(dayOption,dayChoose,monthOption,yearOption))
     yearOption.pack(pady=(0,30), ipady= 5)
 
     Button(chooseDateFrame, text="Choose", width=12, height=1, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: sendDateThread(dayOption.get(),monthOption.get(),yearOption.get() )).pack()
@@ -225,6 +226,22 @@ def sendUpdatedDataThread(data, command):
     threadSendCityList.start()
 
 # client functions
+def send(msg):
+    try:
+        client.sendall(bytes(msg, "utf8"))
+        return True
+    except:
+        print("Server is offline or request timeout")
+        messagebox.showerror("Error", "Server is offline or request timeout")
+        showFrame(chooseSVFrame)
+        return False
+
+def receive():
+    msg = client.recv(1024).decode("utf8")
+    if len(msg) == 0:
+        print("Server has disconnected")
+    return msg
+
 def exitApp():
     try:
         client

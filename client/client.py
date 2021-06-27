@@ -4,7 +4,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from threading import Thread
 from datetime import date
-import json
+import calendar
 
 # helper functions
 def send(msg):
@@ -22,6 +22,26 @@ def receive():
     if len(msg) == 0:
         print("Server has disconnected")
     return msg
+
+def onDateChange(dayOption, dayChoose,monthOption, yearOption):
+    newdayChoose = dayOption.get()
+    monthChoose = monthOption.get()
+    yearChoose = yearOption.get()
+
+
+    day = int(newdayChoose)
+    month = monthList.index(monthChoose) + 1
+    year = int(yearChoose)
+
+    dayMargin = calendar.monthrange(year,month)[1]
+
+    if ( day > dayMargin ):
+        dayChoose = dayMargin-1
+        dayOption.current(dayChoose)
+
+    dayList = list(range(1, dayMargin+1)) 
+    dayOption['values'] = dayList
+    
 
 def showFrame(frame):
     frame.tkraise()
@@ -98,38 +118,48 @@ def setUpWeatherByDate():
     Button(weatherDate, text="< Back", width=8, height=1, font = FONT, fg='black', bg='#f7f7f7', bd=0, command=lambda: back(weatherDate, mainMenuFrame)).grid(row = 0, column=0, sticky="NW")
     Label(weatherDate, text = "Weather Data", font = LABELFONT, bg='white').grid(row=0,column=1,sticky="WE",pady=50)
 
-    #Day
+    #choose
     dayList = list(range(1, 32))
-
-    Label(weatherDate, text = "Day", font = FONT, bg='white').grid(pady=15,row=1, column=0, sticky="W", padx=(170,5) )
     dayChoose = StringVar(weatherDate)
-    dayOption = ttk.Combobox(weatherDate, textvariable=dayChoose, values=dayList,width=20,state="readonly", justify='center',font = FONT)
     dayChoose = dayList.index(DAY)
+
+    global monthList
+    monthList = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "Setemper", "October", "November", "December"]
+    monthChoose = StringVar(weatherDate)
+    monthChoose = monthList.index(MONTH)
+
+    global yearList
+    yearList = ["2020","2021","2022"]
+    yearChoose = StringVar(weatherDate)
+    yearChoose = yearList.index(YEAR)
+    #Day
+    Label(weatherDate, text = "Day", font = FONT, bg='white').grid(pady=15,row=1, column=0, sticky="W", padx=(170,5) )
+    
+    dayOption = ttk.Combobox(weatherDate, textvariable=dayChoose, values=dayList,width=20,state="readonly", justify='center',font = FONT)
+    
     dayOption.current(dayChoose)
     dayOption.grid(row = 1, column=1, ipady= 5)
 
     #Month
-    monthList = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "Setemper", "October", "November", "December"]
-
     Label(weatherDate, text = "Month", font = FONT, bg='white').grid(pady=15,row=2, column=0, sticky="W", padx=(170,5))
-    monthChoose = StringVar(weatherDate)
     monthOption = ttk.Combobox(weatherDate, textvariable=monthChoose, value=monthList,width=20,state="readonly", justify='center',font = FONT)
-    monthChoose = monthList.index(MONTH)
     monthOption.current(monthChoose)
+    monthOption.bind("<<ComboboxSelected>>",lambda event: onDateChange(dayOption,dayChoose,monthOption,yearOption))
     monthOption.grid(row = 2, column=1, ipady= 5)
 
     #Year
-    yearList = ["2020","2021","2022"]
-
     Label(weatherDate, text = "Year", font = FONT, bg='white').grid(pady=15,row=3, column=0, sticky="W", padx=(170,5))
-    yearChoose = StringVar(weatherDate)
     yearOption = ttk.Combobox(weatherDate, textvariable = yearChoose, values=yearList,width=20,state="readonly", justify='center',font = FONT)
-    yearChoose = yearList.index(YEAR)
     yearOption.current(yearChoose)
+    
+    yearOption.bind("<<ComboboxSelected>>", lambda event:onDateChange(dayOption,dayChoose,monthOption,yearOption))
     yearOption.grid(row = 3, column=1, ipady= 5)
 
     myLabel = Label(weatherDate, text="", font = FONT, bg='white')
     myLabel.grid(row = 5,column=1, pady = 5)
+
+    dayMargin = calendar.monthrange(int(YEAR), monthChoose)[1]
+    dayOption['values'] = list(range(1, dayMargin)) 
 
     Button(weatherDate, text="Submit", width=15, height=1, font = FONT, fg='white', bg='#0275d8', bd=0, command=lambda: sendAllWeathersThread(dayOption.get(),monthOption.get(),yearOption.get(),myLabel )).grid(row=4,column=1,pady=(25,30))
 

@@ -4,6 +4,7 @@ import json
 from threading import Thread
 from datetime import date
 import random
+import calendar
 
 # helper functions
 def checkExistUsername(username):
@@ -43,12 +44,6 @@ def getWeatherByCity(city, numDay):
     month_loop = MONTH
     year_loop = YEAR
 
-    if (int(DAY) - numDay - 1 < 0):
-        index = MONTHS.index(MONTH)
-        PrevMonth = MONTHS[index-1]
-        keys = list(weatherData[YEAR][PrevMonth])
-        lastDayofPrevMonth = keys[-1]
-
     for i in range(numDay):
         try:
             date_data = weatherData[year_loop][month_loop][day_loop]
@@ -56,12 +51,16 @@ def getWeatherByCity(city, numDay):
                 weather = date_data[city]
         except:
             weather = "null"
+        res += "%-5s %s, %s: %-6s\n" % (month_loop,day_loop.zfill(2), year_loop,weather)
+        day_loop = str(int(day_loop) + 1)
 
-        res += "%-5s %s, %s: %s\n" % (month_loop,day_loop.zfill(2), year_loop,weather)
-        day_loop = str(int(day_loop) - 1)
-        if (int(day_loop) <= 0):
-            day_loop = lastDayofPrevMonth
-            month_loop = PrevMonth
+        monthInt = MONTHS.index(month_loop) + 1
+        dayMargin = calendar.monthrange(int(year_loop),monthInt)[1]
+
+        if (int(day_loop) > dayMargin):
+            day_loop = "1"
+            month_loop = MONTHS[monthInt]
+
     return res
 
 def getWeatherByCityJson(city, numDay):
@@ -69,12 +68,6 @@ def getWeatherByCityJson(city, numDay):
     day_loop = DAY
     month_loop = MONTH
     year_loop = YEAR
-
-    if (int(DAY) - numDay - 1 < 0):
-        index = MONTHS.index(MONTH)
-        PrevMonth = MONTHS[index-1]
-        keys = list(weatherData[YEAR][PrevMonth])
-        lastDayofPrevMonth = keys[-1]
 
     for i in range(numDay):
         try:
@@ -85,11 +78,16 @@ def getWeatherByCityJson(city, numDay):
         except:
             weather = "null"
 
-        res += '"%s %s %s": "%s",' % (month_loop,day_loop.zfill(2), year_loop,weather)
-        day_loop = str(int(day_loop) - 1)
-        if (int(day_loop) <= 0):
-            day_loop = lastDayofPrevMonth
-            month_loop = PrevMonth
+        res += '"%s %s %s": "%s",' % (month_loop,day_loop, year_loop,weather)
+        day_loop = str(int(day_loop) + 1)
+
+        monthInt = MONTHS.index(month_loop) + 1
+        dayMargin = calendar.monthrange(int(year_loop),monthInt)[1]
+
+        if (int(day_loop) > dayMargin):
+            day_loop = "1"
+            month_loop = MONTHS[monthInt]
+
 
     res = res[:-1]
     res += "}}"
@@ -221,6 +219,14 @@ def updateWeatherByCity(newData):
             year = date[2]
             month = date[0]
             day = date[1]
+
+            try: weatherData[year]
+            except: weatherData[year] = {}
+            try: weatherData[year][month]
+            except: weatherData[year][month] = {}
+            try: weatherData[year][month][day]
+            except: weatherData[year][month][day] = {}
+
             weatherData[year][month][day][city] = weatherList[weather]
 
         weatherJson = open("weather.json", "w")

@@ -156,6 +156,7 @@ def setUpChooseCityFrame(data):
 def setUpUpdateDataFrame(data, type):
     weatherList = list(data.values())
     weatherList = weatherList[0]
+
     updateType = list(data.keys())
     updateType = updateType[0]
 

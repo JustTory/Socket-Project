@@ -425,14 +425,14 @@
                 "Hu\u1ebf": "Sunny",
                 "H\u1ea3iPh\u00f2ng": "Sunny",
                 "V\u0169ngT\u00e0u": "Windy",
-                "Qu\u1ea3ngNinh": "Windy",
+                "Qu\u1ea3ngNinh": "Rainy",
                 "M\u1ef9Tho": "Snowy",
                 "B\u1eafcGiang": "Snowy",
                 "B\u1ebfnTre": "Sunny",
-                "Vinh": "Rainy"
+                "Vinh": "Sunny"
             },
             "28": {
-                "TPHCM": "Windy",
+                "TPHCM": "Windy ",
                 "H\u00e0N\u1ed9i": "Rainy",
                 "\u0110\u00e0N\u1eb5ng": "Sunny",
                 "Hu\u1ebf": "Windy",
@@ -444,7 +444,7 @@
                 "B\u1ebfnTre": "Windy"
             },
             "29": {
-                "TPHCM": "Rainy",
+                "TPHCM": "Rainy ",
                 "H\u00e0N\u1ed9i": "Windy",
                 "\u0110\u00e0N\u1eb5ng": "Snowy",
                 "Hu\u1ebf": "Snowy",
@@ -456,7 +456,7 @@
                 "B\u1ebfnTre": "Windy"
             },
             "30": {
-                "TPHCM": "Snowy",
+                "TPHCM": "Snowy ",
                 "H\u00e0N\u1ed9i": "Sunny",
                 "\u0110\u00e0N\u1eb5ng": "Sunny",
                 "Hu\u1ebf": "Snowy",

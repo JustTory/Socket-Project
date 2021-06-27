@@ -55,7 +55,7 @@ def getWeatherByCity(city, numDay):
             if (date_data[city]):
                 weather = date_data[city]
         except:
-            weather = "NaN"
+            weather = "null"
 
         res += "%-5s %s, %s: %s\n" % (month_loop,day_loop.zfill(2), year_loop,weather)
         day_loop = str(int(day_loop) - 1)
@@ -79,6 +79,7 @@ def getWeatherByCityJson(city, numDay):
     for i in range(numDay):
         try:
             date_data = weatherData[year_loop][month_loop][day_loop]
+            city = city.replace(" ", "")
             if (date_data[city]):
                 weather = date_data[city]
         except:
@@ -105,12 +106,12 @@ def getWeatherByDate(day, month, year):
         try:
             status = date_data[city]
         except:
-            status = "NaN"
+            status = "null"
         res += "%s: %s\n" % (cityData[city]['cityName'], status)
     return res
 
 def commandManager(commandArr):
-    print(commandArr)
+    #print(commandArr)
     data_transfer = "Error"
     if commandArr[0] == "/help":
         data_transfer= "\n/city [city_name]\n[city_name]: TPHCM, HaNoi, DaNang, Hue"
@@ -128,14 +129,15 @@ def getAllCity():
     temp = list(cityData)
     res = ""
     for city in temp:
-        res += city + "\n"
-    print(res)
+        res += cityData[city]['cityName'] + "\n"
+    #print(res)
     res = res[:-1]
     return res
 
 def createNewCity(cityName):
     global cityData
-    newCity= {cityName: {"cityName": cityName}}
+    keyCity = cityName.replace(" ", "")
+    newCity= {keyCity: {"cityName": cityName}}
     with open("city.json", "r+") as file:
         fileData = json.load(file)
         fileData.update(newCity)
@@ -151,6 +153,7 @@ def checkExistsDate(day, month, year):
         return False
 
 def getWeather(day, month, year, cityName):
+    cityName = cityName.replace(" ", "")
     if checkExistsDate(day, month ,year):
         try:
             weather = weatherData[year][month][day][cityName]
@@ -172,7 +175,7 @@ def getAllCities(day, month, year):
 def updateWeatherByDate(newData):
     try:
         data = json.loads(newData)
-        print(data)
+        #print(data)
         dataDate = list(data.keys())
         dataDate = dataDate[0]
         dataDate = dataDate.split()
@@ -182,7 +185,8 @@ def updateWeatherByDate(newData):
         cityList = {}
         for city in dataCity:
             if(dataCity[city] != "null"):
-                cityList[city] = dataCity[city]
+                cityKey = city.replace(" ", "")
+                cityList[cityKey] = dataCity[city]
 
         year = dataDate[2]
         month = dataDate[0]
@@ -204,10 +208,10 @@ def updateWeatherByDate(newData):
 
 def updateWeatherByCity(newData):
     data = json.loads(newData)
-    print(data)
+    #print(data)
 
     city = list(data.keys())
-    city = city[0]
+    city = city[0].replace(" ", "")
     weatherList = list(data.values())
     weatherList = weatherList[0]
 
@@ -352,8 +356,10 @@ def userSection(client, clientAddr):
 
             response = commandManager(data)
             client.sendall(bytes(response, "utf8"))
-            print(clientAddr, response)
-
+            if response != "Error":
+                print(clientAddr, "Request sent successfully")
+            else:
+                print(clientAddr, "Request sent error")
         else: return
 
 def adminSection(client, clientAddr):
@@ -381,18 +387,18 @@ def adminSection(client, clientAddr):
             elif reqType == "choosedate":
                 print(clientAddr, "ADMIN CHOOSE DATE: ", data)
                 res = getAllCities(data[1], data[2], data[3])
-                print(res)
+                #print(res)
                 client.sendall(bytes(res, "utf8"))
-                print("ADMIN CHOOSE DATE: city list sent successfully")
+                print(clientAddr, "ADMIN CHOOSE DATE: city list sent successfully")
 
             elif reqType == "updateddate":
                 print(clientAddr, "ADMIN UPDATE BY DATE")
                 if updateWeatherByDate(data[1]):
                     client.sendall(bytes("success", "utf8"))
-                    print("ADMIN UPDATE BY DATE: updated successfully")
+                    print(clientAddr, "ADMIN UPDATE BY DATE: updated successfully")
                 else:
                     client.sendall(bytes("error", "utf8"))
-                    print("ADMIN UPDATE BY DATE: error")
+                    print(clientAddr, "ADMIN UPDATE BY DATE: error")
 
             elif reqType == "getcitylist":
                 print(clientAddr, "ADMIN GET CITY LIST")
@@ -400,20 +406,20 @@ def adminSection(client, clientAddr):
                 client.sendall(bytes(res, "utf8"))
 
             elif reqType == "choosecity":
-                print(clientAddr, "ADMIN CHOOSE CITY: ", data[1])
+                print(clientAddr, "ADMIN CHOOSE CITY")#, data[1])
                 res = getWeatherByCityJson(data[1], 7)
-                print(res)
+                #print(res)
                 client.sendall(bytes(res, "utf8"))
-                print("success")
+                print(clientAddr, "ADMIN CHOOSE CITY: success")
 
             elif reqType == "updatedcity":
                 print(clientAddr, "ADMIN UPDATE BY CITY")
                 if updateWeatherByCity(data[1]):
                     client.sendall(bytes("success", "utf8"))
-                    print("ADMIN UPDATE BY CITY: updated successfully")
+                    print(clientAddr, "ADMIN UPDATE BY CITY: updated successfully")
                 else:
                     client.sendall(bytes("error", "utf8"))
-                    print("ADMIN UPDATE BY CITY: error")
+                    print(clientAddr, "ADMIN UPDATE BY CITY: error")
 
             elif reqType == "exit":
                 disconnectClient(client, clientAddr)

@@ -2,28 +2,34 @@
     "TPHCM": {
         "cityName": "TPHCM"
     },
-    "HaNoi": {
-        "cityName": "HaNoi"
+    "H\u00e0N\u1ed9i": {
+        "cityName": "H\u00e0 N\u1ed9i"
     },
-    "DaNang": {
-        "cityName": "DaNang"
+    "\u0110\u00e0N\u1eb5ng": {
+        "cityName": "\u0110\u00e0 N\u1eb5ng"
     },
-    "Hue": {
-        "cityName": "Hue"
+    "Hu\u1ebf": {
+        "cityName": "Hu\u1ebf"
     },
-    "HaiPhong": {
-        "cityName": "HaiPhong"
+    "H\u1ea3iPh\u00f2ng": {
+        "cityName": "H\u1ea3i Ph\u00f2ng"
     },
-    "VungTau": {
-        "cityName": "VungTau"
+    "V\u0169ngT\u00e0u": {
+        "cityName": "V\u0169ng T\u00e0u"
     },
-    "QuangNinh": {
-        "cityName": "QuangNinh"
+    "Qu\u1ea3ngNinh": {
+        "cityName": "Qu\u1ea3ng Ninh"
     },
-    "MyTho": {
-        "cityName": "MyTho"
+    "M\u1ef9Tho": {
+        "cityName": "M\u1ef9 Tho"
     },
-    "Bac Giang": {
-        "cityName": "Bac Giang"
+    "B\u1eafcGiang": {
+        "cityName": "B\u1eafc Giang"
+    },
+    "B\u1ebfnTre": {
+        "cityName": "B\u1ebfn Tre"
+    },
+    "Vinh": {
+        "cityName": "Vinh"
     }
 }

@@ -27,7 +27,6 @@ def selectRow(event, weatherLabel, weatherOption):
         weatherLabel.configure(text=name + "'s weather")
 
         pos = weatherType.index(weather)
-
         if pos == -1 : weatherOption.current(0)
         else: weatherOption.current(pos)
 
